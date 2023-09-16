@@ -1,8 +1,8 @@
 openapi: 3.0.3
 info:
-  title: SOA Lab 1 Swagger - OpenAPI 3.0
+  title: SOA Lab 1 Collection Service Swagger - OpenAPI 3.0
   description: |-
-    SOA Lab 1 OpenAPI documentation
+    SOA Lab 1 Collection Service OpenAPI documentation
   contact:
     email: the47iq@gmail.com
   license:
@@ -12,73 +12,11 @@ info:
 tags:
   - name: ticket
     description: Tickets creation, deletion and search
-  - name: booking
-    description: Booking of the tickets
   - name: coordinates
     description: CRUD operations about coordinates
   - name: person
     description: CRUD operations about person
 paths:
-  /booking/person/{person-id}/cancel:
-    post:
-      tags:
-        - booking
-      summary: Cancel booking of the tickets for person
-      description: Sets the owner and the price attributes to null for all tickets owned by a person
-      operationId: cancelBooking
-      parameters:
-        - name: person-id
-          in: path
-          description: ID of person
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Successful operation
-        '404':
-          description: Person not found
-  /booking/sell/{ticket-id}/{person-id}/{price}:
-    post:
-      tags:
-        - booking
-      summary: Sell a ticket to a person
-      description: Sets the price and the owner attributes and return an updated ticket object information
-      operationId: sellTicket
-      parameters:
-        - name: ticket-id
-          in: path
-          description: ID of ticket to sell
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: price
-          in: path
-          description: Price of the ticket
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: person-id
-          in: path
-          description: ID of person
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Ticket'
-        '400':
-          description: Validation exception
-        '404':
-          description: Either ticket not found or person not found
   /coordinates:
     get: 
       tags:
