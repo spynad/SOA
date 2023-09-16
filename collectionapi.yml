@@ -27,7 +27,7 @@ paths:
       parameters:
         - name: sort
           in: query
-          description: Array of fields that are used for sorting. The "-" sign means sorting in descending order. If queries and deletion order are provided for one field (with and without "-"), an error response will be returned.
+          description: A list of sorting fields is given, with "-" indicating descending order. Providing both ascending and descending instructions will trigger an error response.
           required: false
           explode: true
           schema:
@@ -45,7 +45,7 @@ paths:
         - name: filter
           in: query
           required: false
-          description: Array of fields used for filtering. Each element must contain the name of the field and the filtering method in parentheses, as well as the value that will be used for filtering. If the value type is incorrect, an error response will be returned.
+          description: An array of filtering fields, each containing the field name, filtering method in parentheses, and the filtering value. Incorrect value types will result in an error response.
           schema:
             type: array
             items:
@@ -56,7 +56,7 @@ paths:
         - name: page
           in: query
           required: false
-          description: Specifies the page number to be paginated. If used without the "pageSize" parameter, the page size will be 10. If none of the parameters "page" or "pageSize" is used, then all Flats will be returned.
+          description: Specifies the page number for pagination. When used without the "pageSize" parameter, the default page size is set to 10. If neither "page" nor "pageSize" parameters are used, all coordinates will be returned.
           schema:
             type: integer
             default: 0
@@ -64,7 +64,7 @@ paths:
         - name: pageSize
           in: query
           required: false
-          description: The specified page size for pagination. If used without the "page" parameter, the first page will be displayed. If none of the parameters "page" or "pageSize" is used, then all Flats will be returned.
+          description: This sets the page size for pagination. When used alone without the "page" parameter, it defaults to displaying the first page. If neither "page" nor "pageSize" parameters are specified, all coordinates will be returned.
           schema:
             type: integer
             default: 10
@@ -78,6 +78,8 @@ paths:
                   $ref: '#/components/schemas/CoordinatesArray'
         '400':
           description: Validation exception
+        '500':
+          description: Internal error occurred.
     put:
       tags:
         - coordinates
@@ -102,6 +104,8 @@ paths:
           description: Validation exception
         '404':
           description: Coordinates not found
+        '500':
+          description: Internal error occurred.
     post:
       tags:
         - coordinates
@@ -124,6 +128,8 @@ paths:
                 $ref: '#/components/schemas/Coordinates'
         '400':
           description: Validation exception
+        '500':
+          description: Internal error occurred.
   /coordinates/{coordinatesId}:
     get:
       tags:
@@ -150,6 +156,8 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Coordinates not found
+        '500':
+          description: Internal error occurred.
     delete:
       tags:
         - coordinates
@@ -171,6 +179,8 @@ paths:
           description: Invalid ID supplied
         '200':
           description: Successful operation
+        '500':
+          description: Internal error occurred.
   /person:
     get: 
       tags:
@@ -181,7 +191,7 @@ paths:
       parameters:
         - name: sort
           in: query
-          description: Array of fields that are used for sorting. The "-" sign means sorting in descending order. If queries and deletion order are provided for one field (with and without "-"), an error response will be returned.
+          description: A list of sorting fields is given, with "-" indicating descending order. Providing both ascending and descending instructions will trigger an error response.
           required: false
           explode: true
           schema:
@@ -203,7 +213,7 @@ paths:
         - name: filter
           in: query
           required: false
-          description: Array of fields used for filtering. Each element must contain the name of the field and the filtering method in parentheses, as well as the value that will be used for filtering. If the value type is incorrect, an error response will be returned.
+          description: An array of filtering fields is required, each containing the field name, filtering method in parentheses, and the filtering value. Incorrect value types will result in an error response.
           schema:
             type: array
             items:
@@ -214,7 +224,7 @@ paths:
         - name: page
           in: query
           required: false
-          description: Specifies the page number to be paginated. If used without the "pageSize" parameter, the page size will be 10. If none of the parameters "page" or "pageSize" is used, then all Flats will be returned.
+          description: Specifies the page number for pagination. When used without the "pageSize" parameter, the default page size is set to 10. If neither "page" nor "pageSize" parameters are used, all tickets will be returned.
           schema:
             type: integer
             default: 0
@@ -222,7 +232,7 @@ paths:
         - name: pageSize
           in: query
           required: false
-          description: The specified page size for pagination. If used without the "page" parameter, the first page will be displayed. If none of the parameters "page" or "pageSize" is used, then all Flats will be returned.
+          description: This sets the page size for pagination. When used alone without the "page" parameter, it defaults to displaying the first page. If neither "page" nor "pageSize" parameters are specified, all persons will be returned.
           schema:
             type: integer
             default: 10
@@ -236,6 +246,8 @@ paths:
                   $ref: '#/components/schemas/PersonArray'
         '400':
           description: Validation exception
+        '500':
+          description: Internal error occurred.
     put:
       tags:
         - person
@@ -260,6 +272,8 @@ paths:
           description: Validation exception
         '404':
           description: Person not found
+        '500':
+          description: Internal error occurred.
     post:
       tags:
         - person
@@ -282,6 +296,8 @@ paths:
                 $ref: '#/components/schemas/Person'
         '400':
           description: Validation exception
+        '500':
+          description: Internal error occurred.
   /person/{personId}:
     get:
       tags:
@@ -308,6 +324,8 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Person not found
+        '500':
+          description: Internal error occurred.
     delete:
       tags:
         - person
@@ -329,6 +347,8 @@ paths:
           description: Invalid ID supplied
         '200':
           description: Successful operation
+        '500':
+          description: Internal error occurred.
   /ticket:
     get: 
       tags:
@@ -339,7 +359,7 @@ paths:
       parameters:
         - name: sort
           in: query
-          description: Array of fields that are used for sorting. The "-" sign means sorting in descending order. If queries and deletion order are provided for one field (with and without "-"), an error response will be returned.
+          description: A list of sorting fields is given, with "-" indicating descending order. Providing both ascending and descending instructions will trigger an error response.
           required: false
           explode: true
           schema:
@@ -381,7 +401,7 @@ paths:
         - name: filter
           in: query
           required: false
-          description: Array of fields used for filtering. Each element must contain the name of the field and the filtering method in parentheses, as well as the value that will be used for filtering. If the value type is incorrect, an error response will be returned.
+          description: An array of filtering fields is required, each containing the field name, filtering method in parentheses, and the filtering value. Incorrect value types will result in an error response.
           schema:
             type: array
             items:
@@ -392,7 +412,7 @@ paths:
         - name: page
           in: query
           required: false
-          description: Specifies the page number to be paginated. If used without the "pageSize" parameter, the page size will be 10. If none of the parameters "page" or "pageSize" is used, then all Flats will be returned.
+          description: Specifies the page number for pagination. When used without the "pageSize" parameter, the default page size is set to 10. If neither "page" nor "pageSize" parameters are used, all tickets will be returned.
           schema:
             type: integer
             default: 0
@@ -400,7 +420,7 @@ paths:
         - name: pageSize
           in: query
           required: false
-          description: The specified page size for pagination. If used without the "page" parameter, the first page will be displayed. If none of the parameters "page" or "pageSize" is used, then all Flats will be returned.
+          description: This sets the page size for pagination. When used alone without the "page" parameter, it defaults to displaying the first page. If neither "page" nor "pageSize" parameters are specified, all tickets will be returned.
           schema:
             type: integer
             default: 10
@@ -414,6 +434,8 @@ paths:
                   $ref: '#/components/schemas/TicketsArray'
         '400':
           description: Validation exception
+        '500':
+          description: Internal error occurred.
         
     put:
       tags:
@@ -439,6 +461,8 @@ paths:
           description: Validation exception
         '404':
           description: Ticket not found
+        '500':
+          description: Internal error occurred.
     post:
       tags:
         - ticket
@@ -461,6 +485,8 @@ paths:
                 $ref: '#/components/schemas/Ticket'
         '400':
           description: Validation exception
+        '500':
+          description: Internal error occurred.
   /ticket/{ticketId}:
     get:
       tags:
@@ -487,6 +513,8 @@ paths:
           description: Invalid ID supplied
         '404':
           description: Ticket not found
+        '500':
+          description: Internal error occurred.
     delete:
       tags:
         - ticket
@@ -508,6 +536,8 @@ paths:
           description: Invalid ID supplied
         '200':
           description: Successful operation
+        '500':
+          description: Internal error occurred.
   /ticket/getAverageTicketDiscount:
     get:
       tags:
@@ -524,6 +554,8 @@ paths:
                 type: number
                 xml:
                   name: "AveragePriceDiscount"
+        '500':
+          description: Internal error occurred.
   /ticket/getMinimalTicketByCreationDate:
     get:
       tags:
@@ -540,6 +572,8 @@ paths:
                 $ref: '#/components/schemas/Ticket'
         '404':
           description: Ticket not found
+        '500':
+          description: Internal error occurred.
   /ticket/getCheaperTicketsByPrice/{price}:
     get:
       tags:
@@ -569,6 +603,8 @@ paths:
                   $ref: '#/components/schemas/Ticket'
         '400':
           description: Invalid price supplied
+        '500':
+          description: Internal error occurred.
 components:
   schemas:
     Ticket:
