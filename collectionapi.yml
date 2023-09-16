@@ -121,7 +121,7 @@ paths:
               $ref: '#/components/schemas/Coordinates'
         required: true
       responses:
-        '200':
+        '201':
           description: Successful operation
           content:
             application/xml:
@@ -284,7 +284,7 @@ paths:
               $ref: '#/components/schemas/Person'
         required: true
       responses:
-        '200':
+        '201':
           description: Successful operation
           content:
             application/xml:
@@ -468,7 +468,7 @@ paths:
               $ref: '#/components/schemas/Ticket'
         required: true
       responses:
-        '200':
+        '201':
           description: Successful operation
           content:
             application/xml:
