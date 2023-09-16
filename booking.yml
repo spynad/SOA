@@ -28,10 +28,64 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: Successful operation
+        '201':
+          description: Started operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OperationalResponse'
         '404':
           description: Person not found
+  /booking/person/cancel/{id}:
+    get:
+      tags:
+        - booking
+      summary: Get status of the booking cancelation of the tickets for person
+      description: Get status of the booking cancelation of the tickets for person
+      operationId: getCancelBooking
+      parameters:
+        - name: id
+          in: path
+          description: ID of an operation
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OperationalStatusResponse'
+        '404':
+          description: Person not found
+    delete:
+      tags:
+        - booking
+      summary: Cancel the booking cancelation of the tickets for person
+      description: Cancel the booking cancelation of the tickets for person
+      operationId: cancelBookingCancellation
+      parameters:
+        - name: id
+          in: path
+          description: ID of an operation
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OperationalStatusResponse'
+        '400':
+          description: Operation can't be cancelled
+        '404':
+          description: Person not found
+    
   /booking/sell/{ticket-id}/{person-id}/{price}:
     post:
       tags:
@@ -62,16 +116,67 @@ paths:
             type: integer
             format: int64
       responses:
+        '201':
+          description: Started operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OperationalResponse'
+        '400':
+          description: Validation exception
+        '404':
+          description: Either ticket not found or person not found
+  /booking/sell/{id}:
+    get:
+      tags:
+        - booking
+      summary: Get status of a ticket sell to a person
+      description: Get status of a ticket sell to a person
+      operationId: sellTicketStatus
+      parameters:
+        - name: id
+          in: path
+          description: ID of person
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
         '200':
           description: Successful operation
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/Ticket'
+                $ref: '#/components/schemas/OperationalStatusResponse'
         '400':
           description: Validation exception
         '404':
-          description: Either ticket not found or person not found
+          description: Either ticket not found or person not found or operation not found
+    delete:
+      tags:
+        - booking
+      summary: Cancel an operation of a ticket sell to a person
+      description: Cancel an operation of a ticket sell to a person
+      operationId: sellTicketCancel
+      parameters:
+        - name: id
+          in: path
+          description: ID of person
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OperationalStatusResponse'
+        '400':
+          description: Validation exception
+        '404':
+          description: Either ticket not found or person not found or operation not found
   
 components:
   schemas:
@@ -179,3 +284,30 @@ components:
             - JAPAN
       required:
         - hairColor
+    OperationalResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        time:
+          type: string
+          format: date-time
+    OperationalStatusResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        time:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+            - CREATED
+            - ERROR
+            - PENDING
+            - CANCELED
