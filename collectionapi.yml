@@ -539,7 +539,7 @@ paths:
         '500':
           description: Internal error occurred.
   /ticket/getAverageTicketDiscount:
-    get:
+    post:
       tags:
         - ticket
       summary: Get average discount of tickets
@@ -557,7 +557,7 @@ paths:
         '500':
           description: Internal error occurred.
   /ticket/getMinimalTicketByCreationDate:
-    get:
+    post:
       tags:
         - ticket
       summary: Find minimal ticket by creation date field
@@ -575,7 +575,7 @@ paths:
         '500':
           description: Internal error occurred.
   /ticket/getCheaperTicketsByPrice/{price}:
-    get:
+    post:
       tags:
         - ticket
       summary: Find tickets with the lower price than given
