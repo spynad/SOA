@@ -75,12 +75,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: array
-                xml:
-                  name: "Coordinates"
-                  wrapped: true
-                items:
-                  $ref: '#/components/schemas/Coordinates'
+                  $ref: '#/components/schemas/CoordinatesArray'
         '400':
           description: Validation exception
     put:
@@ -238,12 +233,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: array
-                xml:
-                  name: "Person"
-                  wrapped: true
-                items:
-                  $ref: '#/components/schemas/Person'
+                  $ref: '#/components/schemas/PersonArray'
         '400':
           description: Validation exception
     put:
@@ -421,12 +411,7 @@ paths:
           content:
             application/xml:
               schema:
-                type: array
-                xml:
-                  name: "Ticket"
-                  wrapped: true
-                items:
-                  $ref: '#/components/schemas/Ticket'
+                  $ref: '#/components/schemas/TicketsArray'
         '400':
           description: Validation exception
         
@@ -690,3 +675,69 @@ components:
             - JAPAN
       required:
         - hairColor
+    CoordinatesArray:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          example: 0
+        pagesTotal:
+          type: integer
+          format: int64
+          example: 100
+        pageSize:
+          type: integer
+          format: int64
+          example: 100
+        tickets:
+          type: array
+          xml:
+            name: "Coordinates"
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Coordinates'
+    PersonArray:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          example: 0
+        pagesTotal:
+          type: integer
+          format: int64
+          example: 100
+        pageSize:
+          type: integer
+          format: int64
+          example: 100
+        tickets:
+          type: array
+          xml:
+            name: "Person"
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Person'
+    TicketsArray:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          example: 0
+        pagesTotal:
+          type: integer
+          format: int64
+          example: 100
+        pageSize:
+          type: integer
+          format: int64
+          example: 100
+        tickets:
+          type: array
+          xml:
+            name: "Ticket"
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Ticket'
