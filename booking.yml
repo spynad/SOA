@@ -59,7 +59,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/OperationalStatusResponse'
         '404':
-          description: Person not found
+          description: Operation not found
     delete:
       tags:
         - booking
@@ -84,7 +84,7 @@ paths:
         '400':
           description: Operation can't be cancelled
         '404':
-          description: Person not found
+          description: Operation not found
     
   /booking/sell/{ticket-id}/{person-id}/{price}:
     post:
@@ -151,7 +151,7 @@ paths:
         '400':
           description: Validation exception
         '404':
-          description: Either ticket not found or person not found or operation not found
+          description: Operation not found
     delete:
       tags:
         - booking
@@ -176,7 +176,7 @@ paths:
         '400':
           description: Validation exception
         '404':
-          description: Either ticket not found or person not found or operation not found
+          description: Operation not found
   
 components:
   schemas:
