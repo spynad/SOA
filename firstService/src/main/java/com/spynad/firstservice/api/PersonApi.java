@@ -22,6 +22,7 @@ import com.spynad.firstservice.exception.NotFoundException;
 import java.io.InputStream;
 
 import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.*;
@@ -34,9 +35,8 @@ public class PersonApi  {
     @Inject PersonService service;
 
     @POST
-
-    @Consumes({ "application/xml" })
-    @Produces({ "application/xml" })
+    @Consumes({MediaType.APPLICATION_XML})
+    @Produces({MediaType.APPLICATION_XML})
     @Operation(summary = "Add a new person", description = "Add a new person", tags={ "person" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Successful operation", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = Person.class))),
@@ -52,8 +52,6 @@ public class PersonApi  {
     }
     @DELETE
     @Path("/{personId}")
-
-
     @Operation(summary = "Delete a person", description = "delete a person", tags={ "person" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
@@ -68,8 +66,6 @@ public class PersonApi  {
         return service.deletePerson(personId,securityContext);
     }
     @GET
-
-
     @Produces({ "application/xml" })
     @Operation(summary = "Get list of person", description = "Get list of person", tags={ "person" })
     @ApiResponses(value = {
@@ -84,7 +80,6 @@ public class PersonApi  {
     }
     @GET
     @Path("/{personId}")
-
     @Produces({ "application/xml" })
     @Operation(summary = "Find person by ID", description = "Returns a single person", tags={ "person" })
     @ApiResponses(value = {
@@ -100,7 +95,6 @@ public class PersonApi  {
         return service.getPersonById(personId,securityContext);
     }
     @PUT
-
     @Consumes({ "application/xml" })
     @Produces({ "application/xml" })
     @Operation(summary = "Update an existing person", description = "Update an existing person by Id", tags={ "person" })
