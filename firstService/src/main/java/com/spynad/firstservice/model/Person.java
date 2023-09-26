@@ -7,13 +7,25 @@ import java.util.HashMap;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
-
+@Entity
+@XmlRootElement(name = "person")
 public class Person {
+    @Id
+    @GeneratedValue
     private Long id;
     private Float weight;
+    @Enumerated(EnumType.STRING)
+    private EyeColorEnum eyeColor;
+    @Enumerated(EnumType.STRING)
+    private HairColorEnum hairColor;
+    @Enumerated(EnumType.STRING)
+    private CountryEnum country;
 
     public enum EyeColorEnum {
         GREEN("GREEN"),
@@ -32,7 +44,6 @@ public class Person {
         }
     }
 
-    private EyeColorEnum eyeColor;
 
     public enum HairColorEnum {
         RED("RED"),
@@ -52,8 +63,6 @@ public class Person {
         }
     }
 
-    private HairColorEnum hairColor;
-
     public enum CountryEnum {
         RUSSIA("RUSSIA"),
         USA("USA"),
@@ -72,8 +81,6 @@ public class Person {
             return String.valueOf(value);
         }
     }
-
-    private CountryEnum country;
 
     @Schema(example = "10", description = "")
     @JsonProperty("id")
