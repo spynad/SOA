@@ -32,6 +32,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
 
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -90,6 +92,22 @@ public class SpringApplicationConfig {
     public PlatformTransactionManager defaultTransactionManager(
             final @Qualifier("defaultManagerFactory") LocalContainerEntityManagerFactoryBean managerFactory) {
         return new JpaTransactionManager(managerFactory.getObject());
+    }
+
+    @Bean
+    public ConnectionFactory jmsConnectionFactory() throws NamingException {
+        InitialContext context = new InitialContext();
+        ConnectionFactory factory = (ConnectionFactory) context.lookup("java:/PizdecConnectionFactory");
+        System.out.println(factory);
+        return factory;
+    }
+
+    @Bean
+    public Queue ticketQueue() throws NamingException {
+        InitialContext context = new InitialContext();
+        Queue queue = (Queue) context.lookup("queue/bookingQueue");
+        System.out.println(queue);
+        return queue;
     }
 
     @Bean
