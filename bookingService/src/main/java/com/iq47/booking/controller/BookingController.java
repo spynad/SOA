@@ -1,4 +1,4 @@
-package com.iq47.booking.contoroller;
+package com.iq47.booking.controller;
 
 import com.iq47.booking.model.exception.UnableToCancelException;
 import com.iq47.booking.model.message.OperationalResponse;
