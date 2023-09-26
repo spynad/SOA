@@ -1,16 +1,17 @@
-package com.spynad.model;
+package com.spynad.firstservice.model;
 
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-public class Person   {
+public class Person {
     private Long id;
     private Float weight;
 
@@ -30,6 +31,7 @@ public class Person   {
             return String.valueOf(value);
         }
     }
+
     private EyeColorEnum eyeColor;
 
     public enum HairColorEnum {
@@ -49,6 +51,7 @@ public class Person   {
             return String.valueOf(value);
         }
     }
+
     private HairColorEnum hairColor;
 
     public enum CountryEnum {
@@ -69,6 +72,7 @@ public class Person   {
             return String.valueOf(value);
         }
     }
+
     private CountryEnum country;
 
     @Schema(example = "10", description = "")
@@ -76,6 +80,7 @@ public class Person   {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -83,9 +88,11 @@ public class Person   {
 
     @Schema(example = "150", description = "")
     @JsonProperty("weight")
-    @DecimalMin("1")  public Float getWeight() {
+    @DecimalMin("1")
+    public Float getWeight() {
         return weight;
     }
+
     public void setWeight(Float weight) {
         this.weight = weight;
     }
@@ -95,6 +102,7 @@ public class Person   {
     public EyeColorEnum getEyeColor() {
         return eyeColor;
     }
+
     public void setEyeColor(EyeColorEnum eyeColor) {
         this.eyeColor = eyeColor;
     }
@@ -105,6 +113,7 @@ public class Person   {
     public HairColorEnum getHairColor() {
         return hairColor;
     }
+
     public void setHairColor(HairColorEnum hairColor) {
         this.hairColor = hairColor;
     }
@@ -114,6 +123,7 @@ public class Person   {
     public CountryEnum getCountry() {
         return country;
     }
+
     public void setCountry(CountryEnum country) {
         this.country = country;
     }

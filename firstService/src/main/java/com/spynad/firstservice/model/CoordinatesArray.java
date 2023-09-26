@@ -1,15 +1,18 @@
-package com.spynad.model;
+package com.spynad.firstservice.model;
 
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.List;
-import javax.validation.constraints.*;
+
+import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class CoordinatesArray   {
+public class CoordinatesArray {
     private Long page;
     private Long pagesTotal;
     private Long pageSize;
@@ -20,6 +23,7 @@ public class CoordinatesArray   {
     public Long getPage() {
         return page;
     }
+
     public void setPage(Long page) {
         this.page = page;
     }
@@ -29,6 +33,7 @@ public class CoordinatesArray   {
     public Long getPagesTotal() {
         return pagesTotal;
     }
+
     public void setPagesTotal(Long pagesTotal) {
         this.pagesTotal = pagesTotal;
     }
@@ -38,6 +43,7 @@ public class CoordinatesArray   {
     public Long getPageSize() {
         return pageSize;
     }
+
     public void setPageSize(Long pageSize) {
         this.pageSize = pageSize;
     }
@@ -47,6 +53,7 @@ public class CoordinatesArray   {
     public List<Coordinates> getTickets() {
         return tickets;
     }
+
     public void setTickets(List<Coordinates> tickets) {
         this.tickets = tickets;
     }

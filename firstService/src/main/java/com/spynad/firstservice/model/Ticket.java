@@ -1,16 +1,19 @@
-package com.spynad.model;
+package com.spynad.firstservice.model;
 
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.util.Date;
-import javax.validation.constraints.*;
+
+import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class Ticket   {
+public class Ticket {
     private Long id;
     private String name;
     private Long coordinatesId;
@@ -36,6 +39,7 @@ public class Ticket   {
             return String.valueOf(value);
         }
     }
+
     private TypeEnum type;
     private Long personId;
 
@@ -43,9 +47,11 @@ public class Ticket   {
     @Schema(example = "10", required = true, description = "")
     @JsonProperty("id")
     @NotNull
-    @Min(1L)  public Long getId() {
+    @Min(1L)
+    public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -53,9 +59,11 @@ public class Ticket   {
     @Schema(example = "Ticket name", required = true, description = "")
     @JsonProperty("name")
     @NotNull
-    @Size(min=1)  public String getName() {
+    @Size(min = 1)
+    public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -65,6 +73,7 @@ public class Ticket   {
     public Long getCoordinatesId() {
         return coordinatesId;
     }
+
     public void setCoordinatesId(Long coordinatesId) {
         this.coordinatesId = coordinatesId;
     }
@@ -75,6 +84,7 @@ public class Ticket   {
     public Date getCreationDate() {
         return creationDate;
     }
+
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
@@ -82,18 +92,23 @@ public class Ticket   {
     @Schema(example = "10", required = true, description = "")
     @JsonProperty("price")
     @NotNull
-    @Min(1)  public Integer getPrice() {
+    @Min(1)
+    public Integer getPrice() {
         return price;
     }
+
     public void setPrice(Integer price) {
         this.price = price;
     }
 
     @Schema(example = "40", description = "")
     @JsonProperty("discount")
-    @Min(1L) @Max(101L)  public Long getDiscount() {
+    @Min(1L)
+    @Max(101L)
+    public Long getDiscount() {
         return discount;
     }
+
     public void setDiscount(Long discount) {
         this.discount = discount;
     }
@@ -104,6 +119,7 @@ public class Ticket   {
     public Boolean isRefundable() {
         return refundable;
     }
+
     public void setRefundable(Boolean refundable) {
         this.refundable = refundable;
     }
@@ -113,6 +129,7 @@ public class Ticket   {
     public TypeEnum getType() {
         return type;
     }
+
     public void setType(TypeEnum type) {
         this.type = type;
     }
@@ -122,6 +139,7 @@ public class Ticket   {
     public Long getPersonId() {
         return personId;
     }
+
     public void setPersonId(Long personId) {
         this.personId = personId;
     }

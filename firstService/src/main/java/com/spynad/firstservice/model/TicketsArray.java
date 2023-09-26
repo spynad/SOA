@@ -1,12 +1,15 @@
-package com.spynad.model;
+package com.spynad.firstservice.model;
 
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.List;
-import javax.validation.constraints.*;
+
+import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class TicketsArray {
@@ -21,6 +24,7 @@ public class TicketsArray {
     public Long getPage() {
         return page;
     }
+
     public void setPage(Long page) {
         this.page = page;
     }
@@ -30,6 +34,7 @@ public class TicketsArray {
     public Long getPagesTotal() {
         return pagesTotal;
     }
+
     public void setPagesTotal(Long pagesTotal) {
         this.pagesTotal = pagesTotal;
     }
@@ -39,6 +44,7 @@ public class TicketsArray {
     public Long getPageSize() {
         return pageSize;
     }
+
     public void setPageSize(Long pageSize) {
         this.pageSize = pageSize;
     }
@@ -48,6 +54,7 @@ public class TicketsArray {
     public List<Ticket> getTickets() {
         return tickets;
     }
+
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
     }

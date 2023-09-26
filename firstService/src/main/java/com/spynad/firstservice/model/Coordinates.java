@@ -1,11 +1,12 @@
-package com.spynad.model;
+package com.spynad.firstservice.model;
 
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
@@ -20,6 +21,7 @@ public class Coordinates {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -29,15 +31,18 @@ public class Coordinates {
     public Float getX() {
         return x;
     }
+
     public void setX(Float x) {
         this.x = x;
     }
 
     @Schema(example = "15", description = "")
     @JsonProperty("y")
-    @DecimalMin("-235")  public Float getY() {
+    @DecimalMin("-235")
+    public Float getY() {
         return y;
     }
+
     public void setY(Float y) {
         this.y = y;
     }
