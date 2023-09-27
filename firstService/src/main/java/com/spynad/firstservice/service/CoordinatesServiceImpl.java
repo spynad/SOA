@@ -13,11 +13,12 @@ import com.spynad.firstservice.exception.NotFoundException;
 import java.io.InputStream;
 
 import com.spynad.firstservice.model.message.ApiResponseMessage;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 
-@RequestScoped
+@ApplicationScoped
 public class CoordinatesServiceImpl implements CoordinatesService {
     public Response addCoordinates(Coordinates body,SecurityContext securityContext)
             throws NotFoundException {

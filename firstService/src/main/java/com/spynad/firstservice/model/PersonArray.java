@@ -2,21 +2,21 @@ package com.spynad.firstservice.model;
 
 import java.util.Objects;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.List;
 
-import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "personArray")
 public class PersonArray {
     private Long page;
     private Long pagesTotal;
     private Long pageSize;
-    private List<Person> tickets = new ArrayList<Person>();
+    private List<Person> persons = new ArrayList<Person>();
 
 
     @Schema(example = "0", description = "")
@@ -51,13 +51,13 @@ public class PersonArray {
 
 
     @Schema(description = "")
-    @JsonProperty("tickets")
-    public List<Person> getTickets() {
-        return tickets;
+    @XmlElement(name = "person")
+    public List<Person> getPersons() {
+        return persons;
     }
 
-    public void setTickets(List<Person> tickets) {
-        this.tickets = tickets;
+    public void setPersons(List<Person> persons) {
+        this.persons = persons;
     }
 
 
@@ -73,12 +73,12 @@ public class PersonArray {
         return Objects.equals(page, personArray.page) &&
                 Objects.equals(pagesTotal, personArray.pagesTotal) &&
                 Objects.equals(pageSize, personArray.pageSize) &&
-                Objects.equals(tickets, personArray.tickets);
+                Objects.equals(persons, personArray.persons);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(page, pagesTotal, pageSize, tickets);
+        return Objects.hash(page, pagesTotal, pageSize, persons);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class PersonArray {
         sb.append("    page: ").append(toIndentedString(page)).append("\n");
         sb.append("    pagesTotal: ").append(toIndentedString(pagesTotal)).append("\n");
         sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
-        sb.append("    tickets: ").append(toIndentedString(tickets)).append("\n");
+        sb.append("    tickets: ").append(toIndentedString(persons)).append("\n");
         sb.append("}");
         return sb.toString();
     }

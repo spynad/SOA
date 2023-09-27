@@ -1,5 +1,6 @@
 package com.spynad.firstservice.model;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class Person {
         GREEN("GREEN"),
         RED("RED"),
         ORANGE("ORANGE");
+
         private String value;
 
         EyeColorEnum(String value) {
@@ -41,6 +43,13 @@ public class Person {
         @JsonValue
         public String toString() {
             return String.valueOf(value);
+        }
+
+        public static EyeColorEnum fromValue(String value){
+            return Arrays.stream(EyeColorEnum.values())
+                    .filter(e -> Objects.equals(e.value, value))
+                    .findFirst()
+                    .orElse(null);
         }
     }
 
@@ -61,6 +70,13 @@ public class Person {
         public String toString() {
             return String.valueOf(value);
         }
+
+        public static HairColorEnum fromValue(String value){
+            return Arrays.stream(HairColorEnum.values())
+                    .filter(e -> Objects.equals(e.value, value))
+                    .findFirst()
+                    .orElse(null);
+        }
     }
 
     public enum CountryEnum {
@@ -79,6 +95,13 @@ public class Person {
         @JsonValue
         public String toString() {
             return String.valueOf(value);
+        }
+
+        public static CountryEnum fromValue(String value){
+            return Arrays.stream(CountryEnum.values())
+                    .filter(e -> Objects.equals(e.value, value))
+                    .findFirst()
+                    .orElse(null);
         }
     }
 

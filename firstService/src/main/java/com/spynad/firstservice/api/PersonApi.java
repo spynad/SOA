@@ -74,7 +74,7 @@ public class PersonApi  {
             @ApiResponse(responseCode = "400", description = "Validation exception"),
 
             @ApiResponse(responseCode = "500", description = "Internal error occurred.") })
-    public Response getAllPerson(  @QueryParam("sort") List<String> sort,  @QueryParam("filter") List<String> filter, @Min(0)  @DefaultValue("0") @QueryParam("page") Integer page, @Min(1)  @DefaultValue("10") @QueryParam("pageSize") Integer pageSize,@Context SecurityContext securityContext)
+    public Response getAllPerson(  @QueryParam("sort") List<String> sort,  @QueryParam("filter") List<String> filter, @Min(0) @QueryParam("page") Integer page, @Min(1) @QueryParam("pageSize") Integer pageSize,@Context SecurityContext securityContext)
             throws NotFoundException {
         return service.getAllPerson(sort,filter,page,pageSize,securityContext);
     }
