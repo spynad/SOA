@@ -1,5 +1,7 @@
 package com.iq47.booking.model.entity;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,19 +9,22 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
+@XmlRootElement(name = "ticket")
 public class Ticket {
     private Long id;
     private String name;
-    private Long coordinatesId;
+    @XmlElement
+    private Coordinates coordinates;
     private LocalDateTime creationDate;
     private Integer price;
     private Integer discount;
     private Boolean refundable;
     private String type;
-    private Long personId;
+    @XmlElement
+    private Person person;
 
     @Override
     public Object clone() {
-        return new Ticket(id, name, coordinatesId, creationDate, price, discount, refundable, type, personId);
+        return new Ticket(id, name, coordinates, creationDate, price, discount, refundable, type, person);
     }
 }

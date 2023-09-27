@@ -1,7 +1,9 @@
 package com.iq47.booking.service;
 
 import com.iq47.booking.model.entity.Operation;
+import com.iq47.booking.model.entity.Person;
 import com.iq47.booking.model.entity.Ticket;
+import com.iq47.booking.model.entity.TicketsArray;
 import com.iq47.booking.model.exception.CancelOperationException;
 import com.iq47.booking.model.exception.TimeOutException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +35,21 @@ public class BookingService {
         String params = String.format("?filter=id[eq]=%d", ticketId);
         String url = String.format("%s/ticket%s", restServiceBaseUrl, params);
         Ticket ticket = restTemplate.getForObject(url, Ticket.class);
+        url = String.format("%s/person", restServiceBaseUrl);
+        Person person = restTemplate.getForObject(url, Person.class);
         try {
             assert ticket != null;
-            sellTicketInternal(ticket, personId, price, operationId);
+            sellTicketInternal(ticket, person, price, operationId);
         } catch (CancelOperationException | TimeOutException e) {
             sellTicketRollback(ticket);
         }
     }
 
     @Transactional(rollbackOn = { CancelOperationException.class, TimeOutException.class })
-    public void sellTicketInternal(Ticket ticket, Long personId, Integer price, Long operationId) throws CancelOperationException, TimeOutException {
+    public void sellTicketInternal(Ticket ticket, Person person, Integer price, Long operationId) throws CancelOperationException, TimeOutException {
         String url = String.format("%s/ticket", restServiceBaseUrl);
         Ticket ticketInternal = (Ticket) ticket.clone();
-        ticketInternal.setPersonId(personId);
+        ticketInternal.setPerson(person);
         ticketInternal.setPrice(price);
         restTemplate.put(url, ticket);
         finishOperation(operationId);
@@ -70,32 +74,32 @@ public class BookingService {
         restTemplate.put(url, ticket);
     }
 
-    public void cancelBooking(Long personId, Long operationId) {
+    public void cancelBooking(Long personId, Long operationId) throws TimeOutException {
         String params = String.format("?filter=person\\.id[eq]=%d", personId);
         String url = String.format("%s/ticket%s", restServiceBaseUrl, params);
-        List<Ticket> tickets = (List<Ticket>) restTemplate.getForObject(url, List.class);
+        TicketsArray tickets = restTemplate.getForObject(url, TicketsArray.class);
         try {
             assert tickets != null;
-            cancelBookingInternal(tickets, personId, operationId);
-        } catch (CancelOperationException | TimeOutException e) {
-            sellTicketsRollback(tickets);
+            cancelBookingInternal(tickets, operationId);
+        } catch (CancelOperationException e) {
+            cancelBookingRollback(tickets);
         }
     }
 
-    void sellTicketsRollback(List<Ticket> tickets) {
+    void cancelBookingRollback(TicketsArray tickets) {
         String url = String.format("%s/ticket", restServiceBaseUrl);
-        for (Ticket ticket: tickets) {
+        for (Ticket ticket: tickets.getTickets()) {
             restTemplate.put(url, ticket);
         }
     }
 
     @Transactional
-    public void cancelBookingInternal(List<Ticket> tickets, Long personId, Long operationId) throws CancelOperationException, TimeOutException {
+    public void cancelBookingInternal(TicketsArray tickets, Long operationId) throws CancelOperationException, TimeOutException {
         String url = String.format("%s/ticket", restServiceBaseUrl);
-        for (Ticket ticket: tickets) {
+        for (Ticket ticket: tickets.getTickets()) {
             Ticket ticketInternal = (Ticket) ticket.clone();
-            ticketInternal.setPersonId(null);
-            ticketInternal.setPrice(null);
+            ticketInternal.setPerson(null);
+            ticketInternal.setPrice(1);
             restTemplate.put(url, ticket);
         }
         finishOperation(operationId);

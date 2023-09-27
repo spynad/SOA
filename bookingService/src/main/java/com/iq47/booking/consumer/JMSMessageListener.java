@@ -88,7 +88,7 @@ public class JMSMessageListener implements MessageListener {
         task.setStatus(OperationStatus.FINISHED);
     }
 
-    private void handleSellTicketMessage(JSONObject jo, Operation task) {
+    private void handleSellTicketMessage(JSONObject jo, Operation task) throws TimeOutException {
         bookingService.cancelBooking(jo.getLong("person_id"), jo.getLong("task_id"));
         task.setStatus(OperationStatus.FINISHED);
     }

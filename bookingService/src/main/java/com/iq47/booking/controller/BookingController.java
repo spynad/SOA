@@ -6,6 +6,7 @@ import com.iq47.booking.model.message.OperationalStatusResponse;
 import com.iq47.booking.service.BookingOperationalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class BookingController {
     }
 
     // POST /booking/person/{person-id}/cancel
-    @PostMapping("/person/{personId}/cancel")
+    @PostMapping(value = "/person/{personId}/cancel", produces= MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<OperationalResponse> cancelBooking(@PathVariable("personId") Long personId) {
         try {
             OperationalResponse response = bookingOperationalService.cancelBooking(personId);
@@ -38,7 +39,7 @@ public class BookingController {
     }
 
     // GET /booking/person/cancel/{id}
-    @GetMapping("/person/cancel/{id}")
+    @GetMapping(value = "/person/cancel/{id}", produces= MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<OperationalStatusResponse> getCancelBookingStatus(@PathVariable("id") Long id) {
         try {
             OperationalStatusResponse response = bookingOperationalService.getOperationStatus(id);
@@ -49,7 +50,7 @@ public class BookingController {
     }
 
     // DELETE /booking/person/cancel/{id}
-    @DeleteMapping("/person/cancel/{id}")
+    @DeleteMapping(value = "/person/cancel/{id}", produces= MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<OperationalStatusResponse> cancelBookingCancellation(@PathVariable("id") Long id) {
         try {
             OperationalStatusResponse response = bookingOperationalService.cancelOperation(id);
@@ -60,7 +61,7 @@ public class BookingController {
     }
 
     // Endpoint to sell a ticket to a person
-    @PostMapping("/sell/{ticketId}/{personId}/{price}")
+    @PostMapping(value = "/sell/{ticketId}/{personId}/{price}", produces= MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<OperationalResponse> sellTicket(
             @PathVariable("ticketId") Long ticketId,
             @PathVariable("personId") Long personId,
@@ -75,7 +76,7 @@ public class BookingController {
     }
 
     // Endpoint to get status of a ticket sell to a person
-    @GetMapping("/sell/{id}")
+    @GetMapping(value = "/sell/{id}", produces= MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<OperationalStatusResponse> sellTicketStatus(@PathVariable("id") Long id) {
         try {
             OperationalStatusResponse response = bookingOperationalService.getOperationStatus(id);
@@ -86,7 +87,7 @@ public class BookingController {
     }
 
     // Endpoint to cancel an operation of a ticket sell to a person
-    @DeleteMapping("/sell/{id}")
+    @DeleteMapping(value = "/sell/{id}", produces= MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<OperationalStatusResponse> sellTicketCancel(@PathVariable("id") Long id) {
         try {
             OperationalStatusResponse response = bookingOperationalService.cancelOperation(id);
