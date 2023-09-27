@@ -11,10 +11,10 @@ import java.util.List;
 @Repository
 public interface OperationRepository extends JpaRepository<Operation, Long> {
 
-    @Query(value = "SELECT * FROM task WHERE status=3 AND finished_at + restart_period * interval '1 second' < NOW()", nativeQuery = true)
+    @Query(value = "SELECT * FROM operation WHERE status=3 AND finished_at + restart_period * interval '1 second' < NOW()", nativeQuery = true)
     List<Operation> getApplicableTimedOutOperations();
 
-    @Query(value = "SELECT * FROM task WHERE status=1 AND start + timeout * interval '1 second' < NOW()", nativeQuery = true)
+    @Query(value = "SELECT * FROM operation WHERE status=1 AND start + timeout * interval '1 second' < NOW()", nativeQuery = true)
     List<Operation> getAboutToTimeOutOperations();
 
 }

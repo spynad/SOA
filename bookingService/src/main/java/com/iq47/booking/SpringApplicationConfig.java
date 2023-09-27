@@ -68,7 +68,7 @@ public class SpringApplicationConfig {
             EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(defaultDataSource())
-                .packages("org.iq47.model.entity")
+                .packages("com.iq47.booking.model.entity")
                 .build();
     }
 
