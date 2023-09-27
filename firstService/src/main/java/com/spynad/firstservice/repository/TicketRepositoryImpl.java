@@ -192,6 +192,17 @@ public class TicketRepositoryImpl implements TicketRepository{
     }
 
     @Override
+    public List<Ticket> getAllTickets() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Ticket> cq = cb.createQuery(Ticket.class);
+        Root<Ticket> rootEntry = cq.from(Ticket.class);
+        CriteriaQuery<Ticket> all = cq.select(rootEntry);
+
+        TypedQuery<Ticket> allQuery = entityManager.createQuery(all);
+        return allQuery.getResultList();
+    }
+
+    @Override
     public Ticket saveTicket(Ticket ticket) {
         entityManager.persist(ticket);
         return ticket;

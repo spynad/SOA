@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import com.spynad.firstservice.model.message.ApiResponseMessage;
 import com.spynad.firstservice.repository.TicketRepository;
@@ -181,8 +182,9 @@ public class TicketServiceImpl implements TicketService {
     }
     public Response getAverageTicketDiscount(SecurityContext securityContext)
             throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        List<Ticket> tickets = repository.getAllTickets();
+        Double avg = tickets.stream().collect(Collectors.averagingLong(Ticket::getDiscount));
+        return Response.ok().entity(avg).build();
     }
     public Response getCheaperTicketsByPrice(Integer price,SecurityContext securityContext)
             throws NotFoundException {
