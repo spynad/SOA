@@ -1,4 +1,4 @@
-package com.iq47.booking.model.entity;
+package com.iq47.booking.model.data;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;

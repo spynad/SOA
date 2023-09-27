@@ -1,9 +1,9 @@
 package com.iq47.booking.service;
 
 import com.iq47.booking.model.entity.Operation;
-import com.iq47.booking.model.entity.Person;
-import com.iq47.booking.model.entity.Ticket;
-import com.iq47.booking.model.entity.TicketsArray;
+import com.iq47.booking.model.data.Person;
+import com.iq47.booking.model.data.Ticket;
+import com.iq47.booking.model.data.TicketsArray;
 import com.iq47.booking.model.exception.CancelOperationException;
 import com.iq47.booking.model.exception.TimeOutException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 @Service

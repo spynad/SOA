@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Profile({"worker", "!web"})
-@ComponentScan(basePackages = "com.iq47", includeFilters = {
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.consumer.*")
+@ComponentScan(basePackages = "com.iq47.booking", includeFilters = {
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.booking.consumer.*")
 }, useDefaultFilters = false)
 public class WorkerConfiguration {
 }

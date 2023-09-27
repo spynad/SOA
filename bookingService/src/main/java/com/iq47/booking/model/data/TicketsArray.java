@@ -1,4 +1,4 @@
-package com.iq47.booking.model.entity;
+package com.iq47.booking.model.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;

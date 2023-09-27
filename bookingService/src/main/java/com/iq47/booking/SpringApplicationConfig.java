@@ -29,18 +29,17 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 @SpringBootConfiguration
-@ComponentScan
 @EnableAutoConfiguration
 @ComponentScan(excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.controller.*"),
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.job.*"),
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.consumer.*"),
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.booking.controller.*"),
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.booking.job.*"),
+        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.booking.consumer.*"),
 })
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "com.iq47.booking.repository",
+@EntityScan(basePackages = "com.iq47.booking.model.entity.*")
+@EnableJpaRepositories(basePackages = "com.iq47.booking.*",
         entityManagerFactoryRef = "defaultManagerFactory",
         transactionManagerRef= "defaultTransactionManager")
-@EntityScan("org.iq47.model.entity.*")
 public class SpringApplicationConfig {
     public static void main(String[] args) {
         SpringApplication.run(SpringApplicationConfig.class, args);
