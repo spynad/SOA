@@ -13,20 +13,8 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "coordinates")
 public class Coordinates {
-    private Long id;
     private Float x;
     private Float y;
-
-
-    @Schema(example = "10", description = "")
-    @JsonProperty("id")
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @Schema(example = "15", description = "")
     @JsonProperty("x")
@@ -59,14 +47,13 @@ public class Coordinates {
             return false;
         }
         Coordinates coordinates = (Coordinates) o;
-        return Objects.equals(id, coordinates.id) &&
-                Objects.equals(x, coordinates.x) &&
+        return Objects.equals(x, coordinates.x) &&
                 Objects.equals(y, coordinates.y);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, x, y);
+        return Objects.hash(x, y);
     }
 
     @Override
@@ -74,7 +61,6 @@ public class Coordinates {
         StringBuilder sb = new StringBuilder();
         sb.append("class Coordinates {\n");
 
-        sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    x: ").append(toIndentedString(x)).append("\n");
         sb.append("    y: ").append(toIndentedString(y)).append("\n");
         sb.append("}");

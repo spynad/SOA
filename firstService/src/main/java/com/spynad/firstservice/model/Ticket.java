@@ -1,28 +1,39 @@
 package com.spynad.firstservice.model;
 
-import java.util.Objects;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.util.Date;
-
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementRef;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "ticket")
+@Entity
 public class Ticket {
+    @Id
+    @GeneratedValue
     private Long id;
     private String name;
-    private Long coordinatesId;
+    @Embedded()
+    @XmlElement
+    private Coordinates coordinates;
     private Date creationDate;
     private Integer price;
     private Long discount;
     private Boolean refundable;
+    private TypeEnum type;
+    @ManyToOne
+    @JoinColumn(name = "person_id", nullable = false)
+    @XmlElementRef(name = "Person")
+    private Person person;
 
     public enum TypeEnum {
         VIP("VIP"),
@@ -40,11 +51,14 @@ public class Ticket {
         public String toString() {
             return String.valueOf(value);
         }
+
+        public static TypeEnum fromValue(String value){
+            return Arrays.stream(TypeEnum.values())
+                    .filter(e -> Objects.equals(e.value, value))
+                    .findFirst()
+                    .orElse(null);
+        }
     }
-
-    private TypeEnum type;
-    private Long personId;
-
 
     @Schema(example = "10", required = true, description = "")
     @JsonProperty("id")
@@ -68,16 +82,6 @@ public class Ticket {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Schema(example = "40", description = "")
-    @JsonProperty("coordinatesId")
-    public Long getCoordinatesId() {
-        return coordinatesId;
-    }
-
-    public void setCoordinatesId(Long coordinatesId) {
-        this.coordinatesId = coordinatesId;
     }
 
     @Schema(required = true, description = "")
@@ -137,13 +141,13 @@ public class Ticket {
     }
 
     @Schema(example = "40", description = "")
-    @JsonProperty("personId")
-    public Long getPersonId() {
-        return personId;
+    @JsonProperty("person")
+    public Person getPerson() {
+        return person;
     }
 
-    public void setPersonId(Long personId) {
-        this.personId = personId;
+    public void setPersonId(Person person) {
+        this.person = person;
     }
 
 
@@ -158,18 +162,19 @@ public class Ticket {
         Ticket ticket = (Ticket) o;
         return Objects.equals(id, ticket.id) &&
                 Objects.equals(name, ticket.name) &&
-                Objects.equals(coordinatesId, ticket.coordinatesId) &&
+                Objects.equals(coordinates.getX(), ticket.coordinates.getX()) &&
+                Objects.equals(coordinates.getY(), ticket.coordinates.getY()) &&
                 Objects.equals(creationDate, ticket.creationDate) &&
                 Objects.equals(price, ticket.price) &&
                 Objects.equals(discount, ticket.discount) &&
                 Objects.equals(refundable, ticket.refundable) &&
                 Objects.equals(type, ticket.type) &&
-                Objects.equals(personId, ticket.personId);
+                Objects.equals(person, ticket.person);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, coordinatesId, creationDate, price, discount, refundable, type, personId);
+        return Objects.hash(id, name, coordinates.getX(), coordinates.getY(), creationDate, price, discount, refundable, type, person);
     }
 
     @Override
@@ -179,13 +184,14 @@ public class Ticket {
 
         sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    coordinatesId: ").append(toIndentedString(coordinatesId)).append("\n");
+        sb.append("    coordinatesX: ").append(toIndentedString(coordinates.getX())).append("\n");
+        sb.append("    coordinatesY: ").append(toIndentedString(coordinates.getY())).append("\n");
         sb.append("    creationDate: ").append(toIndentedString(creationDate)).append("\n");
         sb.append("    price: ").append(toIndentedString(price)).append("\n");
         sb.append("    discount: ").append(toIndentedString(discount)).append("\n");
         sb.append("    refundable: ").append(toIndentedString(refundable)).append("\n");
         sb.append("    type: ").append(toIndentedString(type)).append("\n");
-        sb.append("    personId: ").append(toIndentedString(personId)).append("\n");
+        sb.append("    person: ").append(toIndentedString(person)).append("\n");
         sb.append("}");
         return sb.toString();
     }

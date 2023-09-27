@@ -1,10 +1,8 @@
 package com.spynad.firstservice.model;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -12,6 +10,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElementRef;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -27,6 +26,9 @@ public class Person {
     private HairColorEnum hairColor;
     @Enumerated(EnumType.STRING)
     private CountryEnum country;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<Ticket> tickets;
 
     public enum EyeColorEnum {
         GREEN("GREEN"),
@@ -158,6 +160,10 @@ public class Person {
         this.country = country;
     }
 
+    @JsonProperty("ticket")
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
 
     @Override
     public boolean equals(java.lang.Object o) {

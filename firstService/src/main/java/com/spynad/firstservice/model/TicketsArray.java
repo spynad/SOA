@@ -11,7 +11,9 @@ import java.util.List;
 
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class TicketsArray {
     private Long page;
     private Long pagesTotal;

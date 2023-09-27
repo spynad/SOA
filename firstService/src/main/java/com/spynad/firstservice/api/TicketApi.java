@@ -74,7 +74,7 @@ public class TicketApi {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = TicketsArray.class))),
             @ApiResponse(responseCode = "400", description = "Validation exception"),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
-    public Response getAllTickets(@QueryParam("sort") List<String> sort, @QueryParam("filter") List<String> filter, @Min(0) @DefaultValue("0") @QueryParam("page") Integer page, @Min(1) @DefaultValue("10") @QueryParam("pageSize") Integer pageSize, @Context SecurityContext securityContext)
+    public Response getAllTickets(@QueryParam("sort") List<String> sort, @QueryParam("filter") List<String> filter, @Min(0) @QueryParam("page") Integer page, @Min(1) @QueryParam("pageSize") Integer pageSize, @Context SecurityContext securityContext)
             throws NotFoundException {
         return service.getAllTickets(sort, filter, page, pageSize, securityContext);
     }
