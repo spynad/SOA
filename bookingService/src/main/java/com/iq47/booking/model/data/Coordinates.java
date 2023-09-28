@@ -1,6 +1,6 @@
 package com.iq47.booking.model.data;
 
-import jakarta.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 
 @Data

@@ -1,7 +1,7 @@
 package com.iq47.booking.model.message;
 
 
-import jakarta.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
