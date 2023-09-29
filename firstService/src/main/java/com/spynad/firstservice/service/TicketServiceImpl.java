@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import com.spynad.firstservice.model.Ticket;
 import com.spynad.firstservice.model.TicketsArray;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import com.spynad.firstservice.repository.TicketRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import org.apache.commons.collections4.CollectionUtils;
@@ -34,10 +37,15 @@ public class TicketServiceImpl implements TicketService {
     @Inject
     private TicketRepository repository;
 
+    @Transactional
     public Response addTicket(Ticket body,SecurityContext securityContext)
             throws NotFoundException {
         try {
             if (body == null) return Response.status(400).build();
+            if (body.getId() != null) {
+                return Response.status(400).entity("").build();
+            }
+            body.setCreationDate(Date.from(Instant.now()));
             Ticket ticket = repository.saveTicket(body);
             return Response.ok().entity(ticket).build();
         } catch (Exception e) {
@@ -45,6 +53,8 @@ public class TicketServiceImpl implements TicketService {
             return Response.serverError().build();
         }
     }
+
+    @Transactional
     public Response deleteTicket(Long ticketId,SecurityContext securityContext)
             throws NotFoundException {
         try {
@@ -208,6 +218,8 @@ public class TicketServiceImpl implements TicketService {
             return Response.serverError().build();
         }
     }
+
+    @Transactional
     public Response updateTicket(Ticket body,SecurityContext securityContext)
             throws NotFoundException {
         try {
