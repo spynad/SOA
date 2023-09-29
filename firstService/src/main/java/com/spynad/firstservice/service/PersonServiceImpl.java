@@ -6,6 +6,8 @@ import com.spynad.firstservice.model.*;
 import com.spynad.firstservice.model.Person;
 import com.spynad.firstservice.model.PersonArray;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,9 @@ public class PersonServiceImpl implements PersonService {
             throws NotFoundException {
         try {
             if (body == null) return Response.status(400).build();
+            if (body.getId() != null) {
+                return Response.status(400).entity("id is invalid in this context").build();
+            }
             Person person = repository.savePerson(body);
             return Response.ok().entity(person).build();
         } catch (Exception e) {
@@ -184,14 +189,6 @@ public class PersonServiceImpl implements PersonService {
             throw new IllegalArgumentException("Error while getting page. Check query params format. " + e.getMessage(), e);
         }
 
-        /*Page<Person> ret = new Page<>();
-        ret.setObjects(entityPage.getObjects());
-        ret.setPage(entityPage.getPage());
-        ret.setPageSize(entityPage.getPageSize());
-        ret.setTotalPages(entityPage.getTotalPages());
-        ret.setTotalCount(entityPage.getTotalCount());*/
-
-        //return ret;
         return Response.ok().entity(entityPage).build();
     }
     public Response getPersonById(Long personId,SecurityContext securityContext)
