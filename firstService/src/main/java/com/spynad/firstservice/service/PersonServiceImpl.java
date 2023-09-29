@@ -2,6 +2,7 @@ package com.spynad.firstservice.service;
 
 import com.spynad.firstservice.exception.NotFoundException;
 import com.spynad.firstservice.model.*;
+import com.spynad.firstservice.model.message.ApiResponseMessage;
 import com.spynad.firstservice.repository.PersonRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -57,14 +58,6 @@ public class PersonServiceImpl implements PersonService {
         if (page != null && pageSize == null) pageSize = 10;
         if (pageSize != null && page == null) page = 1;
         if (page == 0) page = 1;
-        /*if (page != null || pageSize != null){
-            if (page == null){
-                page = 1;
-            }
-            if (pageSize == null){
-                pageSize = 20;
-            }
-        }*/
 
         Pattern nestedFieldNamePattern = Pattern.compile("(.*)\\.(.*)");
         Pattern lhsPattern = Pattern.compile("(.*)\\[(.*)\\]=(.*)");
@@ -172,6 +165,8 @@ public class PersonServiceImpl implements PersonService {
             entityPage = repository.getSortedAndFilteredPage(sorts, filters, page, pageSize);
         } catch (NullPointerException e){
             throw new IllegalArgumentException("Error while getting page. Check query params format. " + e.getMessage(), e);
+        } catch (NumberFormatException e) {
+            return Response.status(400).entity(new ApiResponseMessage("bad values in filters")).build();
         }
 
         return Response.ok().entity(entityPage).build();

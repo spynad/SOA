@@ -168,6 +168,8 @@ public class TicketServiceImpl implements TicketService {
             entityPage = repository.getSortedAndFilteredPage(sorts, filters, page, pageSize);
         } catch (NullPointerException e){
             throw new IllegalArgumentException("Error while getting page. Check query params format. " + e.getMessage(), e);
+        } catch (NumberFormatException e) {
+            return Response.status(400).entity(new ApiResponseMessage("bad values in filters")).build();
         }
 
         /*Page<Person> ret = new Page<>();
@@ -189,12 +191,12 @@ public class TicketServiceImpl implements TicketService {
     public Response getCheaperTicketsByPrice(Integer price,SecurityContext securityContext)
             throws NotFoundException {
         // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        return Response.ok().entity(new ApiResponseMessage("magic!")).build();
     }
     public Response getMinimalTicketByCreationDate(SecurityContext securityContext)
             throws NotFoundException {
         // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+        return Response.ok().entity(new ApiResponseMessage("magic!")).build();
     }
     public Response getTicketById(Long ticketId,SecurityContext securityContext)
             throws NotFoundException {
