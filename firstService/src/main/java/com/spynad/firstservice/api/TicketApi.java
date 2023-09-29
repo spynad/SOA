@@ -74,7 +74,7 @@ public class TicketApi {
     }
 
     @POST
-    @Path("/getAverageTicketDiscount")
+    @Path("/get-average-ticket-discount")
     @Produces({"application/xml"})
     @Operation(summary = "Get average discount of tickets", description = "Returns an average discount value", tags = {"ticket"})
     @ApiResponses(value = {
@@ -86,7 +86,7 @@ public class TicketApi {
     }
 
     @POST
-    @Path("/getCheaperTicketsByPrice/{price}")
+    @Path("/get-cheaper-tickers-by-price//{price}")
     @Produces({"application/xml"})
     @Operation(summary = "Find tickets with the lower price than given", description = "Returns a list of tickets", tags = {"ticket"})
     @ApiResponses(value = {
@@ -99,7 +99,7 @@ public class TicketApi {
     }
 
     @POST
-    @Path("/getMinimalTicketByCreationDate")
+    @Path("/get-minimal-ticket-by-creation-date")
     @Produces({"application/xml"})
     @Operation(summary = "Find minimal ticket by creation date field", description = "Returns a single ticket", tags = {"ticket"})
     @ApiResponses(value = {
