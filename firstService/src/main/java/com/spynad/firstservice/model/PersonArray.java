@@ -1,15 +1,13 @@
 package com.spynad.firstservice.model;
 
-import java.util.Objects;
-import java.util.ArrayList;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @XmlRootElement(name = "personArray")
 public class PersonArray {

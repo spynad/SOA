@@ -1,34 +1,24 @@
 package com.spynad.firstservice.api;
 
-import com.spynad.firstservice.model.*;
-import com.spynad.firstservice.service.PersonService;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
+import com.spynad.firstservice.exception.NotFoundException;
 import com.spynad.firstservice.model.Person;
 import com.spynad.firstservice.model.PersonArray;
-
-import java.util.Map;
-import java.util.List;
-import com.spynad.firstservice.exception.NotFoundException;
-
-import java.io.InputStream;
-
+import com.spynad.firstservice.service.PersonService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.inject.Inject;
+import jakarta.validation.constraints.Min;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
-import jakarta.ws.rs.*;
-import jakarta.inject.Inject;
 
-import jakarta.validation.constraints.*;
+import java.util.List;
 @Path("/person")
 public class PersonApi  {
 

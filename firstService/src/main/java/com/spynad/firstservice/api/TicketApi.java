@@ -1,36 +1,25 @@
 package com.spynad.firstservice.api;
 
-import com.spynad.firstservice.model.*;
+import com.spynad.firstservice.exception.NotFoundException;
+import com.spynad.firstservice.model.Ticket;
+import com.spynad.firstservice.model.TicketsArray;
 import com.spynad.firstservice.service.TicketService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
-import java.math.BigDecimal;
-
-import com.spynad.firstservice.model.Ticket;
-import com.spynad.firstservice.model.TicketsArray;
-
-import java.util.Map;
-import java.util.List;
-
-import com.spynad.firstservice.exception.NotFoundException;
-
-import java.io.InputStream;
-
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.inject.Inject;
+import jakarta.validation.constraints.Min;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
-import jakarta.ws.rs.*;
-import jakarta.inject.Inject;
 
-import jakarta.validation.constraints.*;
+import java.math.BigDecimal;
+import java.util.List;
 
 @Path("/ticket")
 

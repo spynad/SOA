@@ -1,35 +1,25 @@
 package com.spynad.firstservice.service;
 
-import com.spynad.firstservice.api.*;
-import com.spynad.firstservice.model.*;
-
-import java.math.BigDecimal;
-import com.spynad.firstservice.model.Ticket;
-import com.spynad.firstservice.model.TicketsArray;
-
-import java.sql.Date;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import com.spynad.firstservice.exception.NotFoundException;
-
-import java.io.InputStream;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
+import com.spynad.firstservice.model.*;
 import com.spynad.firstservice.model.message.ApiResponseMessage;
 import com.spynad.firstservice.repository.TicketRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+
+import java.sql.Date;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class TicketServiceImpl implements TicketService {

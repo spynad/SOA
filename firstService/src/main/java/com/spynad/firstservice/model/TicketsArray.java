@@ -1,17 +1,12 @@
 package com.spynad.firstservice.model;
 
-import java.util.Objects;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
-import java.util.List;
-
-import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.xml.bind.annotation.XmlRootElement;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @XmlRootElement
 public class TicketsArray {

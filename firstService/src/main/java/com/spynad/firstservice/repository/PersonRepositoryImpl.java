@@ -1,6 +1,9 @@
 package com.spynad.firstservice.repository;
 
-import com.spynad.firstservice.model.*;
+import com.spynad.firstservice.model.Filter;
+import com.spynad.firstservice.model.Person;
+import com.spynad.firstservice.model.PersonArray;
+import com.spynad.firstservice.model.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -208,12 +211,19 @@ public class PersonRepositoryImpl implements PersonRepository{
     }
 
     private Object getTypedFieldValue(String fieldName, String fieldValue) {
-        if (Objects.equals(fieldName, "eyeColor")) {
-            return Boolean.valueOf(fieldValue);
-        } else if (Objects.equals(fieldName, "hairColor")) {
-            return Person.HairColorEnum.fromValue(fieldValue);
-        } else if (Objects.equals(fieldName, "country")) {
-            return Person.CountryEnum.fromValue(fieldValue);
-        } else return fieldName;
+        switch (fieldName) {
+            case "id":
+                return Long.valueOf(fieldValue);
+            case "weight":
+                return Float.valueOf(fieldValue);
+            case "eyeColor":
+                return Person.EyeColorEnum.fromValue(fieldValue);
+            case "hairColor":
+                return Person.HairColorEnum.fromValue(fieldValue);
+            case "country":
+                return Person.CountryEnum.fromValue(fieldValue);
+            default:
+                return null;
+        }
     }
 }

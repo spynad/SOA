@@ -1,6 +1,9 @@
 package com.spynad.firstservice.repository;
 
-import com.spynad.firstservice.model.*;
+import com.spynad.firstservice.model.Filter;
+import com.spynad.firstservice.model.Person;
+import com.spynad.firstservice.model.PersonArray;
+import com.spynad.firstservice.model.Sort;
 
 import java.util.List;
 

@@ -1,20 +1,11 @@
 package com.spynad.firstservice.service;
 
-import com.spynad.firstservice.api.*;
-import com.spynad.firstservice.model.*;
-
-import java.math.BigDecimal;
-import com.spynad.firstservice.model.Ticket;
-import com.spynad.firstservice.model.TicketsArray;
-
-import java.util.List;
-import java.util.Map;
 import com.spynad.firstservice.exception.NotFoundException;
-
-import java.io.InputStream;
-
+import com.spynad.firstservice.model.Ticket;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+
+import java.util.List;
 
 public interface TicketService {
     Response addTicket(Ticket body,SecurityContext securityContext) throws NotFoundException;

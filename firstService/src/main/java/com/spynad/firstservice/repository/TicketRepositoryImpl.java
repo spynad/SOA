@@ -9,6 +9,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -219,12 +220,25 @@ public class TicketRepositoryImpl implements TicketRepository{
     }
 
     private Object getTypedFieldValue(String fieldName, String fieldValue) {
-        if (Objects.equals(fieldName, "eyeColor")) {
-            return Boolean.valueOf(fieldValue);
-        } else if (Objects.equals(fieldName, "hairColor")) {
-            return Person.HairColorEnum.fromValue(fieldValue);
-        } else if (Objects.equals(fieldName, "country")) {
-            return Person.CountryEnum.fromValue(fieldValue);
-        } else return fieldName;
+        switch (fieldName) {
+            case "id", "discount", "person.id":
+                return Long.valueOf(fieldValue);
+            case "price":
+                return Integer.valueOf(fieldValue);
+            case "creationDate":
+                return Date.valueOf(fieldValue);
+            case "refundable":
+                return Boolean.valueOf(fieldValue);
+            case "x", "y", "person.weight":
+                return Float.valueOf(fieldValue);
+            case "person.eyeColor":
+                return Person.EyeColorEnum.fromValue(fieldValue);
+            case "person.hairColor":
+                return Person.HairColorEnum.fromValue(fieldValue);
+            case "person.country":
+                return Person.CountryEnum.fromValue(fieldValue);
+            default:
+                return null;
+        }
     }
 }

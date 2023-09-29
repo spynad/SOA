@@ -1,22 +1,13 @@
 package com.spynad.firstservice.service;
 
-import com.spynad.firstservice.api.*;
-import com.spynad.firstservice.model.*;
-
-import com.spynad.firstservice.model.Coordinates;
-import com.spynad.firstservice.model.CoordinatesArray;
-
-import java.util.List;
-import java.util.Map;
 import com.spynad.firstservice.exception.NotFoundException;
-
-import java.io.InputStream;
-
+import com.spynad.firstservice.model.Coordinates;
 import com.spynad.firstservice.model.message.ApiResponseMessage;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
+
+import java.util.List;
 
 @ApplicationScoped
 public class CoordinatesServiceImpl implements CoordinatesService {
