@@ -3,6 +3,7 @@ package com.spynad.firstservice.api;
 import com.spynad.firstservice.exception.NotFoundException;
 import com.spynad.firstservice.model.Person;
 import com.spynad.firstservice.model.PersonArray;
+import com.spynad.firstservice.model.message.ApiResponseMessage;
 import com.spynad.firstservice.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -66,7 +67,11 @@ public class PersonApi  {
             @ApiResponse(responseCode = "500", description = "Internal error occurred.") })
     public Response getAllPerson(  @QueryParam("sort") List<String> sort,  @QueryParam("filter") List<String> filter, @Min(0) @QueryParam("page") Integer page, @Min(1) @QueryParam("pageSize") Integer pageSize,@Context SecurityContext securityContext)
             throws NotFoundException {
-        return service.getAllPerson(sort,filter,page,pageSize,securityContext);
+        try {
+            return service.getAllPerson(sort, filter, page, pageSize, securityContext);
+        } catch (IllegalArgumentException e) {
+            return Response.status(400).entity(new ApiResponseMessage("bad values in filters")).build();
+        }
     }
     @GET
     @Path("/{personId}")

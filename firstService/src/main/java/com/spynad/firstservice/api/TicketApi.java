@@ -3,6 +3,7 @@ package com.spynad.firstservice.api;
 import com.spynad.firstservice.exception.NotFoundException;
 import com.spynad.firstservice.model.Ticket;
 import com.spynad.firstservice.model.TicketsArray;
+import com.spynad.firstservice.model.message.ApiResponseMessage;
 import com.spynad.firstservice.service.TicketService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -65,7 +66,11 @@ public class TicketApi {
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
     public Response getAllTickets(@QueryParam("sort") List<String> sort, @QueryParam("filter") List<String> filter, @Min(0) @QueryParam("page") Integer page, @Min(1) @QueryParam("pageSize") Integer pageSize, @Context SecurityContext securityContext)
             throws NotFoundException {
-        return service.getAllTickets(sort, filter, page, pageSize, securityContext);
+        try {
+            return service.getAllTickets(sort, filter, page, pageSize, securityContext);
+        } catch (IllegalArgumentException e) {
+            return Response.status(400).entity(new ApiResponseMessage("bad values in filters")).build();
+        }
     }
 
     @POST

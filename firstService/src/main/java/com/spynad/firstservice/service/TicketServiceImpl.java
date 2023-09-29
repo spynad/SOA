@@ -168,7 +168,7 @@ public class TicketServiceImpl implements TicketService {
         try {
             entityPage = repository.getSortedAndFilteredPage(sorts, filters, page, pageSize);
         } catch (NullPointerException e){
-            throw new IllegalArgumentException("Error while getting page. Check query params format. " + e.getMessage(), e);
+            return Response.status(400).entity(new ApiResponseMessage("query params invalid")).build();
         } catch (NumberFormatException e) {
             return Response.status(400).entity(new ApiResponseMessage("bad values in filters")).build();
         }
@@ -203,12 +203,12 @@ public class TicketServiceImpl implements TicketService {
             throws NotFoundException {
         try {
             Ticket ticket = repository.getTicketById(ticketId);
-            if (ticket == null) return Response.status(404).build();
+            if (ticket == null) return Response.status(404).entity(new ApiResponseMessage("ticket not found")).build();
 
             return Response.ok().entity(ticket).build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().build();
+            return Response.serverError().entity(new ApiResponseMessage(e.getClass().getName() + ' ' + e.getMessage())).build();
         }
     }
 
@@ -220,7 +220,7 @@ public class TicketServiceImpl implements TicketService {
             return Response.ok().entity(ticket).build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().build();
+            return Response.serverError().entity(new ApiResponseMessage(e.getClass().getName() + ' ' + e.getMessage())).build();
         }
     }
 }
