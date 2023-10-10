@@ -15,6 +15,8 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -22,19 +24,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
-import javax.jms.ConnectionFactory;
-import javax.jms.Queue;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.time.Duration;
 
 @SpringBootConfiguration
 @EnableAutoConfiguration
-@ComponentScan(excludeFilters = {
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.booking.controller.*"),
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.booking.job.*"),
-        @ComponentScan.Filter(type = FilterType.REGEX, pattern="com.iq47.booking.consumer.*"),
-})
+@ComponentScan
 @EnableTransactionManagement
 @EntityScan(basePackages = "com.iq47.booking.model.entity.*")
 @EnableJpaRepositories(basePackages = "com.iq47.booking.*",
@@ -78,25 +73,18 @@ public class SpringApplicationConfig {
             final @Qualifier("defaultManagerFactory") LocalContainerEntityManagerFactoryBean managerFactory) {
         return new JpaTransactionManager(managerFactory.getObject());
     }
-
-    @Bean
-    public ConnectionFactory jmsConnectionFactory() throws NamingException {
-        InitialContext context = new InitialContext();
-        ConnectionFactory factory = (ConnectionFactory) context.lookup("java:/PizdecConnectionFactory");
-        System.out.println(factory);
-        return factory;
-    }
-
-    @Bean
-    public Queue ticketQueue() throws NamingException {
-        InitialContext context = new InitialContext();
-        Queue queue = (Queue) context.lookup("queue/bookingQueue");
-        System.out.println(queue);
-        return queue;
-    }
-
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
+        return builder
+                .setConnectTimeout(Duration.ofMillis(2000))
+                .setReadTimeout(Duration.ofMillis(2000))
+                .build();
+    }
+
+    @Bean
+    public HttpHeaders headers() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_XML);
+        return headers;
     }
 }

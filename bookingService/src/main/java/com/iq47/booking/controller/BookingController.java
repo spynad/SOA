@@ -10,8 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jms.JMSException;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -29,13 +27,8 @@ public class BookingController {
     // POST /booking/person/{person-id}/cancel
     @PostMapping(value = "/person/{personId}/cancel", produces= MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<OperationalResponse> cancelBooking(@PathVariable("personId") Long personId) {
-        try {
-            OperationalResponse response = bookingOperationalService.cancelBooking(personId);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (JMSException e) {
-            log.error(Arrays.toString(e.getStackTrace()));
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        OperationalResponse response = bookingOperationalService.cancelBooking(personId);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     // GET /booking/person/cancel/{id}
@@ -57,6 +50,8 @@ public class BookingController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (UnableToCancelException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -66,13 +61,8 @@ public class BookingController {
             @PathVariable("ticketId") Long ticketId,
             @PathVariable("personId") Long personId,
             @PathVariable("price") Integer price) {
-        try {
             OperationalResponse response = bookingOperationalService.sellTicket(ticketId, personId, price);
             return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } catch (JMSException e) {
-            log.error(Arrays.toString(e.getStackTrace()));
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 
     // Endpoint to get status of a ticket sell to a person
@@ -94,6 +84,8 @@ public class BookingController {
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (UnableToCancelException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

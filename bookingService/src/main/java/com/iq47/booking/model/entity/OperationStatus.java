@@ -6,5 +6,6 @@ public enum OperationStatus {
     ERROR,
     TIMED_OUT,
     FINISHED,
+    REQUESTED_CANCELLATION,
     CANCELLED
 }

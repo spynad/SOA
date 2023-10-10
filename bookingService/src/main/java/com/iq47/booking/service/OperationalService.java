@@ -25,18 +25,4 @@ public class OperationalService {
     public Operation save(Operation operation) {
         return repository.save(operation);
     }
-
-    public List<Operation> getApplicableTimedOutOperations() {
-        return repository.getApplicableTimedOutOperations();
-    }
-
-    public List<Operation> timeoutAllExpiredOperations() {
-        List<Operation> timedOut =  repository.getAboutToTimeOutOperations();
-        for(Operation task: timedOut) {
-            task.setStatus(OperationStatus.TIMED_OUT);
-            task.setFinishedAt(LocalDateTime.now());
-            repository.save(task);
-        }
-        return timedOut;
-    }
 }

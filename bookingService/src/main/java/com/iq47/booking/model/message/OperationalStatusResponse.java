@@ -13,5 +13,6 @@ import java.time.LocalDateTime;
 public class OperationalStatusResponse {
     private Long id;
     private LocalDateTime time;
+    private LocalDateTime finishedAt;
     private String status;
 }

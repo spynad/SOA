@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "operation")
@@ -21,16 +20,13 @@ public class Operation {
 
     private LocalDateTime start;
 
-    private String message;
-
-    @Column(name = "timeout")
-    private int timeoutSeconds;
-
-    @Column(name = "restart_period")
-    private int restartPeriodSeconds;
-
     @Column(name = "finished_at")
     private LocalDateTime finishedAt;
 
     private OperationStatus status;
+
+    public Operation() {
+        this.start = LocalDateTime.now();
+        this.status = OperationStatus.EXECUTION;
+    }
 }
