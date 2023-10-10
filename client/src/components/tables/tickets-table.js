@@ -1,7 +1,6 @@
 import {useSnackbar} from "notistack";
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {TICKETS_API} from "../../utils/api"
+import {TICKETS_API, xml_axios} from "../../utils/api"
 import {Button, Layout, Space, Table, Tag} from "antd";
 import {ReloadOutlined} from "@ant-design/icons";
 import {filtersMapToLHSBrackets, filtersToLHSBrackets, parseSorterToQueryParam} from "../../utils/tables/sort-and-filter";
@@ -14,14 +13,14 @@ export default function TicketsTable({pageSize}){
 
     const [sortQueryParams, setSortQueryParams] = useState([]);
     const [filterModel, setFilterModel] = useState(new Map());
-    const [currentPage, setCurrentPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(0);
     const [data, setData] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [collapsed, setCollapsed] = useState(false)
 
     useEffect(() => {
-        getData(1, pageSize);
+        getData(currentPage, pageSize);
     }, [])
 
     const getData = (page, sort, filter) => {
@@ -44,15 +43,16 @@ export default function TicketsTable({pageSize}){
 
         setLoading(true)
 
-        axios.get(TICKETS_API, {params: queryParams})
+        xml_axios.get(TICKETS_API, {params: queryParams})
             .then((response) => {
-                setData(response.data["tickets"].map((elem) =>{
+                let res = response.data
+                setData(response.data["ticketsArray"]["tickets"].map((elem) =>{
                     return {
                         ...elem,
                         key: elem.id
                     }
                 }))
-                setTotalCount(response.data["pagesTotal"])
+                setTotalCount(response.data["ticketsArray"]["pagesTotal"])
                 setLoading(false)
             })
             .catch((err) => {
@@ -231,14 +231,6 @@ export default function TicketsTable({pageSize}){
                     title: "Person",
                     children: [
                         {
-                            title: "Name",
-                            dataIndex: ["person", "name"],
-                            key: "person.name",
-                            sorter: {multiple: 3},
-                            sortDirections: ["ascend", "descend"],
-                            ...getColumnSearchProps("person.name", handleFilterChange)
-                        },
-                        {
                             title: "Weight",
                             dataIndex: ["person", "weight"],
                             key: "person.weight",
@@ -263,12 +255,12 @@ export default function TicketsTable({pageSize}){
                             ...getColumnSearchProps("person.hairColor", handleFilterChange)
                         },
                         {
-                            title: "Nationality",
-                            dataIndex: ["person", "nationality"],
-                            key: "person.nationality",
+                            title: "Country",
+                            dataIndex: ["person", "country"],
+                            key: "person.country",
                             sorter: {multiple: 3},
                             sortDirections: ["ascend", "descend"],
-                            ...getColumnSearchProps("person.nationality", handleFilterChange)
+                            ...getColumnSearchProps("person.country", handleFilterChange)
                         },
                     ]
                 }

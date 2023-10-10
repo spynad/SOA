@@ -1,8 +1,7 @@
 import {useForm} from "antd/es/form/Form";
 import {useSnackbar} from "notistack";
 import {useState} from "react";
-import axios from "axios";
-import {CANCEL_BOOKING} from "../../../utils/api";
+import {xml_axios, CANCEL_BOOKING} from "../../../utils/api";
 import {Button, Form, InputNumber} from "antd";
 import {OperationResponseModal} from "../templates/operation-response-modal";
 
@@ -14,7 +13,7 @@ export function CancelBooking() {
     const [modalValue, setModalValue] = useState()
 
     const handelOpen = (e) => {
-        axios.post(`${CANCEL_BOOKING}/${e["id"]}/cancel`)
+        xml_axios.post(`${CANCEL_BOOKING}/${e["id"]}/cancel`)
             .then((response) => {
                 const data = response.data
                 setModalValue(data)

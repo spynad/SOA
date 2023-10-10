@@ -22,10 +22,11 @@ export function OperationStatusResponseModal({title, value, visible, handleOk}){
                    bordered
             >
                 {
-                    value ? <Descriptions title={"Информация о билете"} layout={"inline"}>
-                        {getDescription("ID", value?.id)}
-                        {getDescription("Status update time", value?.time)}
-                        {getDescription("Status", value?.status)}
+                    value ? <Descriptions title={"Операция"} layout={"inline"}>
+                        {getDescription("ID", value.operation?.id)}
+                        {getDescription("Время начала исполнения", value.operation?.time)}
+                        {getDescription("Время завершения исполнения", value.operation?.finishedAt)}
+                        {getDescription("Статус", value.operation?.status)}
                     </Descriptions> : <Typography>Нет ответа</Typography>
                 }
             </Modal>

@@ -1,8 +1,7 @@
 import {useForm} from "antd/es/form/Form";
 import {useSnackbar} from "notistack";
 import {useState} from "react";
-import axios from "axios";
-import {OPERATION_API} from "../../../utils/api";
+import {xml_axios, OPERATION_API} from "../../../utils/api";
 import {Button, Form, InputNumber} from "antd";
 import {OperationResponseModal} from "../templates/operation-response-modal";
 
@@ -14,7 +13,7 @@ export function CancelOperation() {
     const [modalValue, setModalValue] = useState()
 
     const handelOpen = (e) => {
-        axios.delete(`${OPERATION_API}/${e["id"]}`)
+        xml_axios.delete(`${OPERATION_API}/${e["id"]}`)
             .then((response) => {
                 const data = response.data
                 setModalValue(data)

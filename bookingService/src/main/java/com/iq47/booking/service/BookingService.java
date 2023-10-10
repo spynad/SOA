@@ -106,7 +106,7 @@ public class BookingService {
 
     public void cancelBooking(Long personId, Long operationId) {
         try {
-            String params = String.format("?filter=person\\.id[eq]=%d", personId);
+            String params = String.format("?filter=person.id[eq]=%d", personId);
             String url = String.format("%s/ticket%s", restServiceBaseUrl, params);
             TicketsArray tickets = restTemplate.getForObject(url, TicketsArray.class);
             try {

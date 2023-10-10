@@ -1,8 +1,7 @@
 import {useForm} from "antd/es/form/Form";
 import {useSnackbar} from "notistack";
 import {useState} from "react";
-import axios from "axios";
-import {SELL_TICKET} from "../../../utils/api";
+import {xml_axios, SELL_TICKET} from "../../../utils/api";
 import {Button, Form, InputNumber} from "antd";
 import {OperationResponseModal} from "../templates/operation-response-modal";
 
@@ -14,7 +13,7 @@ export function SellTicket() {
     const [modalValue, setModalValue] = useState()
 
     const handelOpen = (e) => {
-        axios.post(`${SELL_TICKET}/${e["ticket_id"]}/${e["person_id"]}/${e["price"]}`)
+        xml_axios.post(`${SELL_TICKET}/${e["ticket_id"]}/${e["person_id"]}/${e["price"]}`)
             .then((response) => {
                 const data = response.data
                 setModalValue(data)

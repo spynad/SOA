@@ -1,9 +1,12 @@
 import './App.css';
 import {SnackbarProvider} from "notistack";
+import {useEffect} from "react";
 import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 import TicketsCatalogPage from "./pages/catalog-page";
 import {BookingPage} from "./pages/booking-page";
 import {ThemeSwitcherProvider} from "react-css-theme-switcher";
+import {xml_axios} from "./utils/api";
+import convert from "xml-js";
 
 function App() {
   const currThemes = {

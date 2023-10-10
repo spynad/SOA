@@ -126,7 +126,6 @@ public class TicketApi {
     }
 
     @PUT
-
     @Consumes({"application/xml"})
     @Produces({"application/xml"})
     @Operation(summary = "Update an existing ticket", description = "Update an existing ticket by Id", tags = {"ticket"})

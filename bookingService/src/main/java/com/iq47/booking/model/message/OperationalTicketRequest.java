@@ -7,11 +7,13 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @XmlRootElement(name = "OperationalTicket")
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class OperationalTicketRequest {
     private long operationId;

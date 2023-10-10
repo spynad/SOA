@@ -1,29 +1,29 @@
 import {useSnackbar} from "notistack";
 import {useForm} from "antd/es/form/Form";
 import {useState} from "react";
-import {TICKETS_API, xml_axios} from "../../utils/api";
+import {PERSON_API, xml_axios} from "../../utils/api";
 import {Button, Form} from "antd";
 import {InputNumber} from "antd/es";
-import TicketForm from "./ticket-form";
+import PersonForm from "./person-form";
 
-export function UpdateTicketForm(){
+export function UpdatePersonForm(){
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
     const [updateForm] = useForm();
     const [isUpdateTicketModalOpen, setIsUpdateTicketModalOpen] = useState(false);
     const [initialValues, setInitialValues] = useState(undefined);
     const [ticketId, setTicketId] = useState(undefined);
-    const [creationDate, setCreationDate] = useState(undefined);
+    const [creationDate] = useState(undefined);
 
     const showUpdateFlatModal = (e) => {
-        xml_axios.get(`${TICKETS_API}/${e["id"]}`)
+        xml_axios.get(`${PERSON_API}/${e["id"]}`)
             .then((response) => {
                 let data = undefined
                 if (response.data){
-                    data = response.data["ticket"]
+                    data = response.data["person"]
                 }
                 if (data === undefined){
-                    enqueueSnackbar("Билет не найден!", {
+                    enqueueSnackbar("Человек не найден!", {
                         autoHideDuration: 2000,
                         variant: "error"
                     })
@@ -31,7 +31,6 @@ export function UpdateTicketForm(){
                 setInitialValues(data)
                 setIsUpdateTicketModalOpen(true)
                 setTicketId(e["id"])
-                setCreationDate(data["creationDate"])
             })
             .catch((err) => {
                 let error = err.response.data
@@ -45,11 +44,10 @@ export function UpdateTicketForm(){
     const handleFormSubmit = (body) => {
         if (ticketId) {
             body['id'] = ticketId
-            body['creationDate'] = creationDate
-            xml_axios.put(`${TICKETS_API}`, {'ticket': body})
+            xml_axios.put(`${PERSON_API}`, {'person': body})
                 .then((response) => {
-                    const ticket = response.data
-                    enqueueSnackbar("Успешно обновлен билет с id: " + ticket.id, {
+                    const ticket = response.data.person
+                    enqueueSnackbar("Успешно обновлен человек с id: " + ticket.id, {
                         autoHideDuration: 5000,
                         variant: "success"
                     })
@@ -89,14 +87,14 @@ export function UpdateTicketForm(){
                 </Form.Item>
                 <Form.Item>
                     <Button type={"primary"} onClick={updateForm.submit} style={{width: 150}}>
-                        Обновить билет
+                        Обновить человека
                     </Button>
                 </Form.Item>
             </Form>
-            <TicketForm formVisible={isUpdateTicketModalOpen && initialValues !== undefined}
+            <PersonForm formVisible={isUpdateTicketModalOpen && initialValues !== undefined}
                       onCancel={handleUpdateTicketCancel}
                       onFinish={handleFormSubmit}
-                      title={initialValues ? `Обновить билет с ID: ${ticketId}` : "Добавить билет"}
+                      title={initialValues ? `Обновить человека с ID: ${ticketId}` : "Добавить человека"}
                       initialValues={initialValues}
             />
         </>

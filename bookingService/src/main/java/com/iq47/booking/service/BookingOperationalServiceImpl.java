@@ -41,19 +41,19 @@ public class BookingOperationalServiceImpl implements BookingOperationalService 
         operation = operationRepository.save(operation);
         Operation finalOperation = operation;
         executorService.execute(() -> bookingService.cancelBooking(personId, finalOperation.getId()));
-        return new OperationalResponse(operation.getId(), operation.getStart());
+        return new OperationalResponse(operation.getId(), operation.getStart().toString());
     }
 
     @Override
     public OperationalStatusResponse getOperationStatus(Long id) {
         Operation operation = operationalService.getById(id).orElseThrow(NoSuchElementException::new);
-        return new OperationalStatusResponse(id, operation.getStart(), operation.getFinishedAt(), operation.getStatus().toString());
+        return new OperationalStatusResponse(id, operation.getStart().toString(), operation.getFinishedAt().toString(), operation.getStatus().toString());
     }
 
     @Override
     public OperationalStatusResponse cancelOperation(Long id) throws UnableToCancelException {
         Operation operation = cancelOperationInternal(id);
-        return new OperationalStatusResponse(id, operation.getStart(), operation.getFinishedAt(), operation.getStatus().toString());
+        return new OperationalStatusResponse(id, operation.getStart().toString(), operation.getFinishedAt().toString(), operation.getStatus().toString());
     }
 
     @Transactional
@@ -74,6 +74,6 @@ public class BookingOperationalServiceImpl implements BookingOperationalService 
         operation = operationRepository.save(operation);
         Operation finalOperation = operation;
         executorService.execute(() -> bookingService.sellTicket(ticketId, personId, price, finalOperation.getId()));
-        return new OperationalResponse(operation.getId(), operation.getStart());
+        return new OperationalResponse(operation.getId(), operation.getStart().toString());
     }
 }

@@ -1,10 +1,9 @@
 import {useForm} from "antd/es/form/Form";
 import {useSnackbar} from "notistack";
 import {useState} from "react";
-import axios from "axios";
-import {OPERATION_API} from "../../../utils/api";
+import {xml_axios, OPERATION_API} from "../../../utils/api";
 import {Button, Form, InputNumber} from "antd";
-import {OperationResponseModal} from "../templates/operation-response-modal";
+import {OperationStatusResponseModal} from "../templates/operation-status-response-modal";
 
 export function GetOperationStatus() {
     const [form] = useForm()
@@ -14,7 +13,7 @@ export function GetOperationStatus() {
     const [modalValue, setModalValue] = useState()
 
     const handelOpen = (e) => {
-        axios.get(`${OPERATION_API}/${e["id"]}`)
+        xml_axios.get(`${OPERATION_API}/${e["id"]}`)
             .then((response) => {
                 const data = response.data
                 setModalValue(data)
@@ -64,7 +63,7 @@ export function GetOperationStatus() {
                     </Button>
                 </Form.Item>
             </Form>
-            <OperationResponseModal title={"Информация о статусе операции"}
+            <OperationStatusResponseModal title={"Информация о статусе операции"}
                                     visible={modalVisible}
                                     value={modalValue}
                                     handleOk={handleModalOk}

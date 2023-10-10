@@ -1,10 +1,10 @@
 import {useSnackbar} from "notistack";
 import {useState} from "react";
-import {TICKETS_API, xml_axios} from "../../utils/api";
+import {PERSON_API, xml_axios} from "../../utils/api";
 import {Button} from "antd";
-import TicketForm from "./ticket-form";
+import PersonForm from "./person-form";
 
-export function AddTicketForm(){
+export function AddPersonForm(){
     const {enqueueSnackbar, closeSnackbar} = useSnackbar()
     const [isAddTicketModalOpen, setIsAddTicketModalOpen] = useState(false)
     const showModifyTicketModal = () => {setIsAddTicketModalOpen(true)}
@@ -12,10 +12,10 @@ export function AddTicketForm(){
     const handleAddTicketCancel = () => {setIsAddTicketModalOpen(false)}
 
     const onFormSubmit = (e) => {
-        xml_axios.post(TICKETS_API, {'ticket': e})
+        xml_axios.post(PERSON_API, {'person': e})
             .then((response) => {
-                const newTicket = response.data
-                enqueueSnackbar("Создан новый билет с id: " + newTicket.id, {
+                const newTicket = response.data.person
+                enqueueSnackbar("Создан новый человек с id: " + newTicket.id, {
                     autoHideDuration: 5000,
                     variant: "success"
                 })
@@ -33,12 +33,12 @@ export function AddTicketForm(){
     return (
         <>
             <Button type={"primary"} onClick={showModifyTicketModal} style={{width: 150, flex: 1}}>
-                Добавить билет
+                Добавить человека
             </Button>
-            <TicketForm formVisible={isAddTicketModalOpen}
+            <PersonForm formVisible={isAddTicketModalOpen}
                       onCancel={handleAddTicketCancel}
                       onFinish={onFormSubmit}
-                      title={"Добавить билет"}
+                      title={"Добавить человека"}
             />
         </>
     )
