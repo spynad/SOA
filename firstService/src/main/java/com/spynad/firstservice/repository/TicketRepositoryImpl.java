@@ -238,6 +238,8 @@ public class TicketRepositoryImpl implements TicketRepository{
                 return Date.valueOf(fieldValue);
             case "refundable":
                 return Boolean.valueOf(fieldValue);
+            case "type":
+                return Ticket.TypeEnum.fromValue(fieldValue);
             case "x", "y", "person.weight":
                 return Float.valueOf(fieldValue);
             case "person.eyeColor":
