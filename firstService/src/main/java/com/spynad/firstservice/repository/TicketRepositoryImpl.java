@@ -156,11 +156,17 @@ public class TicketRepositoryImpl implements TicketRepository{
 
         TypedQuery<Ticket> typedQuery = entityManager.createQuery(select);
 
+        List<Ticket> ticketList;
+        long totalCount = typedQuery.getResultList().size();
+
         TicketsArray ret = new TicketsArray();
 
         if (page != null && size != null){
             typedQuery.setFirstResult((page - 1) * size);
             typedQuery.setMaxResults(size);
+
+            ticketList = typedQuery.getResultList();
+
 
             long countResult = 0;
 
@@ -177,12 +183,15 @@ public class TicketRepositoryImpl implements TicketRepository{
 
             ret.setPage(Long.valueOf(page));
             ret.setPageSize(Long.valueOf(size));
-            ret.setPagesTotal((long) Math.ceil((countResult * 1.0) / size));
-            //ret.setTotalCount(countResult);
+            ret.setPagesTotal((long) Math.ceil((totalCount * 1.0) / size));
+            ret.setTickets(ticketList);
+        } else {
+            ret.setPage(Long.valueOf(page));
+            ret.setPageSize(Long.valueOf(size));
+            ret.setPagesTotal(0L);
+            ret.setTickets(null);
         }
 
-        ret.setTickets(typedQuery.getResultList());
-        //ret.setObjects(typedQuery.getResultList());
 
         return ret;
     }

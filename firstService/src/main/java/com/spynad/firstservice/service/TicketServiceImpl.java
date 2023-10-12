@@ -60,7 +60,7 @@ public class TicketServiceImpl implements TicketService {
     public Response getAllTickets(List<String> sortList,List<String> filterList,Integer page,Integer pageSize,SecurityContext securityContext)
             throws NotFoundException {
         if (page != null && pageSize == null) pageSize = 10;
-        if (pageSize != null && page == null) page = 1;
+        if (pageSize != null && page == null ) page = 1;
         if (page != null && page == 0) page = 1;
 
         Pattern nestedFieldNamePattern = Pattern.compile("(.*)\\.(.*)");

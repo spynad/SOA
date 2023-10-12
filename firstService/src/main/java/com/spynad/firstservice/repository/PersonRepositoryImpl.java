@@ -156,6 +156,8 @@ public class PersonRepositoryImpl implements PersonRepository{
         }
 
         TypedQuery<Person> typedQuery = entityManager.createQuery(select);
+        List<Person> personList;
+        long totalCount = typedQuery.getResultList().size();
 
         PersonArray ret = new PersonArray();
         //Page<Person> ret = new Page<>();
@@ -163,6 +165,8 @@ public class PersonRepositoryImpl implements PersonRepository{
         if (page != null && size != null){
             typedQuery.setFirstResult((page - 1) * size);
             typedQuery.setMaxResults(size);
+
+            personList = typedQuery.getResultList();
 
             long countResult = 0;
 
@@ -179,12 +183,16 @@ public class PersonRepositoryImpl implements PersonRepository{
 
             ret.setPage(Long.valueOf(page));
             ret.setPageSize(Long.valueOf(size));
-            ret.setPagesTotal((long) Math.ceil((countResult * 1.0) / size));
+            //ret.setPagesTotal((long) Math.ceil((countResult * 1.0) / size));
+            ret.setPagesTotal((long) Math.ceil((totalCount * 1.0) / size));
             //ret.setTotalCount(countResult);
+            ret.setPersons(personList);
+        } else {
+            ret.setPage(Long.valueOf(page));
+            ret.setPageSize(Long.valueOf(size));
+            ret.setPagesTotal(0L);
+            ret.setPersons(null);
         }
-
-        ret.setPersons(typedQuery.getResultList());
-        //ret.setObjects(typedQuery.getResultList());
 
         return ret;
     }
