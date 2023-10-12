@@ -263,7 +263,7 @@ public class TicketServiceImpl implements TicketService {
                     ticket.setPrice(t.getPrice());
                     ticket.setType(t.getType());
                     ticket.setRefundable(t.getRefundable());
-                    ticket.setCreationDate(t.getCreationDate());
+                    ticket.setCreationDate(Date.from(Instant.now()));
                     ticket.setPersonId(person);
                     repository.saveTicket(ticket);
 
