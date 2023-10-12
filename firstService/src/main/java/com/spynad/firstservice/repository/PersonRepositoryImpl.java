@@ -188,10 +188,12 @@ public class PersonRepositoryImpl implements PersonRepository{
             //ret.setTotalCount(countResult);
             ret.setPersons(personList);
         } else {
-            ret.setPage(Long.valueOf(page));
-            ret.setPageSize(Long.valueOf(size));
-            ret.setPagesTotal(0L);
-            ret.setPersons(null);
+            personList = typedQuery.getResultList();
+
+            ret.setPage(1L);
+            ret.setPageSize(totalCount);
+            ret.setPagesTotal(1L);
+            ret.setPersons(personList);
         }
 
         return ret;

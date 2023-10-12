@@ -186,10 +186,12 @@ public class TicketRepositoryImpl implements TicketRepository{
             ret.setPagesTotal((long) Math.ceil((totalCount * 1.0) / size));
             ret.setTickets(ticketList);
         } else {
-            ret.setPage(Long.valueOf(page));
-            ret.setPageSize(Long.valueOf(size));
-            ret.setPagesTotal(0L);
-            ret.setTickets(null);
+            ticketList = typedQuery.getResultList();
+
+            ret.setPage(1L);
+            ret.setPageSize(totalCount);
+            ret.setPagesTotal(1L);
+            ret.setTickets(ticketList);
         }
 
 
