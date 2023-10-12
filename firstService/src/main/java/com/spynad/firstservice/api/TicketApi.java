@@ -1,6 +1,7 @@
 package com.spynad.firstservice.api;
 
 import com.spynad.firstservice.exception.NotFoundException;
+import com.spynad.firstservice.model.OperationalTicket;
 import com.spynad.firstservice.model.Ticket;
 import com.spynad.firstservice.model.TicketsArray;
 import com.spynad.firstservice.model.message.ApiResponseMessage;
@@ -139,5 +140,32 @@ public class TicketApi {
             , @Context SecurityContext securityContext)
             throws NotFoundException {
         return service.updateTicket(body, securityContext);
+    }
+
+    @POST
+    @Consumes({"application/xml"})
+    @Produces({"application/xml"})
+    @Operation(summary = "Buffer operational ticket", description = "Buffer operational ticket", tags = {"ticket"})
+    public Response bufferTicket(@Parameter(description = "Buffer operational ticket", required = true) OperationalTicket body,
+                                 @Context SecurityContext securityContext) {
+        return service.bufferTicket(body, securityContext);
+    }
+
+    @POST
+    @Consumes({"application/xml"})
+    @Produces({"application/xml"})
+    @Operation(summary = "Submit operation", description = "Submit operation", tags = {"ticket"})
+    public Response submitTicket(@Parameter(description = "Operation", required = true) com.spynad.firstservice.model.Operation body,
+                                 @Context SecurityContext securityContext) {
+        return service.submitTicket(body, securityContext);
+    }
+
+    @POST
+    @Consumes({"application/xml"})
+    @Produces({"application/xml"})
+    @Operation(summary = "Cancel operation", description = "Cancel operation", tags = {"ticket"})
+    public Response cancelBufferTicket(@Parameter(description = "Cancel", required = true) com.spynad.firstservice.model.Operation body,
+                                 @Context SecurityContext securityContext) {
+        return service.cancelBufferTicket(body, securityContext);
     }
 }

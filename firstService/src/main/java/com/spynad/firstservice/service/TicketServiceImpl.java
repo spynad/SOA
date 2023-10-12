@@ -3,6 +3,7 @@ package com.spynad.firstservice.service;
 import com.spynad.firstservice.exception.NotFoundException;
 import com.spynad.firstservice.model.*;
 import com.spynad.firstservice.model.message.ApiResponseMessage;
+import com.spynad.firstservice.repository.OperationalTicketRepository;
 import com.spynad.firstservice.repository.TicketRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -26,6 +27,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Inject
     private TicketRepository repository;
+
+    @Inject
+    private OperationalTicketRepository opRepository;
 
     @Transactional
     public Response addTicket(Ticket body,SecurityContext securityContext)
@@ -222,5 +226,33 @@ public class TicketServiceImpl implements TicketService {
             e.printStackTrace();
             return Response.serverError().entity(new ApiResponseMessage(e.getClass().getName() + ' ' + e.getMessage())).build();
         }
+    }
+
+    @Override
+    public Response bufferTicket(OperationalTicket body, SecurityContext securityContext) {
+        try {
+            if (body == null) return Response.status(400).build();
+            if (body.getId() != null) {
+                return Response.status(400).entity("").build();
+            }
+            body.setCreationDate(Date.from(Instant.now()));
+            body.setStatus(OperationalTicket.StatusEnum.PENDING);
+            OperationalTicket ticket = opRepository.saveOperationalTicket(body);
+            return Response.ok().entity(ticket).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError().build();
+        }
+    }
+
+    @Override
+    public Response submitTicket(Operation body, SecurityContext securityContext) {
+
+        return null;
+    }
+
+    @Override
+    public Response cancelBufferTicket(Operation body, SecurityContext securityContext) {
+        return null;
     }
 }

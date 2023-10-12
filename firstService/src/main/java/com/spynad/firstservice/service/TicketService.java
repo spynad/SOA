@@ -1,6 +1,8 @@
 package com.spynad.firstservice.service;
 
 import com.spynad.firstservice.exception.NotFoundException;
+import com.spynad.firstservice.model.Operation;
+import com.spynad.firstservice.model.OperationalTicket;
 import com.spynad.firstservice.model.Ticket;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
@@ -16,4 +18,7 @@ public interface TicketService {
     Response getMinimalTicketByCreationDate(SecurityContext securityContext) throws NotFoundException;
     Response getTicketById(Long ticketId,SecurityContext securityContext) throws NotFoundException;
     Response updateTicket(Ticket body,SecurityContext securityContext) throws NotFoundException;
+    Response bufferTicket(OperationalTicket body, SecurityContext securityContext);
+    Response submitTicket(Operation body, SecurityContext securityContext);
+    Response cancelBufferTicket(Operation body, SecurityContext securityContext);
 }
