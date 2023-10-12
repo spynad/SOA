@@ -146,6 +146,7 @@ public class TicketApi {
     @Consumes({"application/xml"})
     @Produces({"application/xml"})
     @Operation(summary = "Buffer operational ticket", description = "Buffer operational ticket", tags = {"ticket"})
+    @Path("/buffer")
     public Response bufferTicket(@Parameter(description = "Buffer operational ticket", required = true) OperationalTicket body,
                                  @Context SecurityContext securityContext) {
         return service.bufferTicket(body, securityContext);
@@ -155,6 +156,7 @@ public class TicketApi {
     @Consumes({"application/xml"})
     @Produces({"application/xml"})
     @Operation(summary = "Submit operation", description = "Submit operation", tags = {"ticket"})
+    @Path("/buffer/submit")
     public Response submitTicket(@Parameter(description = "Operation", required = true) com.spynad.firstservice.model.Operation body,
                                  @Context SecurityContext securityContext) {
         return service.submitTicket(body, securityContext);
@@ -164,6 +166,7 @@ public class TicketApi {
     @Consumes({"application/xml"})
     @Produces({"application/xml"})
     @Operation(summary = "Cancel operation", description = "Cancel operation", tags = {"ticket"})
+    @Path("/buffer/cancel")
     public Response cancelBufferTicket(@Parameter(description = "Cancel", required = true) com.spynad.firstservice.model.Operation body,
                                  @Context SecurityContext securityContext) {
         return service.cancelBufferTicket(body, securityContext);
