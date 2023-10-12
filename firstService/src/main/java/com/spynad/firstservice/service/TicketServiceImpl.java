@@ -233,6 +233,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public Response bufferTicket(OperationalTicket body, SecurityContext securityContext) {
         try {
             if (body == null) return Response.status(400).build();
@@ -250,6 +251,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public Response submitTicket(Operation body, SecurityContext securityContext) {
         try {
             List<OperationalTicket> tickets = opRepository.getOperationalTicketsByOperationId(body.getId());
@@ -280,6 +282,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    @Transactional
     public Response cancelBufferTicket(Operation body, SecurityContext securityContext) {
         try {
             List<OperationalTicket> tickets = opRepository.getPendingOperationalTickets(body.getId());
