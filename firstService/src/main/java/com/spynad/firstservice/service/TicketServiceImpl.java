@@ -4,6 +4,7 @@ import com.spynad.firstservice.exception.NotFoundException;
 import com.spynad.firstservice.model.*;
 import com.spynad.firstservice.model.message.ApiResponseMessage;
 import com.spynad.firstservice.repository.OperationalTicketRepository;
+import com.spynad.firstservice.repository.PersonRepository;
 import com.spynad.firstservice.repository.TicketRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -30,6 +31,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Inject
     private OperationalTicketRepository opRepository;
+
+    @Inject
+    private PersonRepository personRepository;
 
     @Transactional
     public Response addTicket(Ticket body,SecurityContext securityContext)
@@ -247,12 +251,46 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Response submitTicket(Operation body, SecurityContext securityContext) {
+        try {
+            List<OperationalTicket> tickets = opRepository.getOperationalTicketsByOperationId(body.getId());
+            for (OperationalTicket t : tickets) {
+                if (t.getTicketId() == null) {
+                    Person person = personRepository.getPersonById(t.getPersonId());
 
-        return null;
+                    Ticket ticket = new Ticket();
+                    ticket.setDiscount(t.getDiscount());
+                    ticket.setName(t.getName());
+                    ticket.setPrice(t.getPrice());
+                    ticket.setType(t.getType());
+                    ticket.setRefundable(t.getRefundable());
+                    ticket.setCreationDate(t.getCreationDate());
+                    ticket.setPersonId(person);
+                    repository.saveTicket(ticket);
+
+                    t.setStatus(OperationalTicket.StatusEnum.SAVED);
+                    opRepository.updateOperationalTicket(t);
+                }
+            }
+            return Response.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError().build();
+        }
+
     }
 
     @Override
     public Response cancelBufferTicket(Operation body, SecurityContext securityContext) {
-        return null;
+        try {
+            List<OperationalTicket> tickets = opRepository.getPendingOperationalTickets(body.getId());
+            for (OperationalTicket t : tickets) {
+                t.setStatus(OperationalTicket.StatusEnum.CANCELED);
+                opRepository.updateOperationalTicket(t);
+            }
+            return Response.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError().build();
+        }
     }
 }

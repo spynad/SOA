@@ -163,7 +163,7 @@ public class OperationalTicket {
         this.status = status;
     }
 
-    public Long getTicket_id() {
+    public Long getTicketId() {
         return ticketId;
     }
 
