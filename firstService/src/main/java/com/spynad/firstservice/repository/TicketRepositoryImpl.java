@@ -39,7 +39,7 @@ public class TicketRepositoryImpl implements TicketRepository{
                         if (filter.getNestedName() != null) {
                             predicates.add(criteriaBuilder.equal(
                                             root.get(filter.getFieldName()).get(filter.getNestedName()),
-                                            getTypedFieldValue(filter.getFieldName(), filter.getFieldValue())
+                                            getTypedFieldValue(filter.getNestedName(), filter.getFieldValue())
                                     )
                             );
                         } else {
@@ -54,7 +54,7 @@ public class TicketRepositoryImpl implements TicketRepository{
                         if (filter.getNestedName() != null) {
                             predicates.add(criteriaBuilder.notEqual(
                                             root.get(filter.getFieldName()).get(filter.getNestedName()),
-                                            getTypedFieldValue(filter.getFieldName(), filter.getFieldValue())
+                                            getTypedFieldValue(filter.getNestedName(), filter.getFieldValue())
                                     )
                             );
                         } else {
@@ -242,11 +242,11 @@ public class TicketRepositoryImpl implements TicketRepository{
                 return Ticket.TypeEnum.fromValue(fieldValue);
             case "x", "y", "person.weight":
                 return Float.valueOf(fieldValue);
-            case "person.eyeColor":
+            case "eyeColor":
                 return Person.EyeColorEnum.fromValue(fieldValue);
-            case "person.hairColor":
+            case "hairColor":
                 return Person.HairColorEnum.fromValue(fieldValue);
-            case "person.country":
+            case "country":
                 return Person.CountryEnum.fromValue(fieldValue);
             default:
                 return null;
