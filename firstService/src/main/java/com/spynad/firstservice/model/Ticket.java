@@ -32,7 +32,7 @@ public class Ticket {
     private Boolean refundable;
     private TypeEnum type;
     @ManyToOne
-    @JoinColumn(name = "person_id", nullable = false)
+    @JoinColumn(name = "person_id", nullable = true)
     @XmlElementRef(name = "Person")
     private Person person;
 
