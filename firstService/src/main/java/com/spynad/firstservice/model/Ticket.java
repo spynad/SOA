@@ -24,7 +24,6 @@ public class Ticket {
     private Long id;
     private String name;
     @Embedded()
-    @XmlElement
     private Coordinates coordinates;
 
     public Coordinates getCoordinates() {
