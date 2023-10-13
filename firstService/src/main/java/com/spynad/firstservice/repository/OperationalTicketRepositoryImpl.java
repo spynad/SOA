@@ -26,7 +26,7 @@ public class OperationalTicketRepositoryImpl implements OperationalTicketReposit
     @Override
     public List<OperationalTicket> getPendingOperationalTickets(Long id) {
         List<OperationalTicket> tickets = entityManager
-                .createQuery("select OperationalTicket from OperationalTicket where status=StatusEnum.PENDING and operationId=:id")
+                .createQuery("select ticket from OperationalTicket ticket where status=StatusEnum.PENDING and operationId=:id")
                 .setParameter("id", id)
                 .getResultList();
         return tickets;
@@ -34,7 +34,7 @@ public class OperationalTicketRepositoryImpl implements OperationalTicketReposit
 
     @Override
     public List<OperationalTicket> getOperationalTicketsByOperationId(Long id) {
-        List<OperationalTicket> tickets = entityManager.createQuery("select OperationalTicket from OperationalTicket where operationId=:id")
+        List<OperationalTicket> tickets = entityManager.createQuery("select ticket from OperationalTicket ticket where operationId=:id")
                 .setParameter("id", id)
                 .getResultList();
         return tickets;
