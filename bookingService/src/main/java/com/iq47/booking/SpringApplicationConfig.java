@@ -11,12 +11,15 @@ import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.AbstractHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -26,6 +29,9 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @SpringBootConfiguration
 @EnableAutoConfiguration
@@ -74,11 +80,27 @@ public class SpringApplicationConfig {
         return new JpaTransactionManager(managerFactory.getObject());
     }
     @Bean
+    @Qualifier("getTemplate")
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
                 .setConnectTimeout(Duration.ofMillis(2000))
                 .setReadTimeout(Duration.ofMillis(2000))
                 .build();
+    }
+
+    @Bean
+    @Qualifier("putTemplate")
+    public RestTemplate putRestTemplate(RestTemplateBuilder builder) {
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        StringHttpMessageConverter converter = new StringHttpMessageConverter();
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.APPLICATION_XML));
+        messageConverters.add(converter);
+        RestTemplate restTemplate = builder
+                .setConnectTimeout(Duration.ofMillis(2000))
+                .setReadTimeout(Duration.ofMillis(2000))
+                .build();
+        restTemplate.setMessageConverters(messageConverters);
+        return restTemplate;
     }
 
     @Bean

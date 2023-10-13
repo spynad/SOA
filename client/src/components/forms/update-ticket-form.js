@@ -35,7 +35,11 @@ export function UpdateTicketForm(){
             })
             .catch((err) => {
                 let error = err.response.data
-                enqueueSnackbar(error.message, {
+                let msg = error.message
+                if(err.response.status == 404) {
+                   msg = "Билет с заданным id не найден"
+                }
+                enqueueSnackbar(msg, {
                     autoHideDuration: 5000,
                     variant: "error"
                 })

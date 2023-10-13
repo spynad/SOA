@@ -46,13 +46,18 @@ export default function TicketsTable({pageSize}){
         xml_axios.get(TICKETS_API, {params: queryParams})
             .then((response) => {
                 let res = response.data
-                setData(response.data["ticketsArray"]["tickets"].map((elem) =>{
-                    return {
-                        ...elem,
-                        key: elem.id
-                    }
-                }))
-                setTotalCount(response.data["ticketsArray"]["pagesTotal"])
+                if (Object.prototype.toString.call(response.data["ticketsArray"]["tickets"]) === '[object Array]') {
+                    setData(response.data["ticketsArray"]["tickets"].map((elem) =>{
+                        return {
+                            ...elem,
+                            key: elem.id
+                        }
+                    }))
+                    setTotalCount(response.data["ticketsArray"]["pagesTotal"])
+                } else {
+                    setData({...response.data["ticketsArray"]["tickets"], key: response.data["ticketsArray"]["tickets"].id})
+                    setTotalCount(1)
+                }
                 setLoading(false)
             })
             .catch((err) => {
@@ -230,6 +235,14 @@ export default function TicketsTable({pageSize}){
                 {
                     title: "Person",
                     children: [
+                        {
+                            title: "ID",
+                            dataIndex: ["person", "id"],
+                            key: "person.id",
+                            sorter: {multiple: 3},
+                            sortDirections: ["ascend", "descend"],
+                            ...getColumnSearchProps("person.id", handleFilterChange)
+                        },
                         {
                             title: "Weight",
                             dataIndex: ["person", "weight"],
