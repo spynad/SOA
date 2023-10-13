@@ -265,27 +265,35 @@ public class TicketServiceImpl implements TicketService {
                             ticket.setPersonId(person);
                         }
 
-                        ticket.setDiscount(t.getDiscount());
-                        ticket.setName(t.getName());
-                        ticket.setPrice(t.getPrice());
-                        ticket.setType(t.getType());
-                        ticket.setRefundable(t.getRefundable());
-                        ticket.setCreationDate(Date.from(Instant.now()));
-                        ticket.setCoordinates(new Coordinates(t.getCoordinates().getX(), t.getCoordinates().getY()));
+                        updateTicketFields(t, ticket);
 
                         repository.saveTicket(ticket);
+                    } else {
+                        Ticket ticket = repository.getTicketById(t.getTicketId());
+                        updateTicketFields(t, ticket);
 
-                        t.setStatus(OperationalTicket.StatusEnum.SAVED);
-                        opRepository.updateOperationalTicket(t);
+                        repository.updateTicket(ticket);
                     }
+                    t.setStatus(OperationalTicket.StatusEnum.SAVED);
+                    opRepository.updateOperationalTicket(t);
                 }
             }
             return Response.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().build();
+            return Response.serverError().entity(new ApiResponseMessage(e.getMessage())).build();
         }
 
+    }
+
+    private void updateTicketFields(OperationalTicket t, Ticket ticket) {
+        ticket.setDiscount(t.getDiscount());
+        ticket.setName(t.getName());
+        ticket.setPrice(t.getPrice());
+        ticket.setType(t.getType());
+        ticket.setRefundable(t.getRefundable());
+        ticket.setCreationDate(Date.from(Instant.now()));
+        ticket.setCoordinates(new Coordinates(t.getCoordinates().getX(), t.getCoordinates().getY()));
     }
 
     @Override
