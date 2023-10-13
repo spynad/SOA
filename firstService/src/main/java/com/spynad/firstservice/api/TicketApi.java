@@ -87,7 +87,7 @@ public class TicketApi {
     }
 
     @POST
-    @Path("/get-cheaper-tickers-by-price//{price}")
+    @Path("/get-cheaper-tickets-by-price/{price}")
     @Produces({"application/xml"})
     @Operation(summary = "Find tickets with the lower price than given", description = "Returns a list of tickets", tags = {"ticket"})
     @ApiResponses(value = {

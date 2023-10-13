@@ -1,7 +1,6 @@
 import {useSnackbar} from "notistack";
 import {useState} from "react";
-import axios from "axios";
-import {CHEAPER_TICKETS} from "../../../utils/api";
+import {xml_axios, CHEAPER_TICKETS} from "../../../utils/api";
 import {Button, Form} from "antd";
 import {SimpleResponseModal} from "../templates/simple-response-modal";
 import {InputNumber} from "antd/es";
@@ -15,9 +14,9 @@ export function GetPriceLessThanStatedCount(){
     const [modalValue, setModalValue] = useState()
 
     const handelOpen = (e) => {
-        axios.post(`${CHEAPER_TICKETS}/${e["price"]}`)
+        xml_axios.post(`${CHEAPER_TICKETS}/${e["price"]}`)
             .then((response) => {
-                const data = response.data
+                const data = response.data.result.result
                 setModalValue(data)
                 setModalVisible(true)
             })
