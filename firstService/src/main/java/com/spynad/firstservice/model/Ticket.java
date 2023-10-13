@@ -26,6 +26,15 @@ public class Ticket {
     @Embedded()
     @XmlElement
     private Coordinates coordinates;
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
+
     private Date creationDate;
     private Integer price;
     private Long discount;

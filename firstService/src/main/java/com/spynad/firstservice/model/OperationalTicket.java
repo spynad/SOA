@@ -29,7 +29,6 @@ public class OperationalTicket {
     private Long ticketId;
     private String name;
     @Embedded()
-    @XmlElement
     private Coordinates coordinates;
     private Date creationDate;
     private Integer price;
@@ -173,5 +172,13 @@ public class OperationalTicket {
 
     public Boolean getRefundable() {
         return refundable;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 }

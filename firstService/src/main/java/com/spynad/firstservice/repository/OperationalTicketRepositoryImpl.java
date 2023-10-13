@@ -29,6 +29,7 @@ public class OperationalTicketRepositoryImpl implements OperationalTicketReposit
                 .createQuery("select ticket from OperationalTicket ticket where status=StatusEnum.PENDING and operationId=:id")
                 .setParameter("id", id)
                 .getResultList();
+        System.out.println("govno");
         return tickets;
     }
 

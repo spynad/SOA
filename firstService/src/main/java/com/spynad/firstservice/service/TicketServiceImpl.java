@@ -256,21 +256,28 @@ public class TicketServiceImpl implements TicketService {
         try {
             List<OperationalTicket> tickets = opRepository.getOperationalTicketsByOperationId(body.getId());
             for (OperationalTicket t : tickets) {
-                if (t.getTicketId() == null) {
-                    Person person = personRepository.getPersonById(t.getPersonId());
+                if (t.getStatus().equals(OperationalTicket.StatusEnum.PENDING)) {
+                    if (t.getTicketId() == null) {
+                        Ticket ticket = new Ticket();
 
-                    Ticket ticket = new Ticket();
-                    ticket.setDiscount(t.getDiscount());
-                    ticket.setName(t.getName());
-                    ticket.setPrice(t.getPrice());
-                    ticket.setType(t.getType());
-                    ticket.setRefundable(t.getRefundable());
-                    ticket.setCreationDate(Date.from(Instant.now()));
-                    ticket.setPersonId(person);
-                    repository.saveTicket(ticket);
+                        if (t.getPersonId() != null) {
+                            Person person = personRepository.getPersonById(t.getPersonId());
+                            ticket.setPersonId(person);
+                        }
 
-                    t.setStatus(OperationalTicket.StatusEnum.SAVED);
-                    opRepository.updateOperationalTicket(t);
+                        ticket.setDiscount(t.getDiscount());
+                        ticket.setName(t.getName());
+                        ticket.setPrice(t.getPrice());
+                        ticket.setType(t.getType());
+                        ticket.setRefundable(t.getRefundable());
+                        ticket.setCreationDate(Date.from(Instant.now()));
+                        ticket.setCoordinates(new Coordinates(t.getCoordinates().getX(), t.getCoordinates().getY()));
+
+                        repository.saveTicket(ticket);
+
+                        t.setStatus(OperationalTicket.StatusEnum.SAVED);
+                        opRepository.updateOperationalTicket(t);
+                    }
                 }
             }
             return Response.ok().build();

@@ -4,11 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 
 @XmlRootElement(name = "coordinates")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Coordinates {
     private Float x;
     private Float y;
