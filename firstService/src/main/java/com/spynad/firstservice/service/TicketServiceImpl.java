@@ -285,7 +285,7 @@ public class TicketServiceImpl implements TicketService {
         if (t.getPersonId() != null) {
             Person person = personRepository.getPersonById(t.getPersonId());
             ticket.setPersonId(person);
-        }
+        } else ticket.setPersonId(null);
         ticket.setDiscount(t.getDiscount());
         ticket.setName(t.getName());
         ticket.setPrice(t.getPrice());
