@@ -3,6 +3,7 @@ package com.spynad.firstservice.service;
 import com.spynad.firstservice.exception.NotFoundException;
 import com.spynad.firstservice.model.*;
 import com.spynad.firstservice.model.message.ApiResponseMessage;
+import com.spynad.firstservice.model.message.Result;
 import com.spynad.firstservice.repository.OperationalTicketRepository;
 import com.spynad.firstservice.repository.PersonRepository;
 import com.spynad.firstservice.repository.TicketRepository;
@@ -17,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.sql.Date;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -195,17 +197,19 @@ public class TicketServiceImpl implements TicketService {
             throws NotFoundException {
         List<Ticket> tickets = repository.getAllTickets();
         Double avg = tickets.stream().collect(Collectors.averagingLong(Ticket::getDiscount));
-        return Response.ok().entity(avg).build();
+        return Response.ok().entity(new Result(avg.toString())).build();
     }
     public Response getCheaperTicketsByPrice(Integer price,SecurityContext securityContext)
             throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage("magic!")).build();
+        List<Ticket> tickets = repository.getAllTickets();
+        Long count = tickets.stream().map(Ticket::getPrice).filter(t -> t < price).count();
+        return Response.ok().entity(new Result(count.toString())).build();
     }
     public Response getMinimalTicketByCreationDate(SecurityContext securityContext)
             throws NotFoundException {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage("magic!")).build();
+        List<Ticket> tickets = repository.getAllTickets();
+        java.util.Date minDate = tickets.stream().min(Comparator.comparing(Ticket::getCreationDate)).get().getCreationDate();
+        return Response.ok().entity(new Result(minDate.toString())).build();
     }
     public Response getTicketById(Long ticketId,SecurityContext securityContext)
             throws NotFoundException {
