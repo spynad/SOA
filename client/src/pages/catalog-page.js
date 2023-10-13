@@ -26,7 +26,7 @@ export default function TicketsCatalogPage(){
                         }}
                     >
                         <Content>
-                            <TicketsTable pageSize={5}/>
+                            <TicketsTable/>
                             <Divider/>
                             <Space style={{
                                 display: "flex",

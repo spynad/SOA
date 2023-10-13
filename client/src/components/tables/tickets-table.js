@@ -1,33 +1,34 @@
 import {useSnackbar} from "notistack";
 import {useEffect, useState} from "react";
 import {TICKETS_API, xml_axios} from "../../utils/api"
-import {Button, Layout, Space, Table, Tag} from "antd";
+    import {Button, Layout, Space, Table, Tag} from "antd";
 import {ReloadOutlined} from "@ant-design/icons";
 import {filtersMapToLHSBrackets, filtersToLHSBrackets, parseSorterToQueryParam} from "../../utils/tables/sort-and-filter";
 import {getColumnSearchProps} from "./column-search";
 
 const {Sider} = Layout;
 
-export default function TicketsTable({pageSize}){
+export default function TicketsTable(){
     const {enqueueSnackbar, closeSnackbar} = useSnackbar();
 
     const [sortQueryParams, setSortQueryParams] = useState([]);
     const [filterModel, setFilterModel] = useState(new Map());
-    const [currentPage, setCurrentPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(5);
     const [data, setData] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
     const [loading, setLoading] = useState(true);
     const [collapsed, setCollapsed] = useState(false)
 
     useEffect(() => {
-        getData(currentPage, pageSize);
-    }, [])
+        getData(currentPage, pageSize, sortQueryParams, filtersMapToLHSBrackets(filterModel));
+    }, [pageSize, currentPage, filterModel, sortQueryParams])
 
-    const getData = (page, sort, filter) => {
+    const getData = (page, pageSizeT, sort, filter) => {
         const queryParams = new URLSearchParams();
 
         queryParams.append("page", page);
-        queryParams.append("pageSize", pageSize);
+        queryParams.append("pageSize", pageSizeT);
 
         if (sort?.length){
             sort.forEach((elem) => {
@@ -46,18 +47,16 @@ export default function TicketsTable({pageSize}){
         xml_axios.get(TICKETS_API, {params: queryParams})
             .then((response) => {
                 let res = response.data
-                if (Object.prototype.toString.call(response.data["ticketsArray"]["tickets"]) === '[object Array]') {
-                    setData(response.data["ticketsArray"]["tickets"].map((elem) =>{
-                        return {
-                            ...elem,
-                            key: elem.id
-                        }
-                    }))
-                    setTotalCount(response.data["ticketsArray"]["pagesTotal"])
-                } else {
-                    setData({...response.data["ticketsArray"]["tickets"], key: response.data["ticketsArray"]["tickets"].id})
-                    setTotalCount(1)
+                if (Object.prototype.toString.call(response.data["ticketsArray"]["tickets"]) !== '[object Array]') {
+                    response.data["ticketsArray"]["tickets"] = [response.data["ticketsArray"]["tickets"],]
                 }
+                setData(response.data["ticketsArray"]["tickets"].map((elem) =>{
+                    return {
+                        ...elem,
+                        key: elem.id
+                    }
+                }))
+                setTotalCount(response.data["ticketsArray"]["pagesTotal"])
                 setLoading(false)
             })
             .catch((err) => {
@@ -98,11 +97,10 @@ export default function TicketsTable({pageSize}){
             }
         })
 
-        setCurrentPage(pagination.current)
         setSortQueryParams(sortQueryParams)
         setFilterModel(newFilterModel)
 
-        getData(pagination.current, sortQueryParams, filterParams)
+        //getData(currentPage, pageSize, sortQueryParams, filterParams)
     }
 
     const handleFilterChange = (dataIndex, filterType, filterValue) => {
@@ -115,14 +113,14 @@ export default function TicketsTable({pageSize}){
 
             if (filtrationChanged) {
                 filterModel.set(dataIndex, [filterType, filterValue])
-                getData(currentPage, sortQueryParams, filtersMapToLHSBrackets(filterModel))
+                getData(currentPage, pageSize, sortQueryParams, filtersMapToLHSBrackets(filterModel))
                 setFilterModel(filterModel)
             }
         }
     }
 
     const handleRefresh = () => {
-        getData(currentPage, sortQueryParams, filtersMapToLHSBrackets(filterModel))
+        getData(currentPage, pageSize, sortQueryParams, filtersMapToLHSBrackets(filterModel))
     }
 
     return (
@@ -285,7 +283,13 @@ export default function TicketsTable({pageSize}){
                    bordered={true}
                    scroll={{x: 'max-content'}}
                    pagination={{
-                       total: totalCount,
+                       pageSizeOptions: [5, 10, 20, 50, 100],
+                       showSizeChanger: true,
+                       onChange: (newPage, newPageSize) =>  {
+                        setCurrentPage(newPage);
+                        setPageSize(newPageSize);
+                       },
+                       total: totalCount * pageSize,
                        pageSize: pageSize,
                        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
                    }}
