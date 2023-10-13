@@ -208,8 +208,8 @@ public class TicketServiceImpl implements TicketService {
     public Response getMinimalTicketByCreationDate(SecurityContext securityContext)
             throws NotFoundException {
         List<Ticket> tickets = repository.getAllTickets();
-        java.util.Date minDate = tickets.stream().min(Comparator.comparing(Ticket::getCreationDate)).get().getCreationDate();
-        return Response.ok().entity(new Result(minDate.toString())).build();
+        Ticket ticket = tickets.stream().min(Comparator.comparing(Ticket::getCreationDate)).get();
+        return Response.ok().entity(ticket).build();
     }
     public Response getTicketById(Long ticketId,SecurityContext securityContext)
             throws NotFoundException {
