@@ -44,7 +44,7 @@ export function SellTicket() {
                   labelCol={{span: 8}}
                   wrapperCol={{span: 8}}
             >
-                <Form.Item label={"Ticket ID"}
+                <Form.Item label={"ID билета"}
                            name={"ticket_id"}
                            rules={[
                                {required: true, message: "Пожалуйста введите ID билета!"},
@@ -61,7 +61,7 @@ export function SellTicket() {
                 >
                     <InputNumber/>
                 </Form.Item>
-                <Form.Item label={"Person ID"}
+                <Form.Item label={"ID человека"}
                            name={"person_id"}
                            rules={[
                                {required: true, message: "Пожалуйста введите ID человека!"},

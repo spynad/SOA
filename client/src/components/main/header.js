@@ -15,7 +15,7 @@ export default function MyHeader({selectedMenuItem}){
             icon: <TableOutlined/>,
             label: (
                 <Link to={"/catalog"}>
-                    Catalog
+                    Каталог
                 </Link>
             ),
             key: "catalog"
@@ -24,7 +24,7 @@ export default function MyHeader({selectedMenuItem}){
             icon: <CalculatorOutlined/>,
             label: (
                 <Link to={"/booking"}>
-                    Booking
+                    Бронирование
                 </Link>
             ),
             key: "booking"

@@ -14,7 +14,7 @@ export function AddTicketForm(){
     const onFormSubmit = (e) => {
         xml_axios.post(TICKETS_API, {'ticket': e})
             .then((response) => {
-                const newTicket = response.data
+                const newTicket = response.data.ticket
                 enqueueSnackbar("Создан новый билет с id: " + newTicket.id, {
                     autoHideDuration: 5000,
                     variant: "success"

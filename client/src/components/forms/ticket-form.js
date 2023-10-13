@@ -25,7 +25,7 @@ export default function TicketForm({formVisible, onCancel, onFinish, title, init
                       wrapperCol={{span: 8}}
                       layout={"horizontal"}
                 >
-                    <Form.Item label={"Name"}
+                    <Form.Item label={"Название"}
                                name={"name"}
                                rules={[
                                    {required: true, message: "Пожалуйста введите название!"},
@@ -34,7 +34,7 @@ export default function TicketForm({formVisible, onCancel, onFinish, title, init
                     >
                         <Input/>
                     </Form.Item>
-                    <Form.Item label={"Refundable"}
+                    <Form.Item label={"Возвратный"}
                                name={"refundable"}
                                rules={[
                                    {required: true, message: "Пожалуйста выберите, возвратный ли билет!"},
@@ -45,18 +45,18 @@ export default function TicketForm({formVisible, onCancel, onFinish, title, init
                             <Radio value={false}>Нет</Radio>
                         </Radio.Group>
                     </Form.Item>
-                    <Form.Item label={"Type"}
+                    <Form.Item label={"Тип"}
                                name={"type"}
                     >
                         <Select>
-                            <Select.Option value={"undefined"}>-</Select.Option>
-                            <Select.Option value={"vip"}>VIP</Select.Option>
-                            <Select.Option value={"usual"}>Usual</Select.Option>
-                            <Select.Option value={"budgetary"}>Budgetary</Select.Option>
-                            <Select.Option value={"cheap"}>Cheap</Select.Option>
+                            <Select.Option value={null}>-</Select.Option>
+                            <Select.Option value={"VIP"}>VIP</Select.Option>
+                            <Select.Option value={"USUAL"}>Обычный</Select.Option>
+                            <Select.Option value={"BUDGETARY"}>Бюджетный</Select.Option>
+                            <Select.Option value={"CHEAP"}>Дешевый</Select.Option>
                         </Select>
                     </Form.Item>
-                    <Form.Item label={"Price"}
+                    <Form.Item label={"Цена"}
                                name={"price"}
                                rules={[
                                    {required: true, message: "Пожалуйста введите цену!"},
@@ -72,7 +72,7 @@ export default function TicketForm({formVisible, onCancel, onFinish, title, init
                     >
                         <InputNumber/>
                     </Form.Item>
-                    <Form.Item label={"Discount"}
+                    <Form.Item label={"Скидка"}
                                name={"discount"}
                                rules={[
                                    {required: true, message: "Пожалуйста введите скидку!"},
@@ -88,7 +88,7 @@ export default function TicketForm({formVisible, onCancel, onFinish, title, init
                     >
                         <InputNumber/>
                     </Form.Item>
-                    <Form.Item label="Coordinates">
+                    <Form.Item label="Координаты">
                         <Input.Group>
                             <Form.Item
                                 label="X"
@@ -118,7 +118,7 @@ export default function TicketForm({formVisible, onCancel, onFinish, title, init
                             </Form.Item>
                         </Input.Group>
                     </Form.Item>
-                    <Form.Item label="Person">
+                    <Form.Item label="Человек">
                         <Input.Group>
                             <Form.Item
                                 label="ID"

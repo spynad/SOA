@@ -42,7 +42,7 @@ export function GetPriceLessThanStatedCount(){
                   labelCol={{span: 8}}
                   wrapperCol={{span: 8}}
             >
-                <Form.Item label={"Price"}
+                <Form.Item label={"Цена"}
                            name={"price"}
                            rules={[
                                {required: true, message: "Пожалуйста введите цену!"},

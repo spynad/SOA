@@ -136,7 +136,7 @@ export default function TicketsTable(){
                     ...getColumnSearchProps("id", handleFilterChange)
                 },
                 {
-                    title: "Name",
+                    title: "Название",
                     dataIndex: "name",
                     key: "name",
                     sorter: {multiple: 4},
@@ -145,7 +145,7 @@ export default function TicketsTable(){
                     ...getColumnSearchProps("name", handleFilterChange)
                 },
                 {
-                    title: "Creation date",
+                    title: "Дата создания",
                     dataIndex: "creationDate",
                     key: "creationDate",
                     sorter: {multiple: 3},
@@ -153,7 +153,7 @@ export default function TicketsTable(){
                     ...getColumnSearchProps("creationDate", handleFilterChange),
                     children: [
                         {
-                            title: "Time",
+                            title: "Время",
                             dataIndex: ["creationDate"],
                             key: "creationDate.time",
                             render: (text, row) => {
@@ -162,7 +162,7 @@ export default function TicketsTable(){
                             }
                         },
                         {
-                            title: "Date",
+                            title: "Дата",
                             dataIndex: ["creationDate"],
                             key: "creationDate.date",
                             render: (text, row) => {
@@ -173,7 +173,7 @@ export default function TicketsTable(){
                     ]
                 },
                 {
-                    title: "Discount",
+                    title: "Скидка",
                     dataIndex: "discount",
                     key: "discount",
                     sorter: {multiple: 3},
@@ -181,7 +181,7 @@ export default function TicketsTable(){
                     ...getColumnSearchProps("discount", handleFilterChange)
                 },
                 {
-                    title: "Type",
+                    title: "Тип",
                     dataIndex: "type",
                     key: "type",
                     sorter: {multiple: 3},
@@ -189,7 +189,7 @@ export default function TicketsTable(){
                     ...getColumnSearchProps("type", handleFilterChange)
                 },
                 {
-                    title: "Refundable",
+                    title: "Возвратный",
                     dataIndex: "refundable",
                     key: "refundable",
                     sorter: {multiple: 3},
@@ -202,7 +202,7 @@ export default function TicketsTable(){
                     ...getColumnSearchProps("refundable", handleFilterChange)
                 },
                 {
-                    title: "Price",
+                    title: "Цена",
                     dataIndex: "price",
                     key: "price",
                     sorter: {multiple: 3},
@@ -210,7 +210,7 @@ export default function TicketsTable(){
                     ...getColumnSearchProps("price", handleFilterChange)
                 },
                 {
-                    title: "Coordinates",
+                    title: "Координаты",
                     children: [
                         {
                             title: "X",
@@ -231,7 +231,7 @@ export default function TicketsTable(){
                     ]
                 },
                 {
-                    title: "Person",
+                    title: "Человек",
                     children: [
                         {
                             title: "ID",
@@ -242,7 +242,7 @@ export default function TicketsTable(){
                             ...getColumnSearchProps("person.id", handleFilterChange)
                         },
                         {
-                            title: "Weight",
+                            title: "Вес",
                             dataIndex: ["person", "weight"],
                             key: "person.weight",
                             sorter: {multiple: 3},
@@ -250,7 +250,7 @@ export default function TicketsTable(){
                             ...getColumnSearchProps("person.weight", handleFilterChange)
                         },
                         {
-                            title: "Eye color",
+                            title: "Цвет глаз",
                             dataIndex: ["person", "eyeColor"],
                             key: "person.eyeColor",
                             sorter: {multiple: 3},
@@ -258,7 +258,7 @@ export default function TicketsTable(){
                             ...getColumnSearchProps("person.eyeColor", handleFilterChange)
                         },
                         {
-                            title: "Hair color",
+                            title: "Цвет волос",
                             dataIndex: ["person", "hairColor"],
                             key: "person.hairColor",
                             sorter: {multiple: 3},
@@ -266,7 +266,7 @@ export default function TicketsTable(){
                             ...getColumnSearchProps("person.hairColor", handleFilterChange)
                         },
                         {
-                            title: "Country",
+                            title: "Национальность",
                             dataIndex: ["person", "country"],
                             key: "person.country",
                             sorter: {multiple: 3},
@@ -300,7 +300,7 @@ export default function TicketsTable(){
                 justifyContent: "center"
             }}>
                 <Button icon={<ReloadOutlined/>} onClick={handleRefresh} style={{}}>
-                    Refresh
+                    Обновить
                 </Button>
             </Space>
         </>
