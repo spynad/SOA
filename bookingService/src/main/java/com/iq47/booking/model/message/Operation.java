@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OperationRequest {
-    long operationId;
+public class Operation {
+    long id;
 }

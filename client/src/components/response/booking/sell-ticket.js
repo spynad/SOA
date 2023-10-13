@@ -21,7 +21,11 @@ export function SellTicket() {
             })
             .catch((err) => {
                 let error = err.response.data
-                enqueueSnackbar(error.message, {
+                let msg = error.message
+                if(err.response.status == 404) {
+                    msg = "Человек или билет с заданным id не найдены"
+                }
+                enqueueSnackbar(msg, {
                     autoHideDuration: 5000,
                     variant: "error"
                 })

@@ -21,7 +21,14 @@ export function CancelOperation() {
             })
             .catch((err) => {
                 let error = err.response.data
-                enqueueSnackbar(error.message, {
+                let msg = error.message
+                if(err.response.status == 404) {
+                    msg = "Операция с заданным id не найдена"
+                }
+                if(err.response.status == 400) {
+                    msg = "Операция не может быть отеменена"
+                }
+                enqueueSnackbar(msg, {
                     autoHideDuration: 5000,
                     variant: "error"
                 })
