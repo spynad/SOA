@@ -260,11 +260,6 @@ public class TicketServiceImpl implements TicketService {
                     if (t.getTicketId() == null) {
                         Ticket ticket = new Ticket();
 
-                        if (t.getPersonId() != null) {
-                            Person person = personRepository.getPersonById(t.getPersonId());
-                            ticket.setPersonId(person);
-                        }
-
                         updateTicketFields(t, ticket);
 
                         repository.saveTicket(ticket);
@@ -287,6 +282,10 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private void updateTicketFields(OperationalTicket t, Ticket ticket) {
+        if (t.getPersonId() != null) {
+            Person person = personRepository.getPersonById(t.getPersonId());
+            ticket.setPersonId(person);
+        }
         ticket.setDiscount(t.getDiscount());
         ticket.setName(t.getName());
         ticket.setPrice(t.getPrice());
