@@ -6,15 +6,15 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "operation")
 public class Operation {
-    @XmlElement
+    @XmlElement(name = "id")
     private Long id;
 
-    @JsonProperty("operationId")
-    public Long getId() {
+
+    public Long getOperationId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setOperationId(Long id) {
         this.id = id;
     }
 }

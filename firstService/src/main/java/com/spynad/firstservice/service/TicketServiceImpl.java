@@ -254,7 +254,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public Response submitTicket(Operation body, SecurityContext securityContext) {
         try {
-            List<OperationalTicket> tickets = opRepository.getOperationalTicketsByOperationId(body.getId());
+            List<OperationalTicket> tickets = opRepository.getOperationalTicketsByOperationId(body.getOperationId());
             for (OperationalTicket t : tickets) {
                 if (t.getStatus().equals(OperationalTicket.StatusEnum.PENDING)) {
                     if (t.getTicketId() == null) {
@@ -292,7 +292,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public Response cancelBufferTicket(Operation body, SecurityContext securityContext) {
         try {
-            List<OperationalTicket> tickets = opRepository.getPendingOperationalTickets(body.getId());
+            List<OperationalTicket> tickets = opRepository.getPendingOperationalTickets(body.getOperationId());
             for (OperationalTicket t : tickets) {
                 t.setStatus(OperationalTicket.StatusEnum.CANCELED);
                 opRepository.updateOperationalTicket(t);
