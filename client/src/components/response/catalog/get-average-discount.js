@@ -1,7 +1,6 @@
 import {useSnackbar} from "notistack";
 import {useState} from "react";
-import axios from "axios";
-import {AVERAGE_DISCOUNT} from "../../../utils/api";
+import {xml_axios, AVERAGE_DISCOUNT} from "../../../utils/api";
 import {Button} from "antd";
 import {SimpleResponseModal} from "../templates/simple-response-modal";
 
@@ -12,9 +11,9 @@ export function GetAverageDiscount(){
     const [modalValue, setModalValue] = useState()
 
     const handelOpen = () => {
-        axios.post(AVERAGE_DISCOUNT)
+        xml_axios.post(AVERAGE_DISCOUNT)
             .then((response) => {
-                const data = response.data
+                const data = response.data.result.result
                 setModalValue(data)
                 setModalVisible(true)
             })

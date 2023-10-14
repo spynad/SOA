@@ -63,7 +63,7 @@ export function GetOperationStatus() {
                 </Form.Item>
                 <Form.Item>
                     <Button type={"primary"} onClick={form.submit} style={{width: 200}}>
-                        Получить информацию о статусе операции
+                        Статус операции
                     </Button>
                 </Form.Item>
             </Form>

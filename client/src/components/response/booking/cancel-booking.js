@@ -63,7 +63,7 @@ export function CancelBooking() {
                 </Form.Item>
                 <Form.Item>
                     <Button type={"primary"} onClick={form.submit} style={{width: 200}}>
-                        Отменить бронирование билетов для человека
+                        Отмена бронирования
                     </Button>
                 </Form.Item>
             </Form>

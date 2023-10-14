@@ -1,9 +1,8 @@
 import {useSnackbar} from "notistack";
 import {useState} from "react";
-import axios from "axios";
 import {Button} from "antd";
 import {SimpleTicketResponseModal} from "../templates/simple-ticket-response-modal";
-import {MINIMAL_BY_CREATION_DATE} from "../../../utils/api";
+import {xml_axios, MINIMAL_BY_CREATION_DATE} from "../../../utils/api";
 
 export function GetMinByCreationDate(){
 
@@ -13,10 +12,10 @@ export function GetMinByCreationDate(){
     const [modalValue, setModalValue] = useState()
 
     const handelOpen = (e) => {
-        axios.get(`${MINIMAL_BY_CREATION_DATE}`)
+        xml_axios.post(`${MINIMAL_BY_CREATION_DATE}`)
             .then((response) => {
                 const data = response.data
-                setModalValue(data)
+                setModalValue(data.ticket)
                 setModalVisible(true)
             })
             .catch((err) => {
