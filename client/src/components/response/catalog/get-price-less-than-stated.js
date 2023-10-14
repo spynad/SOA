@@ -60,7 +60,7 @@ export function GetPriceLessThanStatedCount(){
                 </Form.Item>
                 <Form.Item>
                     <Button type={"primary"} onClick={form.submit} style={{width: 200}}>
-                        Вычислить количество билетов дешевле заданной цены
+                        Билеты дешевле
                     </Button>
                 </Form.Item>
             </Form>

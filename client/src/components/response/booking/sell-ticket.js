@@ -78,7 +78,7 @@ export function SellTicket() {
                 >
                     <InputNumber/>
                 </Form.Item>
-                <Form.Item label={"Price"}
+                <Form.Item label={"Цена"}
                            name={"price"}
                            rules={[
                                {required: true, message: "Пожалуйста введите цену!"},
