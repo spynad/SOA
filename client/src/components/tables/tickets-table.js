@@ -47,6 +47,17 @@ export default function TicketsTable(){
         xml_axios.get(TICKETS_API, {params: queryParams})
             .then((response) => {
                 let res = response.data
+                if (response.data["ticketsArray"]["tickets"] == null) {
+                    setPageSize(5);
+                    setCurrentPage(1);
+                    setSortQueryParams([]);
+                    setFilterModel(new Map());
+                    enqueueSnackbar("Билеты не найдены", {
+                                        autoHideDuration: 5000,
+                                        variant: "error"
+                                    })
+                    return;
+                }
                 if (Object.prototype.toString.call(response.data["ticketsArray"]["tickets"]) !== '[object Array]') {
                     response.data["ticketsArray"]["tickets"] = [response.data["ticketsArray"]["tickets"],]
                 }
@@ -60,13 +71,21 @@ export default function TicketsTable(){
                 setLoading(false)
             })
             .catch((err) => {
-                let error = err.response.data
-                enqueueSnackbar(error.message, {
-                    autoHideDuration: 5000,
-                    variant: "error"
-                })
-                if (error){
+                if (err.response.status == 400) {
+                    enqueueSnackbar("Некорректные параметры фильтров", {
+                                        autoHideDuration: 5000,
+                                        variant: "error"
+                                    })
                     setLoading(false)
+                } else {
+                    let error = err.response
+                    enqueueSnackbar(error.message, {
+                        autoHideDuration: 5000,
+                        variant: "error"
+                    })
+                    if (error){
+                        setLoading(false)
+                    }
                 }
             })
     }
