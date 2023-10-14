@@ -1,8 +1,8 @@
 import axios from "axios";
 import convert from "xml-js";
 
-const CATALOG_SERVICE = "http://localhost:8080/firstService-1.0-SNAPSHOT/api"
-const BOOKING_SERVICE = "http://localhost:10200/api/v1/booking"
+const CATALOG_SERVICE = "https://localhost:8443/firstService-1.0-SNAPSHOT/api"
+const BOOKING_SERVICE = "https://localhost:10200/api/v1/booking"
 
 export const xml_axios = axios.create({
     headers: {
