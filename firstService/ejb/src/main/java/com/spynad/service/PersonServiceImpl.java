@@ -3,7 +3,9 @@ package com.spynad.service;
 import com.spynad.exception.NotFoundException;
 import com.spynad.model.*;
 import com.spynad.model.message.ApiResponseMessage;
+import com.spynad.model.message.PersonListResult;
 import com.spynad.model.message.PersonResult;
+import com.spynad.model.message.Result;
 import com.spynad.repository.PersonRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -31,32 +33,32 @@ public class PersonServiceImpl implements PersonService {
     public PersonResult addPerson(Person body)
             throws NotFoundException {
         try {
-            if (body == null) return new PersonResult("empty person", null);
+            if (body == null) return new PersonResult("empty person", null, 400);
             if (body.getId() != null) {
-                return new PersonResult("id is invalid in this context", null);
+                return new PersonResult("id is invalid in this context", null, 404);
             }
             Person person = repository.savePerson(body);
-            return new PersonResult("", person);
+            return new PersonResult("", person, 201);
         } catch (Exception e) {
             e.printStackTrace();
-            return new PersonResult("addPerson unknown error", null);
+            return new PersonResult("addPerson unknown error", null, 500);
         }
     }
 
     @Transactional
-    public Response deletePerson(Long personId)
+    public Result deletePerson(Long personId)
             throws NotFoundException {
         try {
             Person person = repository.getPersonById(personId);
-            if (person == null) return Response.status(404).build();
+            if (person == null)  return new Result("id is invalid in this context", 404);
             repository.deletePerson(person);
 
-            return Response.ok().build();
+            return new Result("", 200);
         } catch (Exception e) {
-            return Response.serverError().build();
+            return new Result("server error", 500);
         }
     }
-    public Response getAllPerson(List<String> sortList,List<String> filterList,Integer page,Integer pageSize)
+    public PersonListResult getAllPerson(List<String> sortList,List<String> filterList,Integer page,Integer pageSize)
             throws NotFoundException {
         if (page != null && pageSize == null) pageSize = 10;
         if (pageSize != null && page == null ) page = 1;
@@ -169,32 +171,32 @@ public class PersonServiceImpl implements PersonService {
         } catch (NullPointerException e){
             throw new IllegalArgumentException("Error while getting page. Check query params format. " + e.getMessage(), e);
         } catch (NumberFormatException e) {
-            return Response.status(400).entity(new ApiResponseMessage("bad values in filters")).build();
+            return new PersonListResult("bad values in filters", null, 400);
         }
 
-        return Response.ok().entity(entityPage).build();
+        return new PersonListResult("", entityPage, 200);
     }
-    public Response getPersonById(Long personId)
+    public PersonResult getPersonById(Long personId)
             throws NotFoundException {
         try {
             Person person = repository.getPersonById(personId);
-            if (person == null) return Response.status(404).build();
+            if (person == null) return new PersonResult("Invalid ID supplied", null, 404);
 
-            return Response.ok().entity(person).build();
+            return new PersonResult("", person, 200);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().build();
+            return new PersonResult("server error", null, 500);
         }
     }
     @Transactional
-    public Response updatePerson(Person body)
+    public PersonResult updatePerson(Person body)
             throws NotFoundException {
         try {
             Person person = repository.updatePerson(body);
-            return Response.ok().entity(person).build();
+            return new PersonResult("", person, 200);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().build();
+            return new PersonResult("server error", null, 500);
         }
     }
 }

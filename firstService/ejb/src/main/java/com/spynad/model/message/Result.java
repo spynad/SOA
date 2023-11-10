@@ -15,4 +15,5 @@ import java.io.Serializable;
 public class Result implements Serializable {
     private static final long serialVersionUID = -11113967080513790L;
     private String result;
+    private int status;
 }

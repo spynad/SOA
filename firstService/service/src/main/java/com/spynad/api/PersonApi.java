@@ -3,6 +3,8 @@ package com.spynad.api;
 import com.spynad.config.JNDIConfig;
 import com.spynad.exception.NotFoundException;
 import com.spynad.model.Person;
+import com.spynad.model.message.PersonListResult;
+import com.spynad.model.message.Result;
 import com.spynad.model.PersonArray;
 import com.spynad.model.message.ApiResponseMessage;
 
@@ -43,7 +45,7 @@ public class PersonApi  {
             throws NotFoundException {
         PersonResult result = service.addPerson(body);
         if (result.getResult() == null) {
-            return Response.status(400).entity(result.getMessage()).build();
+            return Response.status(result.getStatus()).entity(result.getMessage()).build();
         }
         return Response.ok().entity(result.getResult()).build();
     }
@@ -60,7 +62,8 @@ public class PersonApi  {
             @ApiResponse(responseCode = "500", description = "Internal error occurred.") })
     public Response deletePerson( @PathParam("personId") Long personId)
             throws NotFoundException {
-        return service.deletePerson(personId);
+        Result result = service.deletePerson(personId);
+        return Response.status(result.getStatus()).entity(result.getResult()).build();
     }
     @GET
     @Produces({ "application/xml" })
@@ -74,7 +77,8 @@ public class PersonApi  {
     public Response getAllPerson(  @QueryParam("sort") List<String> sort,  @QueryParam("filter") List<String> filter, @Min(0) @QueryParam("page") Integer page, @Min(1) @QueryParam("pageSize") Integer pageSize)
             throws NotFoundException {
         try {
-            return service.getAllPerson(sort, filter, page, pageSize);
+            PersonListResult result = service.getAllPerson(sort, filter, page, pageSize);
+            return Response.status(result.getStatus()).entity(result.getResult()).build();
         } catch (IllegalArgumentException e) {
             return Response.status(400).entity(new ApiResponseMessage("bad values in filters")).build();
         }
@@ -93,7 +97,11 @@ public class PersonApi  {
             @ApiResponse(responseCode = "500", description = "Internal error occurred.") })
     public Response getPersonById( @PathParam("personId") Long personId)
             throws NotFoundException {
-        return service.getPersonById(personId);
+        PersonResult result = service.getPersonById(personId);
+        if (result.getResult() == null) {
+            return Response.status(result.getStatus()).entity(result.getMessage()).build();
+        }
+        return Response.ok().entity(result.getResult()).build();
     }
     @PUT
     @Consumes({ "application/xml" })
@@ -110,7 +118,11 @@ public class PersonApi  {
     public Response updatePerson(
             @Parameter(description = "Update an existent person" ,required=true) Person body)
             throws NotFoundException {
-        return service.updatePerson(body);
+        PersonResult result = service.updatePerson(body);
+        if (result.getResult() == null) {
+            return Response.status(result.getStatus()).entity(result.getMessage()).build();
+        }
+        return Response.ok().entity(result.getResult()).build();
     }
 }
 

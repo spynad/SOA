@@ -1,21 +1,22 @@
 package com.spynad.model.message;
 
 import com.spynad.model.Person;
-import jakarta.xml.bind.annotation.XmlRootElement;
+import com.spynad.model.PersonArray;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonResult implements Serializable {
+public class PersonListResult implements Serializable {
     @Serial
-    private static final long serialVersionUID = -983578L;
+    private static final long serialVersionUID = -983478L;
     private String message;
-    private Person result;
+    private PersonArray result;
     private int status;
 }
