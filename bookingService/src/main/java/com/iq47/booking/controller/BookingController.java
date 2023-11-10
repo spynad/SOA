@@ -69,7 +69,7 @@ public class BookingController {
     @GetMapping(value = "/sell/{id}", produces= MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<OperationalStatusResponse> sellTicketStatus(@PathVariable("id") Long id) {
         try {
-            OperationalStatusResponse response = bookingOperationalService.getOperationStatus(id);
+            com.iq47.booking.model.message.OperationalStatusResponse response = bookingOperationalService.getOperationStatus(id);
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
