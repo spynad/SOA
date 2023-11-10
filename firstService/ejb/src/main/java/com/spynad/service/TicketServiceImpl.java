@@ -2,8 +2,7 @@ package com.spynad.service;
 
 import com.spynad.exception.NotFoundException;
 import com.spynad.model.*;
-import com.spynad.model.message.ApiResponseMessage;
-import com.spynad.model.message.Result;
+import com.spynad.model.message.*;
 import com.spynad.repository.OperationalTicketRepository;
 import com.spynad.repository.PersonRepository;
 import com.spynad.repository.TicketRepository;
@@ -40,36 +39,37 @@ public class TicketServiceImpl implements TicketService {
     private PersonRepository personRepository;
 
     @Transactional
-    public Response addTicket(Ticket body)
+    public TicketResult addTicket(Ticket body)
             throws NotFoundException {
         try {
-            if (body == null) return Response.status(400).build();
+            if (body == null) return new TicketResult("empty ticket", null, 400);
             if (body.getId() != null) {
-                return Response.status(400).entity("").build();
+                return new TicketResult("id is invalid in this context", null, 404);
             }
+            
             body.setCreationDate(Date.from(Instant.now()));
             Ticket ticket = repository.saveTicket(body);
-            return Response.ok().entity(ticket).build();
+            return new TicketResult("", ticket, 201);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().build();
+            return new TicketResult("addTicket unknown error", null, 500);
         }
     }
 
     @Transactional
-    public Response deleteTicket(Long ticketId)
+    public Result deleteTicket(Long ticketId)
             throws NotFoundException {
         try {
             Ticket ticket = repository.getTicketById(ticketId);
-            if (ticket == null) return Response.status(404).build();
+            if (ticket == null) return new Result("unknown ticket", 404);
             repository.deleteTicket(ticket);
 
-            return Response.ok().build();
+            return new Result("", 200);
         } catch (Exception e) {
-            return Response.serverError().build();
+            return new Result("", 500);
         }
     }
-    public Response getAllTickets(List<String> sortList,List<String> filterList,Integer page,Integer pageSize)
+    public TicketListResult getAllTickets(List<String> sortList,List<String> filterList,Integer page,Integer pageSize)
             throws NotFoundException {
         if (page != null && pageSize == null) pageSize = 10;
         if (pageSize != null && page == null ) page = 1;
@@ -179,86 +179,76 @@ public class TicketServiceImpl implements TicketService {
 
         try {
             entityPage = repository.getSortedAndFilteredPage(sorts, filters, page, pageSize);
-        } catch (NullPointerException e){
-            return Response.status(400).entity(new ApiResponseMessage("query params invalid")).build();
+        } catch (NullPointerException e) {
+            return new TicketListResult("query params invalid", null, 400);
         } catch (NumberFormatException e) {
-            return Response.status(400).entity(new ApiResponseMessage("bad values in filters")).build();
+            return new TicketListResult("bad values in filters", null, 400);
         }
 
-        /*Page<Person> ret = new Page<>();
-        ret.setObjects(entityPage.getObjects());
-        ret.setPage(entityPage.getPage());
-        ret.setPageSize(entityPage.getPageSize());
-        ret.setTotalPages(entityPage.getTotalPages());
-        ret.setTotalCount(entityPage.getTotalCount());*/
-
-        //return ret;
-        return Response.ok().entity(entityPage).build();
+        return new TicketListResult("", entityPage, 200);
     }
-    public Response getAverageTicketDiscount()
+    public Result getAverageTicketDiscount()
             throws NotFoundException {
         List<Ticket> tickets = repository.getAllTickets();
         Double avg = tickets.stream().collect(Collectors.averagingLong(Ticket::getDiscount));
-        return Response.ok().entity(new Result(avg.toString())).build();
+        return new Result(avg.toString(), 200);
     }
-    public Response getCheaperTicketsByPrice(Integer price)
+    public Result getCheaperTicketsByPrice(Integer price)
             throws NotFoundException {
         List<Ticket> tickets = repository.getAllTickets();
         Long count = tickets.stream().map(Ticket::getPrice).filter(t -> t < price).count();
-        return Response.ok().entity(new Result(count.toString())).build();
+        return new Result(count.toString(), 200);
     }
-    public Response getMinimalTicketByCreationDate()
+    public TicketResult getMinimalTicketByCreationDate()
             throws NotFoundException {
         List<Ticket> tickets = repository.getAllTickets();
         Ticket ticket = tickets.stream().min(Comparator.comparing(Ticket::getCreationDate)).get();
-        return Response.ok().entity(ticket).build();
+        return new TicketResult("", ticket, 200);
     }
-    public Response getTicketById(Long ticketId)
+    public TicketResult getTicketById(Long ticketId)
             throws NotFoundException {
         try {
             Ticket ticket = repository.getTicketById(ticketId);
-            if (ticket == null) return Response.status(404).entity(new ApiResponseMessage("ticket not found")).build();
+            if (ticket == null) return new TicketResult("ticket not found", null, 404);
 
-            return Response.ok().entity(ticket).build();
+            return new TicketResult("", ticket, 200);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().entity(new ApiResponseMessage(e.getClass().getName() + ' ' + e.getMessage())).build();
+            return new TicketResult(e.getMessage(), null, 500);
         }
     }
 
     @Transactional
-    public Response updateTicket(Ticket body)
+    public TicketResult updateTicket(Ticket body)
             throws NotFoundException {
         try {
             Ticket ticket = repository.updateTicket(body);
-            return Response.ok().entity(ticket).build();
+            return new TicketResult("", ticket, 200);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().entity(new ApiResponseMessage(e.getClass().getName() + ' ' + e.getMessage())).build();
+            return new TicketResult(e.getMessage(), null, 500);
         }
     }
 
     @Override
     @Transactional
-    public Response bufferTicket(OperationalTicket body) {
+    public OperationalTicketResult bufferTicket(OperationalTicket body) {
         try {
-            if (body == null) return Response.status(400).build();
-            if (body.getId() != null) {
-                return Response.status(400).entity("").build();
+            if (body == null || body.getId() != null) {
+                return new OperationalTicketResult("unknown operational ticket", null, 400);
             }
             body.setCreationDate(Date.from(Instant.now()));
             body.setStatus(OperationalTicket.StatusEnum.PENDING);
             OperationalTicket ticket = opRepository.saveOperationalTicket(body);
-            return Response.ok().entity(ticket).build();
+            return new OperationalTicketResult("", ticket, 200);
         } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError().build();
+            return new OperationalTicketResult(e.getMessage(), null, 500);
         }
     }
 
     @Override
     @Transactional
-    public Response submitTicket(Operation body) {
+    public boolean submitTicket(Operation body) {
         try {
             List<OperationalTicket> tickets = opRepository.getOperationalTicketsByOperationId(body.getOperationId());
             for (OperationalTicket t : tickets) {
@@ -279,10 +269,10 @@ public class TicketServiceImpl implements TicketService {
                     opRepository.updateOperationalTicket(t);
                 }
             }
-            return Response.ok().build();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().entity(new ApiResponseMessage(e.getMessage())).build();
+            return false;
         }
 
     }
@@ -303,17 +293,17 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public Response cancelBufferTicket(Operation body) {
+    public boolean cancelBufferTicket(Operation body) {
         try {
             List<OperationalTicket> tickets = opRepository.getPendingOperationalTickets(body.getOperationId());
             for (OperationalTicket t : tickets) {
                 t.setStatus(OperationalTicket.StatusEnum.CANCELED);
                 opRepository.updateOperationalTicket(t);
             }
-            return Response.ok().build();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().build();
+            return false;
         }
     }
 }

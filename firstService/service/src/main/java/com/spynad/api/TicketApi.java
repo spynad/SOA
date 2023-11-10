@@ -5,7 +5,7 @@ import com.spynad.exception.NotFoundException;
 import com.spynad.model.OperationalTicket;
 import com.spynad.model.Ticket;
 import com.spynad.model.TicketsArray;
-import com.spynad.model.message.ApiResponseMessage;
+import com.spynad.model.message.*;
 import com.spynad.service.TicketService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +40,11 @@ public class TicketApi {
     public Response addTicket(
             @Parameter(description = "Create a new ticket", required = true) Ticket body)
             throws NotFoundException {
-        return service.addTicket(body);
+        TicketResult result = service.addTicket(body);
+        if (result.getResult() == null) {
+            return Response.status(result.getCode()).entity(result.getMessage()).build();
+        }
+        return Response.ok().entity(result.getResult()).build();
     }
 
     @DELETE
@@ -53,7 +57,8 @@ public class TicketApi {
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
     public Response deleteTicket(@PathParam("ticketId") Long ticketId)
             throws NotFoundException {
-        return service.deleteTicket(ticketId);
+        Result result = service.deleteTicket(ticketId);
+        return Response.status(result.getStatus()).entity(result.getResult()).build();
     }
 
     @GET
@@ -66,7 +71,8 @@ public class TicketApi {
     public Response getAllTickets(@QueryParam("sort") List<String> sort, @QueryParam("filter") List<String> filter, @Min(0) @QueryParam("page") Integer page, @Min(1) @QueryParam("pageSize") Integer pageSize)
             throws NotFoundException {
         try {
-            return service.getAllTickets(sort, filter, page, pageSize);
+            TicketListResult result = service.getAllTickets(sort, filter, page, pageSize);
+            return Response.status(result.getStatus()).entity(result.getResult()).build();
         } catch (IllegalArgumentException e) {
             return Response.status(400).entity(new ApiResponseMessage("bad values in filters")).build();
         }
@@ -81,7 +87,12 @@ public class TicketApi {
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
     public Response getAverageTicketDiscount()
             throws NotFoundException {
-        return service.getAverageTicketDiscount();
+        Result result = service.getAverageTicketDiscount();
+        if (result.getResult() == null) {
+            return Response.status(result.getStatus()).build();
+        } else {
+            return Response.ok().entity(result.getResult()).build();
+        }
     }
 
     @POST
@@ -94,7 +105,12 @@ public class TicketApi {
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
     public Response getCheaperTicketsByPrice(@PathParam("price") Integer price)
             throws NotFoundException {
-        return service.getCheaperTicketsByPrice(price);
+        Result result = service.getCheaperTicketsByPrice(price);
+        if (result.getResult() == null) {
+            return Response.status(result.getStatus()).build();
+        } else {
+            return Response.ok().entity(result.getResult()).build();
+        }
     }
 
     @POST
@@ -107,7 +123,12 @@ public class TicketApi {
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
     public Response getMinimalTicketByCreationDate()
             throws NotFoundException {
-        return service.getMinimalTicketByCreationDate();
+        TicketResult result = service.getMinimalTicketByCreationDate();
+        if (result.getResult() == null) {
+            return Response.status(result.getCode()).entity(new ApiResponseMessage(result.getMessage())).build();
+        } else {
+            return Response.ok().entity(result.getResult()).build();
+        }
     }
 
     @GET
@@ -121,7 +142,12 @@ public class TicketApi {
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
     public Response getTicketById(@PathParam("ticketId") Long ticketId)
             throws NotFoundException {
-        return service.getTicketById(ticketId);
+        TicketResult result = service.getTicketById(ticketId);
+        if (result.getResult() == null) {
+            return Response.status(result.getCode()).entity(new ApiResponseMessage(result.getMessage())).build();
+        } else {
+            return Response.ok().entity(result.getResult()).build();
+        }
     }
 
     @PUT
@@ -136,7 +162,12 @@ public class TicketApi {
     public Response updateTicket(
             @Parameter(description = "Update an existent ticket", required = true) Ticket body)
             throws NotFoundException {
-        return service.updateTicket(body);
+        TicketResult result = service.updateTicket(body);
+        if (result.getResult() == null) {
+            return Response.status(result.getCode()).entity(new ApiResponseMessage(result.getMessage())).build();
+        } else {
+            return Response.ok().entity(result.getResult()).build();
+        }
     }
 
     @POST
@@ -145,7 +176,12 @@ public class TicketApi {
     @Operation(summary = "Buffer operational ticket", description = "Buffer operational ticket", tags = {"ticket"})
     @Path("/buffer")
     public Response bufferTicket(@Parameter(description = "Buffer operational ticket", required = true) OperationalTicket body) {
-        return service.bufferTicket(body);
+        OperationalTicketResult result = service.bufferTicket(body);
+        if (result.getResult() == null) {
+            return Response.status(result.getCode()).entity(new ApiResponseMessage(result.getMessage())).build();
+        } else {
+            return Response.ok().entity(result.getResult()).build();
+        }
     }
 
     @POST
@@ -154,7 +190,9 @@ public class TicketApi {
     @Operation(summary = "Submit operation", description = "Submit operation", tags = {"ticket"})
     @Path("/buffer/submit")
     public Response submitTicket(@Parameter(description = "Operation", required = true) com.spynad.model.Operation body) {
-        return service.submitTicket(body);
+        if (service.submitTicket(body)) {
+            return Response.ok().build();
+        } else return Response.serverError().build();
     }
 
     @POST
@@ -163,6 +201,10 @@ public class TicketApi {
     @Operation(summary = "Cancel operation", description = "Cancel operation", tags = {"ticket"})
     @Path("/buffer/cancel")
     public Response cancelBufferTicket(@Parameter(description = "Cancel", required = true) com.spynad.model.Operation body) {
-        return service.cancelBufferTicket(body);
+        if (service.cancelBufferTicket(body)) {
+            return Response.ok().build();
+        } else {
+            return Response.serverError().build();
+        }
     }
 }
