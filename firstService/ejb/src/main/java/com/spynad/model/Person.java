@@ -7,13 +7,15 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @XmlRootElement(name = "person")
-public class Person {
+public class Person implements Serializable {
+    private static final long serialVersionUID = -2345676543L;
     @Id
     @GeneratedValue
     private Long id;

@@ -3,8 +3,11 @@ package com.spynad.model.message;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlTransient;
 
+import java.io.Serializable;
+
 @XmlRootElement(name = "error")
-public class ApiResponseMessage {
+public class ApiResponseMessage implements Serializable {
+    private static final long serialVersionUID = -98L;
 
     int code;
     String message;

@@ -2,11 +2,13 @@ package com.spynad.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class CoordinatesArray {
+public class CoordinatesArray implements Serializable {
+    private static final long serialVersionUID = 558553967080513790L;
     private Long page;
     private Long pagesTotal;
     private Long pageSize;

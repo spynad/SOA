@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @XmlRootElement(name = "personArray")
-public class PersonArray {
+public class PersonArray implements Serializable {
+    private static final long serialVersionUID = -345678532L;
     private Long page;
     private Long pagesTotal;
     private Long pageSize;

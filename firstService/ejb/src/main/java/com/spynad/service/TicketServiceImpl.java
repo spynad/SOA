@@ -40,7 +40,7 @@ public class TicketServiceImpl implements TicketService {
     private PersonRepository personRepository;
 
     @Transactional
-    public Response addTicket(Ticket body, SecurityContext securityContext)
+    public Response addTicket(Ticket body)
             throws NotFoundException {
         try {
             if (body == null) return Response.status(400).build();
@@ -57,7 +57,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Transactional
-    public Response deleteTicket(Long ticketId,SecurityContext securityContext)
+    public Response deleteTicket(Long ticketId)
             throws NotFoundException {
         try {
             Ticket ticket = repository.getTicketById(ticketId);
@@ -69,7 +69,7 @@ public class TicketServiceImpl implements TicketService {
             return Response.serverError().build();
         }
     }
-    public Response getAllTickets(List<String> sortList,List<String> filterList,Integer page,Integer pageSize,SecurityContext securityContext)
+    public Response getAllTickets(List<String> sortList,List<String> filterList,Integer page,Integer pageSize)
             throws NotFoundException {
         if (page != null && pageSize == null) pageSize = 10;
         if (pageSize != null && page == null ) page = 1;
@@ -195,25 +195,25 @@ public class TicketServiceImpl implements TicketService {
         //return ret;
         return Response.ok().entity(entityPage).build();
     }
-    public Response getAverageTicketDiscount(SecurityContext securityContext)
+    public Response getAverageTicketDiscount()
             throws NotFoundException {
         List<Ticket> tickets = repository.getAllTickets();
         Double avg = tickets.stream().collect(Collectors.averagingLong(Ticket::getDiscount));
         return Response.ok().entity(new Result(avg.toString())).build();
     }
-    public Response getCheaperTicketsByPrice(Integer price,SecurityContext securityContext)
+    public Response getCheaperTicketsByPrice(Integer price)
             throws NotFoundException {
         List<Ticket> tickets = repository.getAllTickets();
         Long count = tickets.stream().map(Ticket::getPrice).filter(t -> t < price).count();
         return Response.ok().entity(new Result(count.toString())).build();
     }
-    public Response getMinimalTicketByCreationDate(SecurityContext securityContext)
+    public Response getMinimalTicketByCreationDate()
             throws NotFoundException {
         List<Ticket> tickets = repository.getAllTickets();
         Ticket ticket = tickets.stream().min(Comparator.comparing(Ticket::getCreationDate)).get();
         return Response.ok().entity(ticket).build();
     }
-    public Response getTicketById(Long ticketId,SecurityContext securityContext)
+    public Response getTicketById(Long ticketId)
             throws NotFoundException {
         try {
             Ticket ticket = repository.getTicketById(ticketId);
@@ -227,7 +227,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Transactional
-    public Response updateTicket(Ticket body,SecurityContext securityContext)
+    public Response updateTicket(Ticket body)
             throws NotFoundException {
         try {
             Ticket ticket = repository.updateTicket(body);
@@ -240,7 +240,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public Response bufferTicket(OperationalTicket body, SecurityContext securityContext) {
+    public Response bufferTicket(OperationalTicket body) {
         try {
             if (body == null) return Response.status(400).build();
             if (body.getId() != null) {
@@ -258,7 +258,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public Response submitTicket(Operation body, SecurityContext securityContext) {
+    public Response submitTicket(Operation body) {
         try {
             List<OperationalTicket> tickets = opRepository.getOperationalTicketsByOperationId(body.getOperationId());
             for (OperationalTicket t : tickets) {
@@ -303,7 +303,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public Response cancelBufferTicket(Operation body, SecurityContext securityContext) {
+    public Response cancelBufferTicket(Operation body) {
         try {
             List<OperationalTicket> tickets = opRepository.getPendingOperationalTickets(body.getOperationId());
             for (OperationalTicket t : tickets) {

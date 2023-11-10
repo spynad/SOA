@@ -3,12 +3,14 @@ package com.spynad.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @XmlRootElement
-public class TicketsArray {
+public class TicketsArray implements Serializable {
+    private static final long serialVersionUID = -558553967080513790L;
     private Long page;
     private Long pagesTotal;
     private Long pageSize;

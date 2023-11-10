@@ -38,10 +38,9 @@ public class TicketApi {
             @ApiResponse(responseCode = "400", description = "Validation exception"),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
     public Response addTicket(
-            @Parameter(description = "Create a new ticket", required = true) Ticket body
-            , @Context SecurityContext securityContext)
+            @Parameter(description = "Create a new ticket", required = true) Ticket body)
             throws NotFoundException {
-        return service.addTicket(body, securityContext);
+        return service.addTicket(body);
     }
 
     @DELETE
@@ -52,9 +51,9 @@ public class TicketApi {
             @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
             @ApiResponse(responseCode = "404", description = "Ticket not found"),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
-    public Response deleteTicket(@PathParam("ticketId") Long ticketId, @Context SecurityContext securityContext)
+    public Response deleteTicket(@PathParam("ticketId") Long ticketId)
             throws NotFoundException {
-        return service.deleteTicket(ticketId, securityContext);
+        return service.deleteTicket(ticketId);
     }
 
     @GET
@@ -64,10 +63,10 @@ public class TicketApi {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = TicketsArray.class))),
             @ApiResponse(responseCode = "400", description = "Validation exception"),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
-    public Response getAllTickets(@QueryParam("sort") List<String> sort, @QueryParam("filter") List<String> filter, @Min(0) @QueryParam("page") Integer page, @Min(1) @QueryParam("pageSize") Integer pageSize, @Context SecurityContext securityContext)
+    public Response getAllTickets(@QueryParam("sort") List<String> sort, @QueryParam("filter") List<String> filter, @Min(0) @QueryParam("page") Integer page, @Min(1) @QueryParam("pageSize") Integer pageSize)
             throws NotFoundException {
         try {
-            return service.getAllTickets(sort, filter, page, pageSize, securityContext);
+            return service.getAllTickets(sort, filter, page, pageSize);
         } catch (IllegalArgumentException e) {
             return Response.status(400).entity(new ApiResponseMessage("bad values in filters")).build();
         }
@@ -80,9 +79,9 @@ public class TicketApi {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = BigDecimal.class))),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
-    public Response getAverageTicketDiscount(@Context SecurityContext securityContext)
+    public Response getAverageTicketDiscount()
             throws NotFoundException {
-        return service.getAverageTicketDiscount(securityContext);
+        return service.getAverageTicketDiscount();
     }
 
     @POST
@@ -93,9 +92,9 @@ public class TicketApi {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = Ticket.class)))),
             @ApiResponse(responseCode = "400", description = "Invalid price supplied"),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
-    public Response getCheaperTicketsByPrice(@PathParam("price") Integer price, @Context SecurityContext securityContext)
+    public Response getCheaperTicketsByPrice(@PathParam("price") Integer price)
             throws NotFoundException {
-        return service.getCheaperTicketsByPrice(price, securityContext);
+        return service.getCheaperTicketsByPrice(price);
     }
 
     @POST
@@ -106,9 +105,9 @@ public class TicketApi {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(mediaType = "application/xml", schema = @Schema(implementation = Ticket.class))),
             @ApiResponse(responseCode = "404", description = "Ticket not found"),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
-    public Response getMinimalTicketByCreationDate(@Context SecurityContext securityContext)
+    public Response getMinimalTicketByCreationDate()
             throws NotFoundException {
-        return service.getMinimalTicketByCreationDate(securityContext);
+        return service.getMinimalTicketByCreationDate();
     }
 
     @GET
@@ -120,9 +119,9 @@ public class TicketApi {
             @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
             @ApiResponse(responseCode = "404", description = "Ticket not found"),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
-    public Response getTicketById(@PathParam("ticketId") Long ticketId, @Context SecurityContext securityContext)
+    public Response getTicketById(@PathParam("ticketId") Long ticketId)
             throws NotFoundException {
-        return service.getTicketById(ticketId, securityContext);
+        return service.getTicketById(ticketId);
     }
 
     @PUT
@@ -135,10 +134,9 @@ public class TicketApi {
             @ApiResponse(responseCode = "404", description = "Ticket not found"),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
     public Response updateTicket(
-            @Parameter(description = "Update an existent ticket", required = true) Ticket body
-            , @Context SecurityContext securityContext)
+            @Parameter(description = "Update an existent ticket", required = true) Ticket body)
             throws NotFoundException {
-        return service.updateTicket(body, securityContext);
+        return service.updateTicket(body);
     }
 
     @POST
@@ -146,9 +144,8 @@ public class TicketApi {
     @Produces({"application/xml"})
     @Operation(summary = "Buffer operational ticket", description = "Buffer operational ticket", tags = {"ticket"})
     @Path("/buffer")
-    public Response bufferTicket(@Parameter(description = "Buffer operational ticket", required = true) OperationalTicket body,
-                                 @Context SecurityContext securityContext) {
-        return service.bufferTicket(body, securityContext);
+    public Response bufferTicket(@Parameter(description = "Buffer operational ticket", required = true) OperationalTicket body) {
+        return service.bufferTicket(body);
     }
 
     @POST
@@ -156,9 +153,8 @@ public class TicketApi {
     @Produces({"application/xml"})
     @Operation(summary = "Submit operation", description = "Submit operation", tags = {"ticket"})
     @Path("/buffer/submit")
-    public Response submitTicket(@Parameter(description = "Operation", required = true) com.spynad.model.Operation body,
-                                 @Context SecurityContext securityContext) {
-        return service.submitTicket(body, securityContext);
+    public Response submitTicket(@Parameter(description = "Operation", required = true) com.spynad.model.Operation body) {
+        return service.submitTicket(body);
     }
 
     @POST
@@ -166,8 +162,7 @@ public class TicketApi {
     @Produces({"application/xml"})
     @Operation(summary = "Cancel operation", description = "Cancel operation", tags = {"ticket"})
     @Path("/buffer/cancel")
-    public Response cancelBufferTicket(@Parameter(description = "Cancel", required = true) com.spynad.model.Operation body,
-                                 @Context SecurityContext securityContext) {
-        return service.cancelBufferTicket(body, securityContext);
+    public Response cancelBufferTicket(@Parameter(description = "Cancel", required = true) com.spynad.model.Operation body) {
+        return service.cancelBufferTicket(body);
     }
 }

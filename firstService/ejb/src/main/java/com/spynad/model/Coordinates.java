@@ -6,13 +6,15 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 
 @XmlRootElement(name = "coordinates")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Coordinates {
+public class Coordinates implements Serializable {
+    private static final long serialVersionUID = -800000000000L;
     private Float x;
     private Float y;
 

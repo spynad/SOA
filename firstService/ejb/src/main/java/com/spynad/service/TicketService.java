@@ -12,15 +12,15 @@ import java.util.List;
 
 @Remote
 public interface TicketService {
-    Response addTicket(Ticket body,SecurityContext securityContext) throws NotFoundException;
-    Response deleteTicket(Long ticketId,SecurityContext securityContext) throws NotFoundException;
-    Response getAllTickets(List<String> sort,List<String> filter,Integer page,Integer pageSize,SecurityContext securityContext) throws NotFoundException;
-    Response getAverageTicketDiscount(SecurityContext securityContext) throws NotFoundException;
-    Response getCheaperTicketsByPrice(Integer price,SecurityContext securityContext) throws NotFoundException;
-    Response getMinimalTicketByCreationDate(SecurityContext securityContext) throws NotFoundException;
-    Response getTicketById(Long ticketId,SecurityContext securityContext) throws NotFoundException;
-    Response updateTicket(Ticket body,SecurityContext securityContext) throws NotFoundException;
-    Response bufferTicket(OperationalTicket body, SecurityContext securityContext);
-    Response submitTicket(Operation body, SecurityContext securityContext);
-    Response cancelBufferTicket(Operation body, SecurityContext securityContext);
+    Response addTicket(Ticket body) throws NotFoundException;
+    Response deleteTicket(Long ticketId) throws NotFoundException;
+    Response getAllTickets(List<String> sort,List<String> filter,Integer page,Integer pageSize) throws NotFoundException;
+    Response getAverageTicketDiscount() throws NotFoundException;
+    Response getCheaperTicketsByPrice(Integer price) throws NotFoundException;
+    Response getMinimalTicketByCreationDate() throws NotFoundException;
+    Response getTicketById(Long ticketId) throws NotFoundException;
+    Response updateTicket(Ticket body) throws NotFoundException;
+    Response bufferTicket(OperationalTicket body);
+    Response submitTicket(Operation body);
+    Response cancelBufferTicket(Operation body);
 }

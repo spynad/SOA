@@ -10,13 +10,18 @@ import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlElementRef;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
 
 @XmlRootElement(name = "ticket")
 @Entity
-public class Ticket {
+public class Ticket implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -4858435645L;
     @Id
     @GeneratedValue
     private Long id;

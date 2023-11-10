@@ -4,6 +4,7 @@ package com.spynad.model;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
 

@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Size;
 import jakarta.xml.bind.annotation.XmlRootElement;
 import lombok.Getter;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
@@ -17,7 +18,8 @@ import java.util.Objects;
 @XmlRootElement(name = "operationalTicket")
 @Entity
 @Table(name = "tickets_buffer")
-public class OperationalTicket {
+public class OperationalTicket implements Serializable {
+    private static final long serialVersionUID = -55855396708051L;
     @Id
     @GeneratedValue
     private Long id;

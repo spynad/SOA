@@ -3,6 +3,7 @@ package com.spynad.service;
 import com.spynad.exception.NotFoundException;
 import com.spynad.model.*;
 import com.spynad.model.message.ApiResponseMessage;
+import com.spynad.model.message.PersonResult;
 import com.spynad.repository.PersonRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
@@ -27,23 +28,23 @@ public class PersonServiceImpl implements PersonService {
     private PersonRepository repository;
 
     @Transactional
-    public Response addPerson(Person body, SecurityContext securityContext)
+    public PersonResult addPerson(Person body)
             throws NotFoundException {
         try {
-            if (body == null) return Response.status(400).build();
+            if (body == null) return new PersonResult("empty person", null);
             if (body.getId() != null) {
-                return Response.status(400).entity("id is invalid in this context").build();
+                return new PersonResult("id is invalid in this context", null);
             }
             Person person = repository.savePerson(body);
-            return Response.ok().entity(person).build();
+            return new PersonResult("", person);
         } catch (Exception e) {
             e.printStackTrace();
-            return Response.serverError().build();
+            return new PersonResult("addPerson unknown error", null);
         }
     }
 
     @Transactional
-    public Response deletePerson(Long personId,SecurityContext securityContext)
+    public Response deletePerson(Long personId)
             throws NotFoundException {
         try {
             Person person = repository.getPersonById(personId);
@@ -55,7 +56,7 @@ public class PersonServiceImpl implements PersonService {
             return Response.serverError().build();
         }
     }
-    public Response getAllPerson(List<String> sortList,List<String> filterList,Integer page,Integer pageSize,SecurityContext securityContext)
+    public Response getAllPerson(List<String> sortList,List<String> filterList,Integer page,Integer pageSize)
             throws NotFoundException {
         if (page != null && pageSize == null) pageSize = 10;
         if (pageSize != null && page == null ) page = 1;
@@ -173,7 +174,7 @@ public class PersonServiceImpl implements PersonService {
 
         return Response.ok().entity(entityPage).build();
     }
-    public Response getPersonById(Long personId,SecurityContext securityContext)
+    public Response getPersonById(Long personId)
             throws NotFoundException {
         try {
             Person person = repository.getPersonById(personId);
@@ -186,7 +187,7 @@ public class PersonServiceImpl implements PersonService {
         }
     }
     @Transactional
-    public Response updatePerson(Person body,SecurityContext securityContext)
+    public Response updatePerson(Person body)
             throws NotFoundException {
         try {
             Person person = repository.updatePerson(body);

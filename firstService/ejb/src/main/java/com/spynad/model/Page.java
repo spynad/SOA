@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
@@ -15,7 +16,8 @@ import java.util.List;
 @AllArgsConstructor
 @XmlRootElement(name = "page")
 @XmlSeeAlso({Person.class, Ticket.class})
-public class Page<T> {
+public class Page<T> implements Serializable {
+    private static final long serialVersionUID = -55855396708051371L;
     private List<T> objects;
     private Integer page;
     private Integer pageSize;
