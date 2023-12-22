@@ -14,13 +14,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@XmlRootElement(name = "page")
-@XmlSeeAlso({Person.class, Ticket.class})
-public class Page<T> implements Serializable {
+@XmlRootElement
+public class Page implements Serializable {
     private static final long serialVersionUID = -55855396708051371L;
-    private List<T> objects;
-    private Integer page;
-    private Integer pageSize;
-    private Integer totalPages;
-    private Long totalCount;
+    private Long page;
+    private Long pageTotal;
+    private Long pageSize;
+    private TicketsArray ticketsArray;
 }

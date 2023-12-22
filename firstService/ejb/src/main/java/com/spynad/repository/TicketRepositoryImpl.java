@@ -18,7 +18,7 @@ public class TicketRepositoryImpl implements TicketRepository{
     @PersistenceContext
     private EntityManager entityManager;
 
-    public TicketsArray getSortedAndFilteredPage(List<Sort> sortList, List<Filter> filtersList, Integer page, Integer size) {
+    public Page getSortedAndFilteredPage(List<Sort> sortList, List<Filter> filtersList, Integer page, Integer size) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Ticket> flatQuery = criteriaBuilder.createQuery(Ticket.class);
         Root<Ticket> root = flatQuery.from(Ticket.class);
@@ -157,6 +157,7 @@ public class TicketRepositoryImpl implements TicketRepository{
         List<Ticket> ticketList;
         long totalCount = typedQuery.getResultList().size();
 
+        Page page1 = new Page();
         TicketsArray ret = new TicketsArray();
 
         if (page != null && size != null){
@@ -179,21 +180,23 @@ public class TicketRepositoryImpl implements TicketRepository{
                 countResult = entityManager.createQuery(cq).getSingleResult();
             }
 
-            ret.setPage(Long.valueOf(page));
-            ret.setPageSize(Long.valueOf(size));
-            ret.setPagesTotal((long) Math.ceil((totalCount * 1.0) / size));
+            page1.setPage(Long.valueOf(page));
+            page1.setPageSize(Long.valueOf(size));
+            page1.setPageTotal((long) Math.ceil((totalCount * 1.0) / size));
             ret.setTickets(ticketList);
+            page1.setTicketsArray(ret);
         } else {
             ticketList = typedQuery.getResultList();
 
-            ret.setPage(1L);
-            ret.setPageSize(totalCount);
-            ret.setPagesTotal(1L);
+            page1.setPage(1L);
+            page1.setPageSize(totalCount);
+            page1.setPageTotal(1L);
             ret.setTickets(ticketList);
+            page1.setTicketsArray(ret);
         }
 
 
-        return ret;
+        return page1;
     }
 
     @Override

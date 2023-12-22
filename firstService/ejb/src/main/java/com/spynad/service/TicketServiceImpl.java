@@ -112,69 +112,71 @@ public class TicketServiceImpl implements TicketService {
 
         List<Filter> filters = new ArrayList<>();
 
-        for (String filter : filterList){
-            Matcher matcher = lhsPattern.matcher(filter);
-            String fieldName = null, fieldValue = null;
-            FilteringOperation filteringOperation = null;
-            String nestedName = null;
+        if (filterList != null) {
+            for (String filter : filterList) {
+                Matcher matcher = lhsPattern.matcher(filter);
+                String fieldName = null, fieldValue = null;
+                FilteringOperation filteringOperation = null;
+                String nestedName = null;
 
-            if (matcher.find()){
-                fieldName = matcher.group(1);
+                if (matcher.find()) {
+                    fieldName = matcher.group(1);
 
-                Matcher nestedFieldMatcher = nestedFieldNamePattern.matcher(fieldName);
-                if (nestedFieldMatcher.find()){
-                    String nestedField = nestedFieldMatcher.group(2).substring(0, 1).toLowerCase() + nestedFieldMatcher.group(2).substring(1);
-                    fieldName = nestedFieldMatcher.group(1);
-                    nestedName = nestedField;
-                }
-
-                filteringOperation = FilteringOperation.fromValue(matcher.group(2));
-
-                if (Objects.equals(fieldName, "eyeColor")){
-                    if (!Objects.equals(filteringOperation, FilteringOperation.EQ) && !Objects.equals(filteringOperation, FilteringOperation.NEQ)) {
-                        throw new IllegalArgumentException("Only [eq] and [neq] operations are allowed for \"eyeColor\" field");
+                    Matcher nestedFieldMatcher = nestedFieldNamePattern.matcher(fieldName);
+                    if (nestedFieldMatcher.find()) {
+                        String nestedField = nestedFieldMatcher.group(2).substring(0, 1).toLowerCase() + nestedFieldMatcher.group(2).substring(1);
+                        fieldName = nestedFieldMatcher.group(1);
+                        nestedName = nestedField;
                     }
-                }
 
-                if (Objects.equals(fieldName, "hairColor")){
-                    if (!Objects.equals(filteringOperation, FilteringOperation.EQ) && !Objects.equals(filteringOperation, FilteringOperation.NEQ)) {
-                        throw new IllegalArgumentException("Only [eq] and [neq] operations are allowed for \"hairColor\" field");
+                    filteringOperation = FilteringOperation.fromValue(matcher.group(2));
+
+                    if (Objects.equals(fieldName, "eyeColor")) {
+                        if (!Objects.equals(filteringOperation, FilteringOperation.EQ) && !Objects.equals(filteringOperation, FilteringOperation.NEQ)) {
+                            throw new IllegalArgumentException("Only [eq] and [neq] operations are allowed for \"eyeColor\" field");
+                        }
                     }
-                }
 
-                if (Objects.equals(fieldName, "country")){
-                    if (!Objects.equals(filteringOperation, FilteringOperation.EQ) && !Objects.equals(filteringOperation, FilteringOperation.NEQ)) {
-                        throw new IllegalArgumentException("Only [eq] and [neq] operations are allowed for \"country\" field");
+                    if (Objects.equals(fieldName, "hairColor")) {
+                        if (!Objects.equals(filteringOperation, FilteringOperation.EQ) && !Objects.equals(filteringOperation, FilteringOperation.NEQ)) {
+                            throw new IllegalArgumentException("Only [eq] and [neq] operations are allowed for \"hairColor\" field");
+                        }
                     }
+
+                    if (Objects.equals(fieldName, "country")) {
+                        if (!Objects.equals(filteringOperation, FilteringOperation.EQ) && !Objects.equals(filteringOperation, FilteringOperation.NEQ)) {
+                            throw new IllegalArgumentException("Only [eq] and [neq] operations are allowed for \"country\" field");
+                        }
+                    }
+
+                    if (Objects.equals(fieldName, "view")) {
+                        fieldValue = matcher.group(3).toLowerCase();
+                    } else fieldValue = matcher.group(3);
                 }
 
-                if (Objects.equals(fieldName, "view")){
-                    fieldValue = matcher.group(3).toLowerCase();
-                } else fieldValue = matcher.group(3);
-            }
+                if (fieldName == null || fieldName.isEmpty()) {
+                    throw new IllegalArgumentException("Filter field name is empty");
+                }
 
-            if (fieldName == null || fieldName.isEmpty()){
-                throw new IllegalArgumentException("Filter field name is empty");
-            }
+                if (fieldValue == null || fieldValue.isEmpty()) {
+                    throw new IllegalArgumentException("Filter field value is empty");
+                }
 
-            if (fieldValue == null || fieldValue.isEmpty()){
-                throw new IllegalArgumentException("Filter field value is empty");
-            }
+                if (Objects.equals(filteringOperation, FilteringOperation.UNDEFINED)) {
+                    throw new IllegalArgumentException("No or unknown filtering operation. Possible values are: eq,neq,gt,lt,gte,lte.");
+                }
 
-            if (Objects.equals(filteringOperation, FilteringOperation.UNDEFINED)){
-                throw new IllegalArgumentException("No or unknown filtering operation. Possible values are: eq,neq,gt,lt,gte,lte.");
+                filters.add(Filter.builder()
+                        .fieldName(fieldName)
+                        .nestedName(nestedName)
+                        .fieldValue(fieldValue)
+                        .filteringOperation(filteringOperation)
+                        .build()
+                );
             }
-
-            filters.add(Filter.builder()
-                    .fieldName(fieldName)
-                    .nestedName(nestedName)
-                    .fieldValue(fieldValue)
-                    .filteringOperation(filteringOperation)
-                    .build()
-            );
         }
 
-        TicketsArray entityPage;
+        Page entityPage;
 
         try {
             entityPage = repository.getSortedAndFilteredPage(sorts, filters, page, pageSize);
@@ -183,6 +185,7 @@ public class TicketServiceImpl implements TicketService {
         } catch (NumberFormatException e) {
             return new TicketListResult("bad values in filters", null, 400);
         }
+
 
         return new TicketListResult("", entityPage, 200);
     }

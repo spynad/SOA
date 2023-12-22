@@ -1,5 +1,6 @@
 package com.spynad.model.message;
 
+import com.spynad.model.Page;
 import com.spynad.model.PersonArray;
 import com.spynad.model.TicketsArray;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,6 @@ public class TicketListResult implements Serializable {
     @Serial
     private static final long serialVersionUID = -913478L;
     private String message;
-    private TicketsArray result;
+    private Page result;
     private int status;
 }

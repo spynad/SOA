@@ -1,7 +1,10 @@
 package com.spynad.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlList;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,40 +14,11 @@ import java.util.Objects;
 @XmlRootElement
 public class TicketsArray implements Serializable {
     private static final long serialVersionUID = -558553967080513790L;
-    private Long page;
-    private Long pagesTotal;
-    private Long pageSize;
-    private List<Ticket> tickets = new ArrayList<Ticket>();
 
+    @XmlElement
+    private List<Ticket> tickets = new ArrayList<>();
 
-    @JsonProperty("page")
-    public Long getPage() {
-        return page;
-    }
-
-    public void setPage(Long page) {
-        this.page = page;
-    }
-
-    @JsonProperty("pagesTotal")
-    public Long getPagesTotal() {
-        return pagesTotal;
-    }
-
-    public void setPagesTotal(Long pagesTotal) {
-        this.pagesTotal = pagesTotal;
-    }
-
-    @JsonProperty("pageSize")
-    public Long getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Long pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    @JsonProperty("tickets")
+    @XmlTransient
     public List<Ticket> getTickets() {
         return tickets;
     }
@@ -63,15 +37,13 @@ public class TicketsArray implements Serializable {
             return false;
         }
         TicketsArray ticketsArray = (TicketsArray) o;
-        return Objects.equals(page, ticketsArray.page) &&
-                Objects.equals(pagesTotal, ticketsArray.pagesTotal) &&
-                Objects.equals(pageSize, ticketsArray.pageSize) &&
+        return
                 Objects.equals(tickets, ticketsArray.tickets);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(page, pagesTotal, pageSize, tickets);
+        return Objects.hash(tickets);
     }
 
     @Override
@@ -79,9 +51,6 @@ public class TicketsArray implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("class TicketsArray {\n");
 
-        sb.append("    page: ").append(toIndentedString(page)).append("\n");
-        sb.append("    pagesTotal: ").append(toIndentedString(pagesTotal)).append("\n");
-        sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
         sb.append("    tickets: ").append(toIndentedString(tickets)).append("\n");
         sb.append("}");
         return sb.toString();
