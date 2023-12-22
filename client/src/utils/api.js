@@ -1,7 +1,8 @@
 import axios from "axios";
 import convert from "xml-js";
+import {Parser, processors} from 'xml2js';
 
-const CATALOG_SERVICE = "https://localhost:8443/firstService-1.0-SNAPSHOT/api"
+const CATALOG_SERVICE = "http://127.0.0.1:45382/api/v1"
 const BOOKING_SERVICE = "https://localhost:10200/api/v1/booking"
 
 export const xml_axios = axios.create({
@@ -24,15 +25,23 @@ export const xml_axios = axios.create({
 })
 
 xml_axios.interceptors.response.use(function (response) {
-    response.data = JSON.parse(convert.xml2json(response.data,{compact: true, spaces: 4, textFn:RemoveJsonTextAttribute}))
-    function RemoveJsonTextAttribute(value,parentElement){
-        try{
-            var keyNo = Object.keys(parentElement._parent).length;
-            var keyName = Object.keys(parentElement._parent)[keyNo-1];
-            parentElement._parent[keyName] = value;
-        }
-        catch(e){}
-    }
+    var parseString = require('xml2js').parseString;
+    var stripPrefix = require('xml2js').processors.stripPrefix;
+
+    parseString(response.data, { tagNameProcessors: [ stripPrefix ] }, function(err, js) {
+        if(err) throw err;
+        response.data = (js)
+    });
+
+    // response.data = JSON.parse(convert.xml2json(response.data,{compact: true, spaces: 4, textFn:RemoveJsonTextAttribute}))
+    // function RemoveJsonTextAttribute(value,parentElement){
+    //     try{
+    //         var keyNo = Object.keys(parentElement._parent).length;
+    //         var keyName = Object.keys(parentElement._parent)[keyNo-1];
+    //         parentElement._parent[keyName] = value;
+    //     }
+    //     catch(e){}
+    // }
     return response;
 }, function (error) {
     return Promise.reject(error);

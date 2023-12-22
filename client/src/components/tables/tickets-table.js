@@ -47,7 +47,16 @@ export default function TicketsTable(){
         xml_axios.get(TICKETS_API, {params: queryParams})
             .then((response) => {
                 let res = response.data
-                if (response.data["ticketsArray"]["tickets"] == null) {
+                if (response.data.getAllTicketsResponse.return[0]["status"][0] === '400') {
+                    enqueueSnackbar("Некорректные параметры фильтров", {
+                        autoHideDuration: 5000,
+                        variant: "error"
+                    })
+                    setLoading(false)
+                    return;
+                }
+                let tickets = response.data.getAllTicketsResponse.return[0].result[0].tickets
+                if (tickets == null) {
                     setPageSize(5);
                     setCurrentPage(1);
                     setSortQueryParams([]);
@@ -58,35 +67,21 @@ export default function TicketsTable(){
                                     })
                     return;
                 }
-                if (Object.prototype.toString.call(response.data["ticketsArray"]["tickets"]) !== '[object Array]') {
-                    response.data["ticketsArray"]["tickets"] = [response.data["ticketsArray"]["tickets"],]
-                }
-                setData(response.data["ticketsArray"]["tickets"].map((elem) =>{
+                // if (Object.prototype.toString.call(response.data["return"]["result"]["tickets"]) !== '[object Array]') {
+                //     response.data["return"]["result"]["tickets"] = [response.data["return"]["result"]["tickets"],]
+                // }
+                setData(tickets.map((elem) =>{
+                    if(elem.person)
+                        elem.person = elem.person[0]
+                    if(elem.coordinates)
+                        elem.coordinates = elem.coordinates[0]
                     return {
                         ...elem,
                         key: elem.id
                     }
                 }))
-                setTotalCount(response.data["ticketsArray"]["pagesTotal"])
+                setTotalCount(response.data.getAllTicketsResponse.return[0].result[0]["pagesTotal"])
                 setLoading(false)
-            })
-            .catch((err) => {
-                if (err.response.status == 400) {
-                    enqueueSnackbar("Некорректные параметры фильтров", {
-                                        autoHideDuration: 5000,
-                                        variant: "error"
-                                    })
-                    setLoading(false)
-                } else {
-                    let error = err.response
-                    enqueueSnackbar(error.message, {
-                        autoHideDuration: 5000,
-                        variant: "error"
-                    })
-                    if (error){
-                        setLoading(false)
-                    }
-                }
             })
     }
 
@@ -175,19 +170,19 @@ export default function TicketsTable(){
                             title: "Время",
                             dataIndex: ["creationDate"],
                             key: "creationDate.time",
-                            render: (text, row) => {
-                                let date = text.split("T")[1].split(".")
-                                return `${date[0]}`
-                            }
+                            // render: (text, row) => {
+                            //     let date = text.split("T")[1].split(".")
+                            //     return `${date[0]}`
+                            // }
                         },
                         {
                             title: "Дата",
                             dataIndex: ["creationDate"],
                             key: "creationDate.date",
-                            render: (text, row) => {
-                                let date = text.split("T")
-                                return `${date[0]}`
-                            }
+                            // render: (text, row) => {
+                            //     let date = text.split("T")
+                            //     return `${date[0]}`
+                            // }
                         },
                     ]
                 },
@@ -201,8 +196,8 @@ export default function TicketsTable(){
                 },
                 {
                     title: "Тип",
-                    dataIndex: "type",
-                    key: "type",
+                    dataIndex: "typeStr",
+                    key: "typeStr",
                     sorter: {multiple: 3},
                     sortDirections: ["ascend", "descend"],
                     ...getColumnSearchProps("type", handleFilterChange)
@@ -213,11 +208,11 @@ export default function TicketsTable(){
                     key: "refundable",
                     sorter: {multiple: 3},
                     sortDirections: ["ascend", "descend"],
-                    render: (text, record) => (
-                        <Tag color={text ? 'green' : 'volcano'}>
-                            {text.toString()}
-                        </Tag>
-                    ),
+                    // render: (text, record) => (
+                    //     <Tag color={text ? 'green' : 'volcano'}>
+                    //         {text[0].toString()}
+                    //     </Tag>
+                    // ),
                     ...getColumnSearchProps("refundable", handleFilterChange)
                 },
                 {

@@ -1,7 +1,7 @@
 import {useSnackbar} from "notistack";
 import {useForm} from "antd/es/form/Form";
 import axios from "axios";
-import {TICKETS_API} from "../../utils/api";
+import {TICKETS_API, xml_axios} from "../../utils/api";
 import {Button, Form} from "antd";
 import {InputNumber} from "antd/es";
 
@@ -10,9 +10,15 @@ export function DeleteTicketForm(){
     const [deleteForm] = useForm();
 
     const handleTicketDelete = (e) => {
-        axios.delete(`${TICKETS_API}/${e['id']}`)
+        xml_axios.delete(`${TICKETS_API}/${e['id']}`)
             .then((response) => {
-                    enqueueSnackbar(`Успешно удален билет с id ${e['id']}`, {
+                if(response.data.deleteTicketResponse.return[0]["status"][0] === '404') {
+                    let msg = "Билет с заданным id не найден"
+                    enqueueSnackbar(msg, {
+                        autoHideDuration: 5000,
+                        variant: "error"
+                    })
+                } else enqueueSnackbar(`Успешно удален билет с id ${e['id']}`, {
                         autoHideDuration: 5000,
                         variant: "success"
                     })

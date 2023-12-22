@@ -1,7 +1,7 @@
 import {useSnackbar} from "notistack";
 import {useForm} from "antd/es/form/Form";
 import axios from "axios";
-import {PERSON_API} from "../../utils/api";
+import {PERSON_API, xml_axios} from "../../utils/api";
 import {Button, Form} from "antd";
 import {InputNumber} from "antd/es";
 
@@ -10,9 +10,15 @@ export function DeletePersonForm(){
     const [deleteForm] = useForm();
 
     const handleTicketDelete = (e) => {
-        axios.delete(`${PERSON_API}/${e['id']}`)
+        xml_axios.delete(`${PERSON_API}/${e['id']}`)
             .then((response) => {
-                    enqueueSnackbar(`Успешно удален человек с id ${e['id']}`, {
+                    if(response.data.deletePersonResponse.return[0]["status"][0] === '404') {
+                        let msg = "Человек с заданным id не найден"
+                        enqueueSnackbar(msg, {
+                            autoHideDuration: 5000,
+                            variant: "error"
+                        })
+                    } else enqueueSnackbar(`Успешно удален человек с id ${e['id']}`, {
                         autoHideDuration: 5000,
                         variant: "success"
                     })

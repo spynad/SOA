@@ -14,7 +14,15 @@ export function AddTicketForm(){
     const onFormSubmit = (e) => {
         xml_axios.post(TICKETS_API, {'ticket': e})
             .then((response) => {
-                const newTicket = response.data.ticket
+                if(response.data.deletePersonResponse.return[0]["status"][0] === '404') {
+                    let msg = "Человек с заданным id не найден"
+                    enqueueSnackbar(msg, {
+                        autoHideDuration: 5000,
+                        variant: "error"
+                    })
+                    return
+                }
+                const newTicket = response.data.addTicketResponse.return[0].result[0]
                 enqueueSnackbar("Создан новый билет с id: " + newTicket.id, {
                     autoHideDuration: 5000,
                     variant: "success"

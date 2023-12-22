@@ -18,19 +18,21 @@ export function UpdatePersonForm(){
     const showUpdateFlatModal = (e) => {
         xml_axios.get(`${PERSON_API}/${e["id"]}`)
             .then((response) => {
-                let data = undefined
-                if (response.data){
-                    data = response.data["person"]
-                }
-                if (data === undefined){
-                    enqueueSnackbar("Человек не найден!", {
-                        autoHideDuration: 2000,
+                if(response.data.getPersonByIdResponse.return[0]["status"][0] === '404') {
+                    let msg = "Человек с заданным id не найден"
+                    enqueueSnackbar(msg, {
+                        autoHideDuration: 5000,
                         variant: "error"
                     })
+                } else {
+                    let data = undefined
+                    if (response.data) {
+                        data = response.data.getPersonByIdResponse.return[0].result[0]
+                    }
+                    setInitialValues(data)
+                    setIsUpdateTicketModalOpen(true)
+                    setTicketId(e["id"])
                 }
-                setInitialValues(data)
-                setIsUpdateTicketModalOpen(true)
-                setTicketId(e["id"])
             })
             .catch((err) => {
                 let error = err.response.data
@@ -48,10 +50,9 @@ export function UpdatePersonForm(){
     const handleFormSubmit = (body) => {
         if (ticketId) {
             body['id'] = ticketId
-            xml_axios.put(`${PERSON_API}`, {'person': body})
+            xml_axios.put(`${PERSON_API}`, {'element': body})
                 .then((response) => {
-                    const ticket = response.data.person
-                    enqueueSnackbar("Успешно обновлен человек с id: " + ticket.id, {
+                    enqueueSnackbar("Успешно обновлен человек с id: " + ticketId, {
                         autoHideDuration: 5000,
                         variant: "success"
                     })
