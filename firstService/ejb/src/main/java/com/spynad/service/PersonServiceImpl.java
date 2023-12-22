@@ -2,17 +2,15 @@ package com.spynad.service;
 
 import com.spynad.exception.NotFoundException;
 import com.spynad.model.*;
-import com.spynad.model.message.ApiResponseMessage;
 import com.spynad.model.message.PersonListResult;
 import com.spynad.model.message.PersonResult;
 import com.spynad.model.message.Result;
 import com.spynad.repository.PersonRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.jws.WebService;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.jboss.ejb3.annotation.Pool;
 
 import java.util.ArrayList;
@@ -23,6 +21,7 @@ import java.util.regex.Pattern;
 
 @Stateless
 @Pool("slsb-strict-max-pool")
+@Slf4j
 public class PersonServiceImpl implements PersonService {
 
     @Inject
@@ -192,6 +191,7 @@ public class PersonServiceImpl implements PersonService {
     public PersonResult updatePerson(Person body)
             throws NotFoundException {
         try {
+            log.info(body.toString());
             Person person = repository.updatePerson(body);
             return new PersonResult("", person, 200);
         } catch (Exception e) {

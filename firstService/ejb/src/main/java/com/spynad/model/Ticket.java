@@ -41,7 +41,7 @@ public class Ticket implements Serializable {
     private Integer price;
     private Long discount;
     private Boolean refundable;
-    private TypeEnum type;
+    private TypeEnum typeStr;
     @ManyToOne
     @JoinColumn(name = "person_id", nullable = true)
     @XmlElementRef(name = "Person")
@@ -137,12 +137,12 @@ public class Ticket implements Serializable {
     }
 
     @JsonProperty("type")
-    public TypeEnum getType() {
-        return type;
+    public TypeEnum getTypeStr() {
+        return typeStr;
     }
 
-    public void setType(TypeEnum type) {
-        this.type = type;
+    public void setTypeStr(TypeEnum typeStr) {
+        this.typeStr = typeStr;
     }
 
     @JsonProperty("person")
@@ -172,13 +172,13 @@ public class Ticket implements Serializable {
                 Objects.equals(price, ticket.price) &&
                 Objects.equals(discount, ticket.discount) &&
                 Objects.equals(refundable, ticket.refundable) &&
-                Objects.equals(type, ticket.type) &&
+                Objects.equals(typeStr, ticket.typeStr) &&
                 Objects.equals(person, ticket.person);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, coordinates.getX(), coordinates.getY(), creationDate, price, discount, refundable, type, person);
+        return Objects.hash(id, name, coordinates.getX(), coordinates.getY(), creationDate, price, discount, refundable, typeStr, person);
     }
 
     @Override
@@ -194,7 +194,7 @@ public class Ticket implements Serializable {
         sb.append("    price: ").append(toIndentedString(price)).append("\n");
         sb.append("    discount: ").append(toIndentedString(discount)).append("\n");
         sb.append("    refundable: ").append(toIndentedString(refundable)).append("\n");
-        sb.append("    type: ").append(toIndentedString(type)).append("\n");
+        sb.append("    type: ").append(toIndentedString(typeStr)).append("\n");
         sb.append("    person: ").append(toIndentedString(person)).append("\n");
         sb.append("}");
         return sb.toString();

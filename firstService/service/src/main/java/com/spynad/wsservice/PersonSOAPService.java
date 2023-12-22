@@ -1,3 +1,4 @@
+/*
 package com.spynad.wsservice;
 
 import com.spynad.exception.NotFoundException;
@@ -24,3 +25,4 @@ public interface PersonSOAPService {
     @WebMethod
     PersonResult updatePerson(Person body) throws NotFoundException;
 }
+*/

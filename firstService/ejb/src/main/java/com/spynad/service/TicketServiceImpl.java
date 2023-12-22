@@ -8,10 +8,7 @@ import com.spynad.repository.PersonRepository;
 import com.spynad.repository.TicketRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
-import jakarta.jws.WebService;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
 import org.jboss.ejb3.annotation.Pool;
 
 import java.sql.Date;
@@ -38,7 +35,7 @@ public class TicketServiceImpl implements TicketService {
     private PersonRepository personRepository;
 
     @Transactional
-    public TicketResult addTicket(Ticket body)
+    public TicketResult addTicket(TicketDTO body)
             throws NotFoundException {
         try {
             if (body == null) return new TicketResult("empty ticket", null, 400);
@@ -47,7 +44,20 @@ public class TicketServiceImpl implements TicketService {
             }
             
             body.setCreationDate(Date.from(Instant.now()));
-            Ticket ticket = repository.saveTicket(body);
+            Ticket ticket = new Ticket();
+            ticket.setTypeStr(body.getTypeStr());
+            ticket.setName(body.getName());
+            ticket.setDiscount(body.getDiscount());
+            ticket.setPrice(body.getPrice());
+            ticket.setCreationDate(body.getCreationDate());
+            ticket.setCoordinates(body.getCoordinates());
+            ticket.setRefundable(body.getRefundable());
+
+            Person person = personRepository.getPersonById(body.getPersonId());
+
+            ticket.setPersonId(person);
+
+            ticket = repository.saveTicket(ticket);
             return new TicketResult("", ticket, 201);
         } catch (Exception e) {
             e.printStackTrace();
@@ -221,10 +231,22 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Transactional
-    public TicketResult updateTicket(Ticket body)
+    public TicketResult updateTicket(TicketDTO body)
             throws NotFoundException {
         try {
-            Ticket ticket = repository.updateTicket(body);
+            Ticket ticket = new Ticket();
+            ticket.setTypeStr(body.getTypeStr());
+            ticket.setName(body.getName());
+            ticket.setDiscount(body.getDiscount());
+            ticket.setPrice(body.getPrice());
+            ticket.setCreationDate(body.getCreationDate());
+            ticket.setCoordinates(body.getCoordinates());
+            ticket.setRefundable(body.getRefundable());
+
+            Person person = personRepository.getPersonById(body.getPersonId());
+
+            ticket.setPersonId(person);
+            ticket = repository.updateTicket(ticket);
             return new TicketResult("", ticket, 200);
         } catch (Exception e) {
             e.printStackTrace();
@@ -239,6 +261,8 @@ public class TicketServiceImpl implements TicketService {
             if (body == null || body.getId() != null) {
                 return new OperationalTicketResult("unknown operational ticket", null, 400);
             }
+            Person person = personRepository.getPersonById(body.getPersonId());
+            if (person == null) return new OperationalTicketResult("unknown person", null, 400);
             body.setCreationDate(Date.from(Instant.now()));
             body.setStatus(OperationalTicket.StatusEnum.PENDING);
             OperationalTicket ticket = opRepository.saveOperationalTicket(body);
@@ -252,7 +276,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public boolean submitTicket(Operation body) {
         try {
-            List<OperationalTicket> tickets = opRepository.getOperationalTicketsByOperationId(body.getOperationId());
+            List<OperationalTicket> tickets = opRepository.getOperationalTicketsByOperationId(body.getId());
             for (OperationalTicket t : tickets) {
                 if (t.getStatus().equals(OperationalTicket.StatusEnum.PENDING)) {
                     if (t.getTicketId() == null) {
@@ -287,7 +311,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.setDiscount(t.getDiscount());
         ticket.setName(t.getName());
         ticket.setPrice(t.getPrice());
-        ticket.setType(t.getType());
+        ticket.setTypeStr(t.getType());
         ticket.setRefundable(t.getRefundable());
         ticket.setCreationDate(Date.from(Instant.now()));
         ticket.setCoordinates(new Coordinates(t.getCoordinates().getX(), t.getCoordinates().getY()));
@@ -297,7 +321,7 @@ public class TicketServiceImpl implements TicketService {
     @Transactional
     public boolean cancelBufferTicket(Operation body) {
         try {
-            List<OperationalTicket> tickets = opRepository.getPendingOperationalTickets(body.getOperationId());
+            List<OperationalTicket> tickets = opRepository.getPendingOperationalTickets(body.getId());
             for (OperationalTicket t : tickets) {
                 t.setStatus(OperationalTicket.StatusEnum.CANCELED);
                 opRepository.updateOperationalTicket(t);

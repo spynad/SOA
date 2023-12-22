@@ -1,10 +1,7 @@
 package com.spynad.wsservice;
 
 import com.spynad.exception.NotFoundException;
-import com.spynad.model.Operation;
-import com.spynad.model.OperationalTicket;
-import com.spynad.model.Person;
-import com.spynad.model.Ticket;
+import com.spynad.model.*;
 import com.spynad.model.message.*;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebService;
@@ -25,7 +22,7 @@ public interface SOAPService {
     PersonResult updatePerson(Person body) throws NotFoundException;
 
     @WebMethod
-    TicketResult addTicket(Ticket body) throws NotFoundException;
+    TicketResult addTicket(TicketDTO ticket) throws NotFoundException;
     @WebMethod
     Result deleteTicket(Long ticketId) throws NotFoundException;
     @WebMethod
@@ -39,7 +36,7 @@ public interface SOAPService {
     @WebMethod
     TicketResult getTicketById(Long ticketId) throws NotFoundException;
     @WebMethod
-    TicketResult updateTicket(Ticket body) throws NotFoundException;
+    TicketResult updateTicket(TicketDTO body) throws NotFoundException;
     @WebMethod
     OperationalTicketResult bufferTicket(OperationalTicket body);
     @WebMethod

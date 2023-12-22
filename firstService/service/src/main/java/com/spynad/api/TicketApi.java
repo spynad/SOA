@@ -4,6 +4,7 @@ import com.spynad.config.JNDIConfig;
 import com.spynad.exception.NotFoundException;
 import com.spynad.model.OperationalTicket;
 import com.spynad.model.Ticket;
+import com.spynad.model.TicketDTO;
 import com.spynad.model.TicketsArray;
 import com.spynad.model.message.*;
 import com.spynad.service.TicketService;
@@ -16,9 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.constraints.Min;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -38,7 +37,7 @@ public class TicketApi {
             @ApiResponse(responseCode = "400", description = "Validation exception"),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
     public Response addTicket(
-            @Parameter(description = "Create a new ticket", required = true) Ticket body)
+            @Parameter(description = "Create a new ticket", required = true) TicketDTO body)
             throws NotFoundException {
         TicketResult result = service.addTicket(body);
         if (result.getResult() == null) {
@@ -160,7 +159,7 @@ public class TicketApi {
             @ApiResponse(responseCode = "404", description = "Ticket not found"),
             @ApiResponse(responseCode = "500", description = "Internal error occurred.")})
     public Response updateTicket(
-            @Parameter(description = "Update an existent ticket", required = true) Ticket body)
+            @Parameter(description = "Update an existent ticket", required = true) TicketDTO body)
             throws NotFoundException {
         TicketResult result = service.updateTicket(body);
         if (result.getResult() == null) {

@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@XmlRootElement
+@XmlRootElement(name = "tickets")
 public class TicketsArray implements Serializable {
     private static final long serialVersionUID = -558553967080513790L;
 
-    @XmlElement
+    @XmlElement(name = "ticket")
     private List<Ticket> tickets = new ArrayList<>();
 
     @XmlTransient

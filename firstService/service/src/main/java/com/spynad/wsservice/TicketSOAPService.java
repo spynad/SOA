@@ -1,3 +1,4 @@
+/*
 package com.spynad.wsservice;
 
 import com.spynad.exception.NotFoundException;
@@ -37,4 +38,4 @@ public interface TicketSOAPService {
     boolean submitTicket(Operation body);
     @WebMethod
     boolean cancelBufferTicket(Operation body);
-}
+}*/

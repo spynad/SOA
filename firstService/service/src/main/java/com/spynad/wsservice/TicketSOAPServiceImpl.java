@@ -1,3 +1,4 @@
+/*
 package com.spynad.wsservice;
 
 import com.spynad.config.JNDIConfig;
@@ -75,3 +76,4 @@ public class TicketSOAPServiceImpl implements TicketSOAPService {
         return service.cancelBufferTicket(body);
     }
 }
+*/

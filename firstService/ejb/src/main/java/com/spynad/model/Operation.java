@@ -2,6 +2,7 @@ package com.spynad.model;
 
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 import java.io.Serializable;
 
@@ -11,12 +12,12 @@ public class Operation implements Serializable {
     @XmlElement(name = "id")
     private Long id;
 
-
-    public Long getOperationId() {
+    @XmlTransient
+    public Long getId() {
         return id;
     }
 
-    public void setOperationId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }

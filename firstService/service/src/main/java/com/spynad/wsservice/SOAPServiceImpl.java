@@ -2,16 +2,15 @@ package com.spynad.wsservice;
 
 import com.spynad.config.JNDIConfig;
 import com.spynad.exception.NotFoundException;
-import com.spynad.model.Operation;
-import com.spynad.model.OperationalTicket;
-import com.spynad.model.Person;
-import com.spynad.model.Ticket;
+import com.spynad.model.*;
 import com.spynad.model.message.*;
 import com.spynad.service.PersonService;
 import com.spynad.service.TicketService;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.List;
 
 @WebService(endpointInterface = "com.spynad.wsservice.SOAPService")
@@ -44,7 +43,7 @@ public class SOAPServiceImpl implements SOAPService{
     }
     TicketService ticketService = JNDIConfig.ticketService();
     @Override
-    public TicketResult addTicket(Ticket body) throws NotFoundException {
+    public TicketResult addTicket(TicketDTO body) throws NotFoundException {
         return ticketService.addTicket(body);
     }
 
@@ -79,7 +78,8 @@ public class SOAPServiceImpl implements SOAPService{
     }
 
     @Override
-    public TicketResult updateTicket(Ticket body) throws NotFoundException {
+    public TicketResult updateTicket(TicketDTO body) throws NotFoundException {
+
         return ticketService.updateTicket(body);
     }
 
