@@ -7,7 +7,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class TicketRepositoryImpl implements TicketRepository{
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (CollectionUtils.isNotEmpty(filtersList)){
+        if (filtersList != null && ! filtersList.isEmpty()){
             predicates = new ArrayList<>();
 
             for (Filter filter : filtersList){
@@ -132,7 +131,7 @@ public class TicketRepositoryImpl implements TicketRepository{
             select.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
         }
 
-        if (CollectionUtils.isNotEmpty(sortList)){
+        if (sortList != null && ! sortList.isEmpty()){
             List<Order> orderList = new ArrayList<>();
 
             for (Sort sortItem : sortList){
@@ -169,7 +168,7 @@ public class TicketRepositoryImpl implements TicketRepository{
 
             long countResult = 0;
 
-            if (CollectionUtils.isNotEmpty(predicates)){
+            if (predicates != null && ! predicates.isEmpty()){
                 Query queryTotal = entityManager.createQuery("SELECT COUNT(f.id) FROM Ticket f");
                 countResult = (long) queryTotal.getSingleResult();
             } else {

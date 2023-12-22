@@ -16,6 +16,7 @@ public class PersonResult implements Serializable {
     @Serial
     private static final long serialVersionUID = -983578L;
     private String message;
+
     private Person result;
     private int status;
 }

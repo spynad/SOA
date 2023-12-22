@@ -10,7 +10,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public class PersonRepositoryImpl implements PersonRepository{
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (CollectionUtils.isNotEmpty(filtersList)){
+        if (filtersList != null && ! filtersList.isEmpty()){
             predicates = new ArrayList<>();
 
             for (Filter filter : filtersList){
@@ -133,7 +132,7 @@ public class PersonRepositoryImpl implements PersonRepository{
             select.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
         }
 
-        if (CollectionUtils.isNotEmpty(sortList)){
+        if (sortList != null && ! sortList.isEmpty()){
             List<Order> orderList = new ArrayList<>();
 
             for (Sort sortItem : sortList){
@@ -169,7 +168,7 @@ public class PersonRepositoryImpl implements PersonRepository{
 
             long countResult = 0;
 
-            if (CollectionUtils.isNotEmpty(predicates)){
+            if (predicates != null && ! predicates.isEmpty()){
                 Query queryTotal = entityManager.createQuery("SELECT COUNT(f.id) FROM Person f");
                 countResult = (long) queryTotal.getSingleResult();
             } else {

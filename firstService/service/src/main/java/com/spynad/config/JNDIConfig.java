@@ -31,10 +31,7 @@ public class JNDIConfig {
     public static TicketService ticketService(){
         Properties jndiProps = new Properties();
         jndiProps.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
-        //jndiProps.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-        //jndiProps.put("jboss.naming.client.ejb.context", true);
         jndiProps.put(Context.PROVIDER_URL, "remote+http://localhost:8080");
-        //jndiProps.put(Context.PROVIDER_URL, "http://localhost:8080/wildfly-services");
         try {
             final Context context = new InitialContext(jndiProps);
             return  (TicketService) context.lookup("ejb:/ejb-1.0-SNAPSHOT/TicketServiceImpl!com.spynad.service.TicketService");

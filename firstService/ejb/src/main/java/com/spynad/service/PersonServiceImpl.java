@@ -12,8 +12,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.jboss.ejb3.annotation.Pool;
 
 import java.util.ArrayList;
@@ -30,7 +28,7 @@ public class PersonServiceImpl implements PersonService {
     private PersonRepository repository;
 
     @Transactional
-    public PersonResult addPerson(Person body)
+    public PersonResult addPerson(Person body, SecurityContext context)
             throws NotFoundException {
         try {
             if (body == null) return new PersonResult("empty person", null, 400);
@@ -69,7 +67,8 @@ public class PersonServiceImpl implements PersonService {
 
         List<Sort> sorts = new ArrayList<>();
 
-        if (CollectionUtils.isNotEmpty(sortList)){
+
+        if (sortList != null && !sortList.isEmpty()){
             boolean containsOppositeSorts = sortList.stream().allMatch(e1 ->
                     sortList.stream().allMatch(e2 -> Objects.equals(e1, "-" + e2))
             );
@@ -143,11 +142,11 @@ public class PersonServiceImpl implements PersonService {
                 } else fieldValue = matcher.group(3);
             }
 
-            if (StringUtils.isEmpty(fieldName)){
+            if (fieldName == null || fieldName.isEmpty()){
                 throw new IllegalArgumentException("Filter field name is empty");
             }
 
-            if (StringUtils.isEmpty(fieldValue)){
+            if (fieldValue == null || fieldValue.isEmpty()){
                 throw new IllegalArgumentException("Filter field value is empty");
             }
 
