@@ -41,9 +41,9 @@ public class PersonApi  {
 
             @ApiResponse(responseCode = "500", description = "Internal error occurred.") })
     public Response addPerson(
-            @Parameter(description = "Create a new person" ,required=true) Person body, @Context SecurityContext context)
+            @Parameter(description = "Create a new person" ,required=true) Person body)
             throws NotFoundException {
-        PersonResult result = service.addPerson(body,context);
+        PersonResult result = service.addPerson(body);
         if (result.getResult() == null) {
             return Response.status(result.getStatus()).entity(result.getMessage()).build();
         }

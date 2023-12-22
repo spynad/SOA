@@ -9,6 +9,7 @@ import com.spynad.model.message.Result;
 import com.spynad.repository.PersonRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+import jakarta.jws.WebService;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
@@ -28,7 +29,7 @@ public class PersonServiceImpl implements PersonService {
     private PersonRepository repository;
 
     @Transactional
-    public PersonResult addPerson(Person body, SecurityContext context)
+    public PersonResult addPerson(Person body)
             throws NotFoundException {
         try {
             if (body == null) return new PersonResult("empty person", null, 400);

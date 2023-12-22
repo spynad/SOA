@@ -1,4 +1,4 @@
-package com.spynad.service;
+package com.spynad.wsservice;
 
 import com.spynad.exception.NotFoundException;
 import com.spynad.model.Operation;
@@ -8,25 +8,33 @@ import com.spynad.model.message.OperationalTicketResult;
 import com.spynad.model.message.Result;
 import com.spynad.model.message.TicketListResult;
 import com.spynad.model.message.TicketResult;
-import jakarta.ejb.Remote;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebService;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
 
 import java.util.List;
 
-@Remote
-public interface TicketService {
+@WebService
+public interface TicketSOAPService {
+    @WebMethod
     TicketResult addTicket(Ticket body) throws NotFoundException;
+    @WebMethod
     Result deleteTicket(Long ticketId) throws NotFoundException;
-    TicketListResult getAllTickets(List<String> sort,List<String> filter,Integer page,Integer pageSize) throws NotFoundException;
+    @WebMethod
+    TicketListResult getAllTickets(List<String> sort, List<String> filter, Integer page, Integer pageSize) throws NotFoundException;
+    @WebMethod
     Result getAverageTicketDiscount() throws NotFoundException;
+    @WebMethod
     Result getCheaperTicketsByPrice(Integer price) throws NotFoundException;
+    @WebMethod
     TicketResult getMinimalTicketByCreationDate() throws NotFoundException;
+    @WebMethod
     TicketResult getTicketById(Long ticketId) throws NotFoundException;
+    @WebMethod
     TicketResult updateTicket(Ticket body) throws NotFoundException;
+    @WebMethod
     OperationalTicketResult bufferTicket(OperationalTicket body);
+    @WebMethod
     boolean submitTicket(Operation body);
+    @WebMethod
     boolean cancelBufferTicket(Operation body);
 }

@@ -8,6 +8,7 @@ import com.spynad.repository.PersonRepository;
 import com.spynad.repository.TicketRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
+import jakarta.jws.WebService;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
