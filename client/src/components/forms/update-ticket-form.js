@@ -18,31 +18,22 @@ export function UpdateTicketForm(){
     const showUpdateFlatModal = (e) => {
         xml_axios.get(`${TICKETS_API}/${e["id"]}`)
             .then((response) => {
-                let data = undefined
-                if (response.data){
-                    data = response.data["ticket"]
-                }
-                if (data === undefined){
-                    enqueueSnackbar("Билет не найден!", {
-                        autoHideDuration: 2000,
+                if(response.data.getTicketByIdResponse.return[0]["code"][0] === '404') {
+                    let msg = "Билет с заданным id не найден"
+                    enqueueSnackbar(msg, {
+                        autoHideDuration: 5000,
                         variant: "error"
                     })
+                } else {
+                    let data = undefined
+                    if (response.data) {
+                        data = response.data.getTicketByIdResponse.return[0].result[0]
+                    }
+                    setInitialValues(data)
+                    setIsUpdateTicketModalOpen(true)
+                    setTicketId(e["id"])
+                    setCreationDate(data["creationDate"])
                 }
-                setInitialValues(data)
-                setIsUpdateTicketModalOpen(true)
-                setTicketId(e["id"])
-                setCreationDate(data["creationDate"])
-            })
-            .catch((err) => {
-                let error = err.response.data
-                let msg = error.message
-                if(err.response.status == 404) {
-                   msg = "Билет с заданным id не найден"
-                }
-                enqueueSnackbar(msg, {
-                    autoHideDuration: 5000,
-                    variant: "error"
-                })
             })
     }
 
@@ -50,10 +41,9 @@ export function UpdateTicketForm(){
         if (ticketId) {
             body['id'] = ticketId
             body['creationDate'] = creationDate
-            xml_axios.put(`${TICKETS_API}`, {'ticket': body})
+            xml_axios.put(`${TICKETS_API}`, {'element': body})
                 .then((response) => {
-                    const ticket = response.data
-                    enqueueSnackbar("Успешно обновлен билет с id: " + ticket.id, {
+                    enqueueSnackbar("Успешно обновлен билет с id: " + ticketId, {
                         autoHideDuration: 5000,
                         variant: "success"
                     })

@@ -14,19 +14,12 @@ export function AddPersonForm(){
     const onFormSubmit = (e) => {
         xml_axios.post(PERSON_API, {'person': e})
             .then((response) => {
-                const newTicket = response.data.person
-                enqueueSnackbar("Создан новый человек с id: " + newTicket.id, {
+                const newTicket = response.data.addPersonResponse.return[0].result[0]
+                enqueueSnackbar("Создан новый человек с id: " + newTicket.id[0], {
                     autoHideDuration: 5000,
                     variant: "success"
                 })
                 handleAddTicketOk()
-            })
-            .catch((err) => {
-                let error = err.response.data
-                enqueueSnackbar(error.message, {
-                    autoHideDuration: 5000,
-                    variant: "error"
-                })
             })
     }
 
