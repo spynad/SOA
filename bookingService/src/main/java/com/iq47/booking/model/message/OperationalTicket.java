@@ -4,9 +4,10 @@ import com.iq47.booking.model.data.Coordinates;
 import com.iq47.booking.model.data.Person;
 import com.iq47.booking.model.data.Ticket;
 import com.iq47.booking.model.data.XmlLocalDateTimeAdapter;
-import jakarta.xml.bind.annotation.XmlElement;
-import jakarta.xml.bind.annotation.XmlRootElement;
-import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -3,17 +3,12 @@ package com.spynad.service;
 import com.spynad.exception.NotFoundException;
 import com.spynad.model.Operation;
 import com.spynad.model.OperationalTicket;
-import com.spynad.model.Ticket;
 import com.spynad.model.TicketDTO;
 import com.spynad.model.message.OperationalTicketResult;
 import com.spynad.model.message.Result;
 import com.spynad.model.message.TicketListResult;
 import com.spynad.model.message.TicketResult;
 import jakarta.ejb.Remote;
-import jakarta.jws.WebMethod;
-import jakarta.jws.WebService;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
 
 import java.util.List;
 

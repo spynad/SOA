@@ -1,6 +1,6 @@
 package com.iq47.booking.model.data;
 
-import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.joda.time.LocalDateTime;
 

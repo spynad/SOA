@@ -6,10 +6,6 @@ import com.spynad.model.message.PersonListResult;
 import com.spynad.model.message.PersonResult;
 import com.spynad.model.message.Result;
 import jakarta.ejb.Remote;
-import jakarta.jws.WebMethod;
-import jakarta.jws.WebService;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.SecurityContext;
 
 import java.util.List;
 

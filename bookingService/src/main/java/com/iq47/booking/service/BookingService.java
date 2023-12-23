@@ -1,5 +1,6 @@
 package com.iq47.booking.service;
 
+import com.iq47.booking.model.data.GetAllTicketsResponse;
 import com.iq47.booking.model.data.Person;
 import com.iq47.booking.model.data.Ticket;
 import com.iq47.booking.model.data.TicketsArray;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,9 +23,7 @@ import javax.transaction.Transactional;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -42,6 +43,7 @@ public class BookingService {
     private final HttpHeaders headers;
 
     private final OperationalService operationalService;
+
 
     @Autowired
     public BookingService(HttpHeaders headers, OperationalService operationalService) {
@@ -129,6 +131,7 @@ public class BookingService {
 
     public void cancelBooking(Long personId, Long operationId) {
         try {
+
             String params = String.format("?filter=person.id[eq]=%d", personId);
             String url = String.format("%s/ticket%s", restServiceBaseUrl, params);
             TicketsArray tickets = restTemplate.getForObject(url, TicketsArray.class);

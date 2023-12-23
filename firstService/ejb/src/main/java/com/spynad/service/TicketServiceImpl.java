@@ -186,7 +186,7 @@ public class TicketServiceImpl implements TicketService {
             }
         }
 
-        Page entityPage;
+        TicketsArray entityPage;
 
         try {
             entityPage = repository.getSortedAndFilteredPage(sorts, filters, page, pageSize);
@@ -221,7 +221,9 @@ public class TicketServiceImpl implements TicketService {
             throws NotFoundException {
         try {
             Ticket ticket = repository.getTicketById(ticketId);
-            if (ticket == null) return new TicketResult("ticket not found", null, 404);
+            if (ticket == null) {
+                return new TicketResult("ticket not found", null, 404) ;
+            }
 
             return new TicketResult("", ticket, 200);
         } catch (Exception e) {

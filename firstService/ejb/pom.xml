@@ -114,6 +114,28 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <packageName>com.spynad.test.wsdl</packageName>
+                    <sourceType>wsdl</sourceType>
+                    <sources>
+                        <source>src/main/resources/service.wsdl</source>
+                    </sources>
+                    <outputDirectory>target/generated-sources/</outputDirectory>
+                    <clearOutputDir>false</clearOutputDir>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

@@ -1,6 +1,6 @@
 
 @XmlSchema(namespace = "http://wsservice.spynad.com/",
-        elementFormDefault = XmlNsForm.QUALIFIED, xmlns = { @XmlNs(namespaceURI = "http://wsservice.spynad.com/", prefix = "")})
+        elementFormDefault = XmlNsForm.QUALIFIED, xmlns = { @XmlNs(namespaceURI = "http://wsservice.spynad.com/", prefix = "ZALUPA")})
 package com.spynad.wsservice;
 
 import jakarta.xml.bind.annotation.XmlNs;

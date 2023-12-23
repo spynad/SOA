@@ -9,8 +9,6 @@ import com.spynad.service.TicketService;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
 
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.List;
 
 @WebService(endpointInterface = "com.spynad.wsservice.SOAPService")

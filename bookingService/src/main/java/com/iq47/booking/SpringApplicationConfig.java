@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.quartz.QuartzDataSource;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+//import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -42,7 +43,7 @@ import java.util.List;
 @EnableJpaRepositories(basePackages = "com.iq47.booking.*",
         entityManagerFactoryRef = "defaultManagerFactory",
         transactionManagerRef= "defaultTransactionManager")
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 public class SpringApplicationConfig {
     public static void main(String[] args) {
         SpringApplication.run(SpringApplicationConfig.class, args);
@@ -84,10 +85,17 @@ public class SpringApplicationConfig {
     @Bean
     @Qualifier("getTemplate")
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder
+        RestTemplate template = builder
                 .setConnectTimeout(Duration.ofMillis(2000))
                 .setReadTimeout(Duration.ofMillis(2000))
                 .build();
+        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+        Jaxb2RootElementHttpMessageConverter converter = new Jaxb2RootElementHttpMessageConverter();
+        converter.setSupportedMediaTypes(Collections.singletonList(MediaType.ALL));
+        messageConverters.add(converter);
+        template.setMessageConverters(messageConverters);
+        return template;
+
     }
 
     @Bean

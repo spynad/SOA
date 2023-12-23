@@ -9,7 +9,6 @@ import com.spynad.repository.PersonRepository;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.jboss.ejb3.annotation.Pool;
 
